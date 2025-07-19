@@ -51,14 +51,24 @@ class AdminPanel {
         document.querySelectorAll('.content-form').forEach(form => {
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
-                this.handleFormSubmit(e.target);
+                
+                // Special handling for gallery form
+                if (form.id === 'galleryForm') {
+                    this.handleGalleryFormSubmit(e.target);
+                } else {
+                    this.handleFormSubmit(e.target);
+                }
             });
 
             // Preview buttons
             const previewBtn = form.querySelector('.preview-btn');
             if (previewBtn) {
                 previewBtn.addEventListener('click', () => {
-                    this.showPreview(form);
+                    if (form.id === 'galleryForm') {
+                        this.handleGalleryFormSubmit(form);
+                    } else {
+                        this.showPreview(form);
+                    }
                 });
             }
         });
@@ -85,6 +95,9 @@ class AdminPanel {
                 }
             });
         });
+
+        // Gallery file upload functionality
+        this.setupGalleryFileUpload();
     }
 
     setupFormValidation() {
@@ -311,6 +324,12 @@ class AdminPanel {
                 form.querySelector('[name="description"]').value = data.description || '';
                 form.querySelector('[name="link"]').value = data.link || '';
                 break;
+                
+            case 'gallery':
+                form.querySelector('[name="title"]').value = data.title || '';
+                form.querySelector('[name="description"]').value = data.description || '';
+                form.querySelector('[name="images"]').value = data.images || '';
+                break;
         }
     }
 
@@ -395,7 +414,8 @@ class AdminPanel {
             award: 'Awards',
             project: 'Projects',
             teaching: 'Teaching & Services',
-            event: 'Events'
+            event: 'Events',
+            gallery: 'Gallery Items'
         };
         document.getElementById('listTitle').textContent = `Select ${titles[type]} to Edit`;
         
@@ -414,7 +434,8 @@ class AdminPanel {
                 award: 'awards.html',
                 project: 'projects.html',
                 teaching: 'teaching.html',
-                event: 'index.html'
+                event: 'index.html',
+                gallery: 'gallery.html'
             };
 
             const filename = fileMap[type];
@@ -450,7 +471,8 @@ class AdminPanel {
             award: '.award-item',
             project: '.project-item',
             teaching: '.teaching-item',
-            event: '.news-item'
+            event: '.news-item',
+            gallery: '.gallery-item'
         };
         
         const selector = selectors[type];
@@ -516,6 +538,13 @@ class AdminPanel {
                 data.description = item.querySelector('p')?.textContent?.trim() || '';
                 data.link = item.querySelector('a')?.href || '';
                 break;
+                
+            case 'gallery':
+                data.title = item.querySelector('.gallery-title')?.textContent?.trim() || '';
+                data.description = item.querySelector('.gallery-description')?.textContent?.trim() || '';
+                const images = item.querySelectorAll('.gallery-image');
+                data.images = Array.from(images).map(img => img.src).join('\n');
+                break;
         }
         
         return data;
@@ -537,7 +566,8 @@ class AdminPanel {
             award: 'Awards',
             project: 'Projects',
             teaching: 'Teaching & Services',
-            event: 'Events'
+            event: 'Events',
+            gallery: 'Gallery Items'
         };
         
         container.innerHTML = items.map((item, index) => {
@@ -594,6 +624,8 @@ class AdminPanel {
                 return data.institution || data.duration || 'No additional info';
             case 'event':
                 return data.date || data.description?.substring(0, 100) + '...' || 'No additional info';
+            case 'gallery':
+                return data.description?.substring(0, 100) + '...' || 'No description';
             default:
                 return 'No additional info';
         }
@@ -647,7 +679,8 @@ class AdminPanel {
             award: 'awards.html',
             project: 'projects.html',
             teaching: 'teaching.html',
-            event: 'index.html'
+            event: 'index.html',
+            gallery: 'gallery.html'
         };
 
         const filename = fileMap[type];
@@ -699,7 +732,8 @@ class AdminPanel {
                 award: 'awards.html',
                 project: 'projects.html',
                 teaching: 'teaching.html',
-                event: 'index.html'
+                event: 'index.html',
+                gallery: 'gallery.html'
             };
 
             const filename = fileMap[type];
@@ -737,7 +771,8 @@ class AdminPanel {
             award: 'Award',
             project: 'Project',
             teaching: 'Teaching Activity',
-            event: 'Event'
+            event: 'Event',
+            gallery: 'Gallery Item'
         };
         
         return titles[type] || 'Item';
@@ -803,7 +838,8 @@ class AdminPanel {
             award: 'awards.html',
             project: 'projects.html',
             teaching: 'teaching.html',
-            event: 'index.html'
+            event: 'index.html',
+            gallery: 'gallery.html'
         };
 
         const filename = fileMap[type];
@@ -847,25 +883,34 @@ class AdminPanel {
         }
     }
 
-    showPreview(form) {
-        // Validate form
-        const fields = form.querySelectorAll('input, select, textarea');
-        let isValid = true;
-        
-        fields.forEach(field => {
-            if (!this.validateField(field)) {
-                isValid = false;
-            }
-        });
+    showPreview(form, galleryData = null) {
+        // Validate form (skip for gallery with provided data)
+        if (!galleryData) {
+            const fields = form.querySelectorAll('input, select, textarea');
+            let isValid = true;
+            
+            fields.forEach(field => {
+                if (!this.validateField(field)) {
+                    isValid = false;
+                }
+            });
 
-        if (!isValid) {
-            this.showMessage('Please fix the errors in the form before previewing', 'error');
-            return;
+            if (!isValid) {
+                this.showMessage('Please fix the errors in the form before previewing', 'error');
+                return;
+            }
         }
 
         // Get form data
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
+        let data = {};
+        if (galleryData) {
+            // Use provided gallery data
+            data = galleryData;
+        } else {
+            // Extract from form data
+            const formData = new FormData(form);
+            data = Object.fromEntries(formData.entries());
+        }
         
         // Generate preview HTML
         const previewHTML = this.generatePreviewHTML(data, this.currentFormType);
@@ -873,6 +918,10 @@ class AdminPanel {
         // Show preview
         document.getElementById('previewContent').innerHTML = previewHTML;
         document.getElementById('previewSection').style.display = 'block';
+        
+        // Generate and show HTML code
+        const htmlCode = this.generateHTML(data, this.currentFormType);
+        this.showGeneratedCode(htmlCode, data);
         
         // Scroll to preview
         document.getElementById('previewSection').scrollIntoView({ behavior: 'smooth' });
@@ -896,6 +945,8 @@ class AdminPanel {
                 return this.generateTeachingPreview(data);
             case 'event':
                 return this.generateEventPreview(data);
+            case 'gallery':
+                return this.generateGalleryPreview(data);
             default:
                 return '<p>Preview not available</p>';
         }
@@ -994,6 +1045,48 @@ class AdminPanel {
         `;
     }
 
+    generateGalleryPreview(data) {
+        // Handle both URL strings and array of URLs
+        let images = [];
+        if (typeof data.images === 'string') {
+            // Split by newlines for URL input
+            images = data.images.split('\n').filter(url => url.trim());
+        } else if (Array.isArray(data.images)) {
+            // Use array directly for file uploads
+            images = data.images;
+        }
+        
+        const imageCount = images.length;
+        
+        let imageHTML = '';
+        if (imageCount === 1) {
+            imageHTML = `<img src="${images[0]}" alt="${this.escapeHtml(data.title)}" class="gallery-image">`;
+        } else if (imageCount > 1) {
+            imageHTML = `
+                <div class="gallery-slider">
+                    <div class="gallery-slides">
+                        ${images.map(img => `<div class="gallery-slide"><img src="${img}" alt="${this.escapeHtml(data.title)}" class="gallery-image"></div>`).join('')}
+                    </div>
+                    <button class="gallery-slider-nav prev">‹</button>
+                    <button class="gallery-slider-nav next">›</button>
+                    <div class="gallery-indicators">
+                        ${images.map((_, index) => `<div class="gallery-indicator ${index === 0 ? 'active' : ''}"></div>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        return `
+            <div class="generated-gallery">
+                <h3>${this.escapeHtml(data.title)}</h3>
+                <div class="description">${this.escapeHtml(data.description)}</div>
+                <div class="images">
+                    ${imageHTML}
+                </div>
+            </div>
+        `;
+    }
+
     generateHTML(data, type) {
         switch (type) {
             case 'publication':
@@ -1008,6 +1101,8 @@ class AdminPanel {
                 return this.generateTeachingHTML(data);
             case 'event':
                 return this.generateEventHTML(data);
+            case 'gallery':
+                return this.generateGalleryHTML(data);
             default:
                 return '';
         }
@@ -1100,6 +1195,47 @@ class AdminPanel {
 </div>`;
     }
 
+    generateGalleryHTML(data) {
+        // Handle both URL strings and array of URLs
+        let images = [];
+        if (typeof data.images === 'string') {
+            // Split by newlines for URL input
+            images = data.images.split('\n').filter(url => url.trim());
+        } else if (Array.isArray(data.images)) {
+            // Use array directly for file uploads
+            images = data.images;
+        }
+        
+        const imageCount = images.length;
+        
+        let imageHTML = '';
+        if (imageCount === 1) {
+            imageHTML = `<img src="${images[0]}" alt="${this.escapeHtml(data.title)}" class="gallery-image">`;
+        } else if (imageCount > 1) {
+            imageHTML = `
+                <div class="gallery-slider">
+                    <div class="gallery-slides">
+                        ${images.map(img => `<div class="gallery-slide"><img src="${img}" alt="${this.escapeHtml(data.title)}" class="gallery-image"></div>`).join('')}
+                    </div>
+                    <button class="gallery-slider-nav prev">‹</button>
+                    <button class="gallery-slider-nav next">›</button>
+                    <div class="gallery-indicators">
+                        ${images.map((_, index) => `<div class="gallery-indicator ${index === 0 ? 'active' : ''}"></div>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        return `<!-- New Gallery Item -->
+<div class="gallery-item">
+    <div class="gallery-header">
+        <h3 class="gallery-title">${this.escapeHtml(data.title)}</h3>
+        <p class="gallery-description">${this.escapeHtml(data.description)}</p>
+    </div>
+    ${imageHTML}
+</div>`;
+    }
+
     escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
@@ -1130,7 +1266,8 @@ class AdminPanel {
                 award: '../awards.html',
                 project: '../projects.html',
                 teaching: '../teaching.html',
-                event: '../index.html'
+                event: '../index.html',
+                gallery: '../gallery.html'
             };
 
             const targetFile = fileMap[type];
@@ -1176,6 +1313,7 @@ class AdminPanel {
                 experience: '.experiences-content',
                 award: '.awards-content',
                 project: '.projects-list',
+                gallery: '.gallery-grid',
                 teaching: '.teaching-content'
             };
             
@@ -1341,6 +1479,190 @@ class AdminPanel {
                 messageDiv.remove();
             }
         }, 5000);
+    }
+
+    setupGalleryFileUpload() {
+        const uploadMethodRadios = document.querySelectorAll('input[name="uploadMethod"]');
+        const urlInputGroup = document.getElementById('urlInputGroup');
+        const fileInputGroup = document.getElementById('fileInputGroup');
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInput = document.getElementById('galleryFileInput');
+        const uploadedFiles = document.getElementById('uploadedFiles');
+
+        // Handle upload method switching
+        uploadMethodRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'url') {
+                    urlInputGroup.style.display = 'block';
+                    fileInputGroup.style.display = 'none';
+                    // Make URL textarea required
+                    document.getElementById('galleryImages').required = true;
+                    // Clear file input
+                    fileInput.value = '';
+                    uploadedFiles.innerHTML = '';
+                } else {
+                    urlInputGroup.style.display = 'none';
+                    fileInputGroup.style.display = 'block';
+                    // Remove required from URL textarea
+                    document.getElementById('galleryImages').required = false;
+                }
+            });
+        });
+
+        // File upload area click handler
+        fileUploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Drag and drop functionality
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            this.handleFileSelection(files);
+        });
+
+        // File input change handler
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            this.handleFileSelection(files);
+        });
+    }
+
+    handleFileSelection(files) {
+        const uploadedFiles = document.getElementById('uploadedFiles');
+        const maxFiles = 10;
+        const maxSize = 5 * 1024 * 1024; // 5MB
+
+        // Clear existing files if too many
+        if (uploadedFiles.children.length + files.length > maxFiles) {
+            this.showMessage(`Maximum ${maxFiles} images allowed. Please remove some files first.`, 'error');
+            return;
+        }
+
+        files.forEach(file => {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                this.showMessage(`${file.name} is not an image file.`, 'error');
+                return;
+            }
+
+            // Validate file size
+            if (file.size > maxSize) {
+                this.showMessage(`${file.name} is too large. Maximum size is 5MB.`, 'error');
+                return;
+            }
+
+            // Create file preview
+            this.createFilePreview(file);
+        });
+    }
+
+    createFilePreview(file) {
+        const uploadedFiles = document.getElementById('uploadedFiles');
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            const fileDiv = document.createElement('div');
+            fileDiv.className = 'uploaded-file';
+            fileDiv.dataset.filename = file.name;
+
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.alt = file.name;
+
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-file';
+            removeBtn.innerHTML = '×';
+            removeBtn.addEventListener('click', () => {
+                fileDiv.remove();
+            });
+
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'uploaded-file-info';
+
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'uploaded-file-name';
+            nameDiv.textContent = file.name;
+
+            const sizeDiv = document.createElement('div');
+            sizeDiv.className = 'uploaded-file-size';
+            sizeDiv.textContent = this.formatFileSize(file.size);
+
+            infoDiv.appendChild(nameDiv);
+            infoDiv.appendChild(sizeDiv);
+            fileDiv.appendChild(img);
+            fileDiv.appendChild(removeBtn);
+            fileDiv.appendChild(infoDiv);
+            uploadedFiles.appendChild(fileDiv);
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Override the gallery form submission to handle file uploads
+    async handleGalleryFormSubmit(form) {
+        const formData = new FormData(form);
+        const uploadMethod = formData.get('uploadMethod');
+        
+        let images = [];
+        
+        if (uploadMethod === 'url') {
+            // Handle URL input
+            const urlText = formData.get('images');
+            if (urlText.trim()) {
+                images = urlText.split('\n').map(url => url.trim()).filter(url => url);
+            }
+        } else {
+            // Handle file uploads
+            const uploadedFiles = document.getElementById('uploadedFiles');
+            const fileElements = uploadedFiles.querySelectorAll('.uploaded-file');
+            
+            if (fileElements.length === 0) {
+                this.showMessage('Please upload at least one image.', 'error');
+                return;
+            }
+
+            // Convert uploaded files to base64 URLs
+            for (let fileElement of fileElements) {
+                const img = fileElement.querySelector('img');
+                if (img && img.src) {
+                    images.push(img.src);
+                }
+            }
+        }
+
+        if (images.length === 0) {
+            this.showMessage('Please provide at least one image.', 'error');
+            return;
+        }
+
+        const data = {
+            title: formData.get('title'),
+            description: formData.get('description'),
+            images: images
+        };
+
+        // Generate preview and HTML
+        this.showPreview(form, data);
     }
 }
 

@@ -1,13 +1,23 @@
 // Modern Portfolio Interactions
 document.addEventListener('DOMContentLoaded', function() {
+    // Ensure all content is visible by default
+    const allContent = document.querySelectorAll('body *');
+    allContent.forEach(element => {
+        if (getComputedStyle(element).opacity === '0') {
+            element.style.opacity = '1';
+        }
+    });
     // Mobile Navigation Toggle
     const navToggle = document.querySelector('.nav-toggle');
     const navMenu = document.querySelector('.nav-menu');
     
     if (navToggle && navMenu) {
-        navToggle.addEventListener('click', function() {
+        navToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             navMenu.classList.toggle('active');
             navToggle.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
         });
     }
 
@@ -16,7 +26,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!e.target.closest('.navbar')) {
             navMenu?.classList.remove('active');
             navToggle?.classList.remove('active');
+            document.body.classList.remove('menu-open');
         }
+    });
+
+    // Close mobile menu when clicking on a nav link
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function() {
+            navMenu?.classList.remove('active');
+            navToggle?.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        });
     });
 
     // Navbar scroll effect
@@ -87,29 +107,49 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(typeWriter, 500);
     }
 
-    // Intersection Observer for scroll animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-fade-in');
-            }
-        });
-    }, observerOptions);
-
-    // Observe elements for scroll animations
+    // Safer animation system with fallbacks
     const animateElements = document.querySelectorAll('.content-card, .publication-item, .experience-item, .award-item, .project-item, .teaching-item, .stat-item, .quick-link, .news-item');
     
+    // First, ensure all elements are visible
     animateElements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(30px)';
-        element.style.transition = 'all 0.6s ease-out';
-        observer.observe(element);
+        element.style.opacity = '1';
+        element.style.transform = 'translateY(0)';
     });
+    
+    // Then apply animations only if Intersection Observer is supported
+    if ('IntersectionObserver' in window) {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.classList.add('animate-fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Set initial animation state and observe
+        animateElements.forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(30px)';
+            element.style.transition = 'all 0.6s ease-out';
+            observer.observe(element);
+        });
+    }
+    
+    // Fallback: ensure all elements are visible after a delay
+    setTimeout(() => {
+        animateElements.forEach(element => {
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        });
+    }, 1000);
 
     // Add parallax effect to hero section
     const hero = document.querySelector('.hero');
@@ -177,6 +217,66 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Gallery Slider Functionality
+    const gallerySliders = document.querySelectorAll('.gallery-slider');
+    
+    gallerySliders.forEach(slider => {
+        const slides = slider.querySelector('.gallery-slides');
+        const slideItems = slider.querySelectorAll('.gallery-slide');
+        const prevBtn = slider.querySelector('.gallery-slider-nav.prev');
+        const nextBtn = slider.querySelector('.gallery-slider-nav.next');
+        const indicators = slider.querySelectorAll('.gallery-indicator');
+        
+        if (slideItems.length <= 1) {
+            // Hide navigation for single images
+            prevBtn?.classList.add('hidden');
+            nextBtn?.classList.add('hidden');
+            slider.querySelector('.gallery-indicators')?.classList.add('hidden');
+            return;
+        }
+        
+        let currentSlide = 0;
+        
+        function updateSlider() {
+            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update indicators
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+            
+            // Update navigation buttons
+            prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex';
+            nextBtn.style.display = currentSlide === slideItems.length - 1 ? 'none' : 'flex';
+        }
+        
+        // Navigation button events
+        prevBtn?.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlider();
+            }
+        });
+        
+        nextBtn?.addEventListener('click', () => {
+            if (currentSlide < slideItems.length - 1) {
+                currentSlide++;
+                updateSlider();
+            }
+        });
+        
+        // Indicator events
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentSlide = index;
+                updateSlider();
+            });
+        });
+        
+        // Initialize slider
+        updateSlider();
+    });
+
     // News Pagination
     const newsGrid = document.getElementById('newsGrid');
     const prevBtn = document.getElementById('prevBtn');
@@ -236,47 +336,33 @@ document.addEventListener('DOMContentLoaded', function() {
 // Add CSS for mobile menu
 const style = document.createElement('style');
 style.textContent = `
-    @media (max-width: 1024px) {
-        .nav-menu {
-            position: fixed;
-            top: 70px;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            flex-direction: column;
-            padding: 2rem;
-            transform: translateY(-100%);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid var(--border-color);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .nav-menu.active {
-            transform: translateY(0);
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .nav-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        
-        .nav-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
-        
-        .nav-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -6px);
-        }
-    }
-    
     .navbar.scrolled {
         background: rgba(255, 255, 255, 0.98);
         box-shadow: var(--shadow-lg);
     }
-`;
+    
+    /* Prevent body scroll when mobile menu is open */
+    body.menu-open {
+        overflow: hidden;
+    }
+    
+    /* Additional mobile menu improvements */
+    @media (max-width: 1024px) {
+        .nav-menu {
+            gap: 1rem;
+        }
+        
+        .nav-link {
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .nav-link:hover {
+            background: rgba(37, 99, 235, 0.1);
+        }
+    }
 `;
 document.head.appendChild(style); 

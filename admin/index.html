@@ -62,6 +62,11 @@
                         <h3>Event</h3>
                         <p>Add news and events</p>
                     </div>
+                    <div class="selector-card" data-type="gallery">
+                        <div class="selector-icon">📸</div>
+                        <h3>Gallery</h3>
+                        <p>Add photo gallery items</p>
+                    </div>
                 </div>
                 
                 <!-- Edit Mode Grid -->
@@ -95,6 +100,11 @@
                         <div class="selector-icon">📅</div>
                         <h3>Events</h3>
                         <p>Edit existing events</p>
+                    </div>
+                    <div class="selector-card" data-type="gallery" data-mode="edit">
+                        <div class="selector-icon">📸</div>
+                        <h3>Gallery</h3>
+                        <p>Edit existing gallery items</p>
                     </div>
                 </div>
             </section>
@@ -309,6 +319,53 @@
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="submit-btn">Add Event</button>
+                        <button type="button" class="preview-btn">Preview</button>
+                    </div>
+                </form>
+
+                <!-- Gallery Form -->
+                <form class="content-form" id="galleryForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="galleryTitle">Gallery Title *</label>
+                        <input type="text" id="galleryTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="galleryDescription">Description *</label>
+                        <textarea id="galleryDescription" name="description" rows="3" placeholder="Brief description of the gallery..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Image Upload Method</label>
+                        <div class="upload-method-selector">
+                            <label class="radio-label">
+                                <input type="radio" name="uploadMethod" value="url" checked>
+                                <span>Enter Image URLs</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="uploadMethod" value="file">
+                                <span>Upload from Device</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" id="urlInputGroup">
+                        <label for="galleryImages">Image URLs *</label>
+                        <textarea id="galleryImages" name="images" rows="4" placeholder="Enter image URLs, one per line. Example:&#10;https://example.com/image1.jpg&#10;https://example.com/image2.jpg&#10;https://example.com/image3.jpg"></textarea>
+                        <small class="form-help">Enter one image URL per line. For multiple images, each URL should be on a separate line.</small>
+                    </div>
+                    <div class="form-group" id="fileInputGroup" style="display: none;">
+                        <label for="galleryFileInput">Upload Images *</label>
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <input type="file" id="galleryFileInput" name="files" multiple accept="image/*" style="display: none;">
+                            <div class="upload-placeholder">
+                                <span class="upload-icon">📁</span>
+                                <p>Click to select images or drag & drop here</p>
+                                <p class="upload-hint">Supports: JPG, PNG, GIF, WebP (Max 5MB each)</p>
+                            </div>
+                        </div>
+                        <div class="uploaded-files" id="uploadedFiles"></div>
+                        <small class="form-help">You can select multiple images. Maximum 10 images per gallery item.</small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Add Gallery Item</button>
                         <button type="button" class="preview-btn">Preview</button>
                     </div>
                 </form>
