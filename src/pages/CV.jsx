@@ -27,7 +27,7 @@ const CV = () => {
             </div>
             
             <a
-              href="/Academic_CV.pdf"
+              href={process.env.NODE_ENV === 'production' ? '/portfolio/Academic_CV.pdf' : '/Academic_CV.pdf'}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
@@ -52,7 +52,7 @@ const CV = () => {
             {!pdfError ? (
               <div className="h-[800px] w-full">
                 <iframe
-                  src="/Academic_CV.pdf"
+                  src={process.env.NODE_ENV === 'production' ? '/portfolio/Academic_CV.pdf' : '/Academic_CV.pdf'}
                   title="Academic CV"
                   className="w-full h-full border-0"
                   style={{ minHeight: '800px' }}
@@ -68,7 +68,7 @@ const CV = () => {
                   <h3 className="text-xl font-semibold text-slate-700 mb-2">PDF Preview Unavailable</h3>
                   <p className="text-slate-600 mb-4">The PDF preview couldn't be loaded. Please use the download button above to view the CV.</p>
                   <a
-                    href="/Academic_CV.pdf"
+                    href={process.env.NODE_ENV === 'production' ? '/portfolio/Academic_CV.pdf' : '/Academic_CV.pdf'}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 font-medium"
