@@ -611,6 +611,56 @@ I can not push this to github it is showing error
 
 _**Assistant**_
 
+I see there's a Git authentication error when trying to deploy. This is likely due to authentication issues with GitHub. Let me help you resolve this by checking your Git configuration and trying alternative deployment methods.
+
+
+---
+
+```bash
+git remote -v
+```
+
+```
+D:\Personal Project\portfolio2\portfolio>git remote -v
+origin  https://github.com/minannu/portfolio.git (fetch)
+Microsoft Windows [Version 10.0.26100.4652]
+(c) Microsoft Corporation. All rights reserved.
+
+D:\Personal Project\portfolio2\portfolio>git remote -v
+origin  https://github.com/minannu/portfolio.git (fetch)
+origin  https://github.com/minannu/portfolio.git (push)
+
+D:\Personal Project\portfolio2\portfolio>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+D:\Personal Project\portfolio2\portfolio>
+```
+
+---
+
+
+
+---
+
 
 
 ---
