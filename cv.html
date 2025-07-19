@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - Md Minhazul Islam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Fixed Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="nav-logo">M</span>
+                <span class="nav-title">Md Minhazul Islam</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="publications.html" class="nav-link">Publications</a>
+                <a href="experiences.html" class="nav-link">Experiences</a>
+                <a href="awards.html" class="nav-link">Awards</a>
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="teaching.html" class="nav-link">Teaching</a>
+                <a href="cv.html" class="nav-link active">CV</a>
+            </div>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="page-content">
+                <div class="content-card">
+                    <div class="page-header">
+                        <h2 class="section-title">CV</h2>
+                    </div>
+                    
+                    <div class="cv-content">
+                        <div class="cv-viewer-section">
+                            <h3>View CV Online</h3>
+                            <p>You can view my CV directly in your browser below, or download it for offline viewing.</p>
+                            <div class="cv-embed-container">
+                                <iframe src="public/Academic_CV.pdf" class="cv-embed" title="Academic CV" onload="this.style.display='block'" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"></iframe>
+                                <div class="cv-fallback" style="display: none;">
+                                    <p>PDF viewer not available. Please <a href="public/Academic_CV.pdf" target="_blank">click here to download</a> the CV.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="cv-download">
+                            <h3>Download My CV</h3>
+                            <p>You can download my complete CV in PDF format for detailed information about my academic background, research experience, and technical skills.</p>
+                            <a href="public/Academic_CV.pdf" target="_blank" class="cv-link">
+                                <span class="cv-icon">📄</span>
+                                Download Academic CV (PDF)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo">M</span>
+                    <span class="footer-title">Md Minhazul Islam</span>
+                </div>
+                <p class="footer-description">
+                    Advancing the understanding of human communication through computational analysis of literature and social media.
+                </p>
+                <div class="footer-links">
+                    <a href="publications.html">Publications</a>
+                    <a href="projects.html">Projects</a>
+                    <a href="cv.html">CV</a>
+                    <a href="mailto:minannu2001@gmail.com">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Md Minhazul Islam. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 

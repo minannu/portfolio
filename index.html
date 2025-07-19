@@ -1,38 +1,244 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/portfolio/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Md Minhazul Islam - Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-    <script type="text/javascript">
-      // Single Page Apps for GitHub Pages
-      // MIT License
-      // https://github.com/rafgraph/spa-github-pages
-      // This script checks to see if a redirect is present in the query string,
-      // converts it back into the correct url and adds it to the
-      // browser's history using window.history.replaceState(...),
-      // which won't cause the browser to attempt to load the new url.
-      // When the single page app is loaded further down in this file,
-      // the correct url will be waiting in the browser's history for
-      // the single page app to route accordingly.
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
-        }
-      }(window.location))
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Fixed Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="nav-logo">M</span>
+                <span class="nav-title">Md Minhazul Islam</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="publications.html" class="nav-link">Publications</a>
+                <a href="experiences.html" class="nav-link">Experiences</a>
+                <a href="awards.html" class="nav-link">Awards</a>
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="teaching.html" class="nav-link">Teaching</a>
+                <a href="cv.html" class="nav-link">CV</a>
+            </div>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">Md Minhazul Islam</h1>
+                    <p class="hero-subtitle">Research Scientist & AI Enthusiast</p>
+                    <p class="hero-description">
+                        Advancing Natural Language Processing and Computational Linguistics research. 
+                        Specializing in Bengali NLP, sentiment analysis, and multimodal learning.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="publications.html" class="btn btn-primary">View Research</a>
+                        <a href="cv.html" class="btn btn-secondary">Download CV</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="public/avatar.jpg" alt="Md Minhazul Islam" class="profile-photo">
+                    <div class="hero-contact-links">
+                        <a href="mailto:minannu2001@gmail.com" class="hero-contact-link" title="Email">
+                            <span class="hero-contact-icon">📧</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/md-minhazul-islam-6755461a1/" target="_blank" class="hero-contact-link" title="LinkedIn">
+                            <span class="hero-contact-icon">💼</span>
+                        </a>
+                        <a href="https://github.com/minannu" target="_blank" class="hero-contact-link" title="GitHub">
+                            <span class="hero-contact-icon">🐙</span>
+                        </a>
+                        <a href="https://scholar.google.com/citations?user=3IIqrOYAAAAJ&hl=en" target="_blank" class="hero-contact-link" title="Google Scholar">
+                            <span class="hero-contact-icon">🎓</span>
+                        </a>
+                        <a href="https://www.kaggle.com/minannu" target="_blank" class="hero-contact-link" title="Kaggle">
+                            <span class="hero-contact-icon">📊</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+                <p class="section-subtitle">Passionate researcher in Computer Science and Engineering</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        I am currently pursuing my BSc in Computer Science and Engineering at Rajshahi University of Engineering and Technology. 
+                        My research interests encompass a broad spectrum, including Natural Language Processing, Digital Humanities, 
+                        Computational Linguistics, Signal Processing and machine learning.
+                    </p>
+                    <p>
+                        Prior to my educational experience, I worked as a Research Assistant under the supervision of 
+                        <a href="https://www.ruet.ac.bd/harunmr9" target="_blank">Md. Harun Or Rashid</a> and 
+                        <a href="https://www.ruet.ac.bd/azmainsrizon" target="_blank">Md Azmain Yakin Srizon</a>.
+                    </p>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">6+</div>
+                        <div class="stat-label">Publications</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">3+</div>
+                        <div class="stat-label">Years Research</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">Model Accuracy</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">15M+</div>
+                        <div class="stat-label">Data Points</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News & Events Section -->
+    <section class="news-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Recent News & Events</h2>
+                <p class="section-subtitle">Stay updated with my latest research activities and achievements</p>
+            </div>
+            <div class="news-container">
+                <div class="news-grid" id="newsGrid">
+                    <div class="news-item" data-page="1">
+                        <div class="news-date">December 2024</div>
+                        <div class="news-content">
+                            <h3>Article Accepted in Data in Brief (Q2 Journal)</h3>
+                            <p>An article was accepted in a Q2 journal named <a href="https://www.sciencedirect.com/journal/data-in-brief" target="_blank">Data in Brief</a>.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item" data-page="1">
+                        <div class="news-date">December 2024</div>
+                        <div class="news-content">
+                            <h3>Two Papers Presented at ICCIT 2024</h3>
+                            <p>Two conference papers were accepted and presented at <a href="https://iccit.org.bd/2024/" target="_blank">ICCIT 2024</a>.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item" data-page="1">
+                        <div class="news-date">December 2024</div>
+                        <div class="news-content">
+                            <h3>Paper Accepted at STI-2024</h3>
+                            <p>A conference paper was accepted and presented at <a href="https://sti.green.edu.bd" target="_blank">STI-2024</a>.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item" data-page="1">
+                        <div class="news-date">October 2024</div>
+                        <div class="news-content">
+                            <h3>Dataset Published in Mendeley Data</h3>
+                            <p>Published a dataset in the <strong>Mendeley Data</strong> repository. <a href="https://data.mendeley.com/datasets/7p6k8mrzcr/3" target="_blank">View dataset</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item" data-page="1">
+                        <div class="news-date">September 2024</div>
+                        <div class="news-content">
+                            <h3>Paper Accepted at ICISET 2024</h3>
+                            <p>A conference paper was accepted and presented at <strong>ICISET 2024</strong>.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item" data-page="1">
+                        <div class="news-date">May 2024</div>
+                        <div class="news-content">
+                            <h3>Robi Datathon 3.0 Final Round</h3>
+                            <p>Participated in the <strong>Robi Datathon 3.0</strong> final round competition held at Robi Headquarters in Dhaka.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item" data-page="1">
+                        <div class="news-date">April 2024</div>
+                        <div class="news-content">
+                            <h3>Robi Datathon 3.0 Regional Round</h3>
+                            <p>Participated in the regional round of <strong>Robi Datathon 3.0</strong> on Kaggle Platform.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="news-item" data-page="1">
+                        <div class="news-date">December 2023</div>
+                        <div class="news-content">
+                            <h3>Paper Presented at ICCIT 2023</h3>
+                            <p>A conference paper was accepted and presented at <strong>ICCIT 2023</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="news-pagination">
+                    <button class="pagination-btn prev-btn" id="prevBtn" disabled>
+                        <span>←</span> Previous
+                    </button>
+                    <div class="pagination-info">
+                        <span id="currentPage">1</span> of <span id="totalPages">1</span>
+                    </div>
+                    <button class="pagination-btn next-btn" id="nextBtn">
+                        Next <span>→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-content">
+                <h3>Get in Touch</h3>
+                <p>Interested in collaboration or research opportunities? Let's connect!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo">M</span>
+                    <span class="footer-title">Md Minhazul Islam</span>
+                </div>
+                <p class="footer-description">
+                    Advancing the understanding of human communication through computational analysis of literature and social media.
+                </p>
+                <div class="footer-links">
+                    <a href="publications.html">Publications</a>
+                    <a href="projects.html">Projects</a>
+                    <a href="cv.html">CV</a>
+                    <a href="mailto:minannu2001@gmail.com">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Md Minhazul Islam. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
 </html>
