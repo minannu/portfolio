@@ -137,6 +137,186 @@ Now let me create a 404.html file that will help with routing on GitHub Pages:
 
 ---
 
+Now I need to update the index.html to handle the redirect from the 404.html:
+
+
+---
+
+
+
+---
+
+Now let me test the build to make sure everything works:
+
+
+---
+
+```bash
+npm run build
+```
+
+```
+Microsoft Windows [Version 10.0.26100.4652]
+(c) Microsoft Corporation. All rights reserved.
+
+D:\Personal Project\portfolio-1>npm run build
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+> fresh-portfolio-project@0.0.0 build
+> vite build
+
+vite v6.3.5 building for production...
+transforming (39) src\assets\avatar.jpg[vite:css][postcss] @import must precede all other statements (bes
+ides @charset or empty @layer)
+4  |  
+5  |  /* Import Google Fonts */
+6  |  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=sw
+ap');
+   |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^
+7  |  
+8  |  /* Base styles */
+✓ 312 modules transformed.
+dist/index.html                      1.80 kB │ gzip:   0.88 kB
+dist/assets/avatar-DEQ4smSQ.jpg  1,127.37 kB
+dist/assets/index-VmVb1Q2e.css      31.95 kB │ gzip:   5.66 kB
+dist/assets/index-qzJSJ0OQ.js      383.18 kB │ gzip: 119.05 kB
+✓ built in 2.77s
+
+D:\Personal Project\portfolio-1>
+```
+
+---
+
+Great! The build completed successfully. Now let me check the built files to make sure the 404.html was copied correctly:
+
+
+---
+
+<details>
+            <summary>Listed directory dist • **12** results</summary>
+        
+| Name |
+|-------|
+| 📁 `assets` |
+| 📄 `index.html` |
+| 📁 `paper_img` |
+| 📄 `404.html` |
+| 📄 `disease prediction image.png` |
+| 📄 `data in brief.jpg` |
+| 📄 `discrepancy paper.gif` |
+| 📄 `contextual embedding paper.gif` |
+| 📄 `avatar.jpg` |
+| 📄 `Academic_CV.pdf` |
+| 📄 `.DS_Store` |
+| 📄 `avatar.png` |
+
+</details>
+
+---
+
+Perfect! The 404.html file is in the dist folder. Let me also check the built index.html to make sure the base path is correct:
+
+
+---
+
+Read file: dist/index.html
+
+---
+
+Excellent! The build is working correctly. I can see that:
+
+1. The base path `/portfolio/` is correctly applied to all assets
+2. The 404.html file is present in the dist folder
+3. The routing script is included in the index.html
+
+## Summary of Changes Made:
+
+1. **Changed from BrowserRouter to HashRouter**: This is the most important change. `HashRouter` uses URL hashes (`#`) which work perfectly with GitHub Pages, while `BrowserRouter` requires server-side routing support.
+
+2. **Added base path to Vite config**: Set `base: "/portfolio/"` in `vite.config.js` to match your GitHub Pages repository name.
+
+3. **Created 404.html**: This file handles routing for GitHub Pages by redirecting all 404s back to index.html.
+
+4. **Updated index.html**: Added the routing script and updated the favicon path to include the base path.
+
+5. **Updated title**: Changed from "Vite + React" to "Portfolio".
+
+## Next Steps:
+
+1. **Test locally**: Run `npm run dev` to make sure everything still works locally
+2. **Build and deploy**: Run `npm run build` and push the changes to GitHub
+3. **Wait for deployment**: GitHub Pages will automatically rebuild your site
+
+The key change is switching from `BrowserRouter` to `HashRouter`. With `HashRouter`, your URLs will look like:
+- `https://minannu.github.io/portfolio/#/` (home)
+- `https://minannu.github.io/portfolio/#/publications` (publications)
+- `https://minannu.github.io/portfolio/#/experiences` (experiences)
+
+This is the standard way to handle React Router with GitHub Pages and will solve your blank page issue.
+
+Would you like me to help you test this locally first, or would you prefer to build and deploy it right away?
+
+---
+
+_**User**_
+
+now it is have same issue
+
+---
+
+_**Assistant**_
+
+Let me check what's happening. First, let me test the build locally to see if there are any issues:
+
+
+---
+
+```bash
+npm run dev
+```
+
+---
+
+Let me check if there are any console errors or issues. Let me also verify the current state of your files and check if there might be a different issue:
+
+
+---
+
+Read file: src/main.jsx
+
+---
+
+The HashRouter change looks correct. Let me check if there might be an issue with the base path or if we need to adjust the approach. Let me try a different solution - instead of using HashRouter, let's use BrowserRouter with a proper GitHub Pages setup:
+
+
+---
+
+
+
+---
+
 
 
 ---
