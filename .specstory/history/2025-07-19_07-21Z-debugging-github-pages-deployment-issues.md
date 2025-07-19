@@ -317,7 +317,316 @@ The HashRouter change looks correct. Let me check if there might be an issue wit
 
 ---
 
+Now let me also check if there are any issues with the CSS imports that might be causing problems:
 
+
+---
+
+Read file: src/index.css
+
+---
+
+I see there's a CSS import issue. The `@import` statement is after the Tailwind directives, which can cause problems. Let me fix this:
+
+
+---
+
+
+
+---
+
+Now let me rebuild the project to see if this fixes the issue:
+
+
+---
+
+```bash
+npm run build
+```
+
+```
+D:\Personal Project\portfolio-1>npm run build
+
+> fresh-portfolio-project@0.0.0 build
+> vite build
+✓ 312 modules transformed.
+dist/index.html                      1.80 kB │ gzip:   0.88 kB
+dist/assets/avatar-DEQ4smSQ.jpg  1,127.37 kB
+dist/assets/index-sxwWZhG8.css      32.05 kB │ gzip:   5.73 kB
+dist/assets/index-DmRTmZDS.js      382.83 kB │ gzip: 118.94 kB
+✓ built in 2.76s
+
+D:\Personal Project\portfolio-1>
+```
+
+---
+
+Great! The build completed without the CSS warning. Now let me check if there might be an issue with the GitHub Pages configuration. Let me also create a simple test to see what's happening. 
+
+Let me check if there are any console errors by looking at the built files more carefully:
+
+
+---
+
+Read file: dist/index.html
+
+---
+
+The build looks correct. Let me try a different approach. Sometimes the issue can be with the GitHub Pages configuration itself. Let me create a simple test to see if the basic React app is working. 
+
+Let me also check if there might be an issue with the routing. Let me temporarily simplify the App component to see if that's the issue:
+
+
+---
+
+Read file: src/App.jsx
+
+---
+
+Let me create a simple test version of the App component to see if the basic React app works:
+
+
+---
+
+
+
+---
+
+Let me try a different approach. Let me create a simple test component to see if the basic React app works:
+
+
+---
+
+```diff
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+-       <Header />
+        <div className="container mx-auto px-4 py-8">
+-         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+-           <div className="lg:col-span-3">
+-             <div className="sticky top-8">
+-               <Sidebar />
+-             </div>
+-           </div>
+-           <div className="lg:col-span-9">
+-             <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8 min-h-[600px]">
+-               <Routes>
+-                 <Route path="/" element={<Home />} />
+-                 <Route path="/publications" element={<Publications />} />
+-                 <Route path="/experiences" element={<Experience />} />
+-                 <Route path="/awards" element={<Awards />} />
+-                 <Route path="/projects" element={<Projects />} />
+-                 <Route path="/teaching-services" element={<TeachingAndServices />} />
+-                 <Route path="/cv" element={<CV />} />
+-                 <Route path="*" element={<Navigate to="/" replace />} />
+-               </Routes>
+-             </div>
+-           </div>
++         <h1 className="text-4xl font-bold text-center text-blue-600 mb-8">
++           Portfolio Test - If you can see this, React is working!
++         </h1>
++         <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8">
++           <p className="text-lg text-center">
++             This is a test to see if the basic React app is rendering correctly.
++           </p>
+          </div>
+        </div>
+```
+
+---
+
+Now let me build this simplified version:
+
+
+---
+
+```bash
+npm run build
+```
+
+```
+D:\Personal Project\portfolio-1>npm run build
+
+> fresh-portfolio-project@0.0.0 build
+> vite build
+✓ 312 modules transformed.
+dist/index.html                      1.80 kB │ gzip:  0.88 kB
+dist/assets/avatar-DEQ4smSQ.jpg  1,127.37 kB
+dist/assets/index-B0XbrKzP.css      31.85 kB │ gzip:  5.69 kB
+dist/assets/index-6lFU7jWw.js      174.38 kB │ gzip: 57.60 kB
+✓ built in 2.40s
+
+D:\Personal Project\portfolio-1>
+```
+
+---
+
+Good! The build is much smaller now (174KB vs 382KB), which means it's not loading all the components. Now let me check if there might be an issue with the GitHub Pages configuration. 
+
+Let me also check if there's a `.nojekyll` file needed for GitHub Pages:
+
+
+---
+
+```diff
+- 
++  
+```
+
+---
+
+Now let me also check if there might be an issue with the routing. Let me try a different approach - let's use HashRouter but with a simpler setup:
+
+
+---
+
+
+
+---
+
+Now let me build this version:
+
+
+---
+
+```bash
+npm run build
+```
+
+```
+D:\Personal Project\portfolio-1>npm run build
+
+> fresh-portfolio-project@0.0.0 build
+> vite build
+✓ 312 modules transformed.
+dist/index.html                      1.80 kB │ gzip:  0.88 kB
+dist/assets/avatar-DEQ4smSQ.jpg  1,127.37 kB
+dist/assets/index-B0XbrKzP.css      31.85 kB │ gzip:  5.69 kB
+dist/assets/index-DXccacIY.js      174.73 kB │ gzip: 57.71 kB
+✓ built in 2.72s
+
+D:\Personal Project\portfolio-1>
+```
+
+---
+
+Perfect! Now let me restore the original App component but with a simpler routing setup to test:
+
+
+---
+
+
+
+---
+
+Now let me build the final version:
+
+
+---
+
+```bash
+npm run build
+```
+
+```
+D:\Personal Project\portfolio-1>npm run build
+
+> fresh-portfolio-project@0.0.0 build
+> vite build
+✓ 312 modules transformed.
+dist/index.html                      1.80 kB │ gzip:   0.88 kB
+dist/assets/avatar-DEQ4smSQ.jpg  1,127.37 kB
+dist/assets/index-sxwWZhG8.css      32.05 kB │ gzip:   5.73 kB
+dist/assets/index-DRWSgTb_.js      383.18 kB │ gzip: 119.05 kB
+✓ built in 2.63s
+
+D:\Personal Project\portfolio-1>
+```
+
+---
+
+Perfect! Now let me check the final built index.html to make sure everything is correct:
+
+
+---
+
+Read file: dist/index.html
+
+---
+
+Excellent! Now let me also check if the .nojekyll file was copied to the dist folder:
+
+
+---
+
+<details>
+            <summary>Listed directory dist • **13** results</summary>
+        
+| Name |
+|-------|
+| 📁 `assets` |
+| 📄 `index.html` |
+| 📁 `paper_img` |
+| 📄 `.nojekyll` |
+| 📄 `404.html` |
+| 📄 `disease prediction image.png` |
+| 📄 `data in brief.jpg` |
+| 📄 `discrepancy paper.gif` |
+| 📄 `contextual embedding paper.gif` |
+| 📄 `avatar.jpg` |
+| 📄 `Academic_CV.pdf` |
+| 📄 `.DS_Store` |
+| 📄 `avatar.png` |
+
+</details>
+
+---
+
+Perfect! All the necessary files are in place. Now let me provide you with a summary of what we've done and what you need to do next:
+
+## Summary of Changes Made:
+
+1. **Fixed CSS Import Order**: Moved the Google Fonts import before Tailwind directives to prevent CSS warnings.
+
+2. **Switched to HashRouter**: Changed from `BrowserRouter` to `HashRouter` which works better with GitHub Pages.
+
+3. **Added .nojekyll File**: Created a `.nojekyll` file to tell GitHub Pages not to process the site with Jekyll.
+
+4. **Maintained 404.html**: Kept the 404.html file for proper routing support.
+
+5. **Correct Base Path**: The Vite config has the correct base path `/portfolio/`.
+
+## What You Need to Do Now:
+
+1. **Commit and Push the Changes**:
+   ```bash
+   git add .
+   git commit -m "Fix GitHub Pages deployment issues"
+   git push origin main
+   ```
+
+2. **Wait for GitHub Pages to Deploy**: It usually takes 2-5 minutes for GitHub Pages to rebuild your site.
+
+3. **Test the Site**: After deployment, visit `https://minannu.github.io/portfolio/` to see if it works.
+
+## Expected Behavior:
+
+With `HashRouter`, your URLs will now look like:
+- `https://minannu.github.io/portfolio/#/` (home)
+- `https://minannu.github.io/portfolio/#/publications` (publications)
+- `https://minannu.github.io/portfolio/#/experiences` (experiences)
+
+The `#` in the URL is normal for HashRouter and indicates that the routing is handled client-side, which is exactly what we need for GitHub Pages.
+
+## If It Still Doesn't Work:
+
+If you still see a blank page after pushing these changes, please:
+
+1. Check the browser's developer console (F12) for any JavaScript errors
+2. Make sure your GitHub repository is set to deploy from the `main` branch and the `dist` folder
+3. Wait a few more minutes for the deployment to complete
+
+The changes we made should resolve the blank page issue. The key fix was switching to `HashRouter` which is specifically designed to work with static hosting services like GitHub Pages.
 
 ---
 
