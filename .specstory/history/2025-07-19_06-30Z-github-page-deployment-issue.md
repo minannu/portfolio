@@ -526,6 +526,91 @@ Perfect! The `Academic_CV.pdf` file exists in the `public` folder. The issue is 
 
 ---
 
+Now let's build and deploy the fix:
+
+
+---
+
+```bash
+npm run deploy
+```
+
+```
+D:\Personal Project\portfolio2\portfolio>npm run deploy
+Microsoft Windows [Version 10.0.26100.4652]
+(c) Microsoft Corporation. All rights reserved.
+
+D:\Personal Project\portfolio2\portfolio>npm run deploy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+> portfolio@0.0.0 predeploy
+> npm run build
+
+
+> portfolio@0.0.0 build
+> vite build
+
+vite v6.2.1 building for production...
+transforming (27) src\database\about-me.jsonBrowserslist: browsers data (caniuse-lite) is 7 months old. P
+lease run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✓ 310 modules transformed.
+dist/index.html                      0.80 kB │ gzip:   0.43 kB
+dist/assets/avatar-DEQ4smSQ.jpg  1,127.37 kB
+dist/assets/index-DKMfaSw1.css      32.10 kB │ gzip:   5.74 kB
+dist/assets/index-D1eO5f4d.js      383.80 kB │ gzip: 119.17 kB
+✓ built in 4.25s
+
+> portfolio@0.0.0 deploy
+> gh-pages -d dist
+
+ProcessError: fatal: unable to access 'https://github.com/minannu/portfolio.git/': Failed to connect to g
+ithub.com port 443 after 21065 ms: Couldn't connect to server
+
+    at ChildProcess.<anonymous> (D:\Personal Project\portfolio2\portfolio\node_modules\gh-pages\lib\git.j
+s:42:16)
+    at ChildProcess.emit (node:events:518:28)
+    at maybeClose (node:internal/child_process:1101:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:304:5)
+
+D:\Personal Project\portfolio2\portfolio>
+```
+
+---
+
+_**User**_
+
+I can not push this to github it is showing error
+
+---
+
+_**Assistant**_
+
 
 
 ---
