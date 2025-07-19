@@ -1,15 +1,15 @@
-
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Experiences - Md Minhazul Islam</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-
-
+</head>
+<body>
     <!-- Fixed Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -43,15 +43,7 @@
                         <h2 class="section-title">Experiences</h2>
                     </div>
                     
-                    <div class="experiences-content"><!-- New Experience -->
-<div class="experience-card">
-    <div class="experience-header">
-        <h3>AI Engineer</h3>
-        <span class="experience-duration">2025-06 - Present</span>
-    </div>
-    <p class="experience-company">Makebell Limited</p>
-    <p class="experience-description">I joined here as AI engineer.</p>
-</div>
+                    <div class="experiences-content">
                         <div class="experience-item">
                             <div class="experience-header">
                                 <h3>Research Assistant</h3>
@@ -121,11 +113,11 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2025 Md Minhazul Islam. All rights reserved.</p>
+                <p>&copy; 2025 Md Minhazul Islam. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
-
- 
+</body>
+</html> 

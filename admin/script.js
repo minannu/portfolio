@@ -1,0 +1,1367 @@
+// Admin Panel JavaScript
+
+class AdminPanel {
+    constructor() {
+        this.currentFormType = null;
+        this.currentMode = 'add';
+        this.currentContent = null;
+        this.init();
+    }
+
+    init() {
+        this.bindEvents();
+        this.setupFormValidation();
+    }
+
+    bindEvents() {
+        // Mode selection
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const mode = e.currentTarget.dataset.mode;
+                this.switchMode(mode);
+            });
+        });
+
+        // Content type selection (add mode)
+        document.querySelectorAll('.selector-card[data-type]:not([data-mode])').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const type = e.currentTarget.dataset.type;
+                this.showForm(type);
+            });
+        });
+
+        // Content type selection (edit mode)
+        document.querySelectorAll('.selector-card[data-mode="edit"]').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const type = e.currentTarget.dataset.type;
+                this.showContentList(type);
+            });
+        });
+
+        // Back buttons
+        document.getElementById('backBtn').addEventListener('click', () => {
+            this.showSelector();
+        });
+
+        document.getElementById('backToListBtn').addEventListener('click', () => {
+            this.showSelector();
+        });
+
+        // Form submissions
+        document.querySelectorAll('.content-form').forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleFormSubmit(e.target);
+            });
+
+            // Preview buttons
+            const previewBtn = form.querySelector('.preview-btn');
+            if (previewBtn) {
+                previewBtn.addEventListener('click', () => {
+                    this.showPreview(form);
+                });
+            }
+        });
+
+        // Close preview
+        document.getElementById('closePreviewBtn').addEventListener('click', () => {
+            this.hidePreview();
+        });
+
+        // Copy code button
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            this.copyGeneratedCode();
+        });
+
+        // Present checkbox handlers
+        document.querySelectorAll('input[name="present"]').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const endDateInput = e.target.closest('.form-group').querySelector('input[type="month"]');
+                if (e.target.checked) {
+                    endDateInput.disabled = true;
+                    endDateInput.value = '';
+                } else {
+                    endDateInput.disabled = false;
+                }
+            });
+        });
+    }
+
+    setupFormValidation() {
+        // Real-time validation
+        document.querySelectorAll('input, select, textarea').forEach(input => {
+            input.addEventListener('blur', () => {
+                this.validateField(input);
+            });
+        });
+    }
+
+    validateField(field) {
+        const value = field.value.trim();
+        const isRequired = field.hasAttribute('required');
+        
+        if (isRequired && !value) {
+            this.showFieldError(field, 'This field is required');
+            return false;
+        }
+
+        if (field.type === 'url' && value && !this.isValidUrl(value)) {
+            this.showFieldError(field, 'Please enter a valid URL');
+            return false;
+        }
+
+        if (field.type === 'email' && value && !this.isValidEmail(value)) {
+            this.showFieldError(field, 'Please enter a valid email address');
+            return false;
+        }
+
+        this.clearFieldError(field);
+        return true;
+    }
+
+    showFieldError(field, message) {
+        this.clearFieldError(field);
+        field.classList.add('error');
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'field-error';
+        errorDiv.textContent = message;
+        errorDiv.style.color = 'var(--danger-color)';
+        errorDiv.style.fontSize = '0.875rem';
+        errorDiv.style.marginTop = '0.25rem';
+        field.parentNode.appendChild(errorDiv);
+    }
+
+    clearFieldError(field) {
+        field.classList.remove('error');
+        const errorDiv = field.parentNode.querySelector('.field-error');
+        if (errorDiv) {
+            errorDiv.remove();
+        }
+    }
+
+    isValidUrl(string) {
+        try {
+            new URL(string);
+            return true;
+        } catch (_) {
+            return false;
+        }
+    }
+
+    isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    showForm(type, editIndex = null) {
+        this.currentFormType = type;
+        
+        // Hide selector and content list
+        document.querySelector('.content-selector').style.display = 'none';
+        document.getElementById('contentListSection').style.display = 'none';
+        
+        // Show form section
+        document.getElementById('formSection').style.display = 'block';
+        
+        // Update form title
+        const titles = {
+            publication: editIndex !== null ? 'Edit Publication' : 'Add Publication',
+            experience: editIndex !== null ? 'Edit Experience' : 'Add Experience',
+            award: editIndex !== null ? 'Edit Award' : 'Add Award',
+            project: editIndex !== null ? 'Edit Project' : 'Add Project',
+            teaching: editIndex !== null ? 'Edit Teaching/Service' : 'Add Teaching/Service',
+            event: editIndex !== null ? 'Edit Event' : 'Add Event'
+        };
+        document.getElementById('formTitle').textContent = titles[type];
+        
+        // Hide all forms
+        document.querySelectorAll('.content-form').forEach(form => {
+            form.style.display = 'none';
+        });
+        
+        // Show specific form
+        const form = document.getElementById(`${type}Form`);
+        form.style.display = 'block';
+        
+        // Pre-fill form if editing
+        if (editIndex !== null && this.currentContent) {
+            this.preFillForm(form, type, editIndex);
+            // Update button text for edit mode
+            const submitBtn = form.querySelector('.submit-btn');
+            if (submitBtn) {
+                submitBtn.textContent = `Update ${titles[type].replace('Edit ', '')}`;
+            }
+        } else {
+            // Reset form for new content
+            form.reset();
+            // Update button text for add mode
+            const submitBtn = form.querySelector('.submit-btn');
+            if (submitBtn) {
+                submitBtn.textContent = `Add ${titles[type].replace('Add ', '')}`;
+            }
+        }
+        
+        // Scroll to form
+        document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async preFillForm(form, type, index) {
+        try {
+            // Get the content data from the stored content
+            const fileMap = {
+                publication: 'publications.html',
+                experience: 'experiences.html',
+                award: 'awards.html',
+                project: 'projects.html',
+                teaching: 'teaching.html',
+                event: 'index.html'
+            };
+
+            const filename = fileMap[type];
+            const response = await fetch(`/get-file/${filename}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to read file');
+            }
+            
+            const html = result.content;
+            const contentItems = this.extractContentItems(html, type);
+            
+            if (contentItems[index]) {
+                const data = contentItems[index].data;
+                this.fillFormFields(form, type, data);
+            }
+            
+        } catch (error) {
+            console.error('Error pre-filling form:', error);
+            this.showMessage(`Error loading content for editing: ${error.message}`, 'error');
+        }
+    }
+
+    fillFormFields(form, type, data) {
+        switch (type) {
+            case 'publication':
+                form.querySelector('[name="title"]').value = data.title || '';
+                form.querySelector('[name="status"]').value = data.status || '';
+                form.querySelector('[name="authors"]').value = data.authors || '';
+                form.querySelector('[name="description"]').value = data.description || '';
+                form.querySelector('[name="link"]').value = data.link || '';
+                break;
+                
+            case 'experience':
+                form.querySelector('[name="title"]').value = data.title || '';
+                // Parse duration to get start and end dates
+                if (data.duration) {
+                    const parts = data.duration.split(' - ');
+                    if (parts.length === 2) {
+                        form.querySelector('[name="startDate"]').value = this.parseDateToMonth(parts[0]);
+                        if (parts[1] !== 'Present') {
+                            form.querySelector('[name="endDate"]').value = this.parseDateToMonth(parts[1]);
+                        } else {
+                            form.querySelector('[name="present"]').checked = true;
+                        }
+                    }
+                }
+                form.querySelector('[name="company"]').value = data.company || '';
+                form.querySelector('[name="description"]').value = data.description || '';
+                break;
+                
+            case 'award':
+                form.querySelector('[name="title"]').value = data.title || '';
+                form.querySelector('[name="year"]').value = data.year || '';
+                form.querySelector('[name="organization"]').value = data.organization || '';
+                form.querySelector('[name="description"]').value = data.description || '';
+                form.querySelector('[name="link"]').value = data.link || '';
+                break;
+                
+            case 'project':
+                form.querySelector('[name="title"]').value = data.title || '';
+                form.querySelector('[name="description"]').value = data.description || '';
+                form.querySelector('[name="technologies"]').value = data.technologies || '';
+                form.querySelector('[name="link"]').value = data.link || '';
+                break;
+                
+            case 'teaching':
+                form.querySelector('[name="title"]').value = data.title || '';
+                // Parse duration to get start and end dates
+                if (data.duration) {
+                    const parts = data.duration.split(' - ');
+                    if (parts.length === 2) {
+                        form.querySelector('[name="startDate"]').value = this.parseDateToMonth(parts[0]);
+                        if (parts[1] !== 'Present') {
+                            form.querySelector('[name="endDate"]').value = this.parseDateToMonth(parts[1]);
+                        } else {
+                            form.querySelector('[name="present"]').checked = true;
+                        }
+                    }
+                }
+                form.querySelector('[name="institution"]').value = data.institution || '';
+                form.querySelector('[name="description"]').value = data.description || '';
+                form.querySelector('[name="link"]').value = data.link || '';
+                break;
+                
+            case 'event':
+                form.querySelector('[name="title"]').value = data.title || '';
+                form.querySelector('[name="date"]').value = this.parseDateToMonth(data.date);
+                form.querySelector('[name="description"]').value = data.description || '';
+                form.querySelector('[name="link"]').value = data.link || '';
+                break;
+        }
+    }
+
+    parseDateToMonth(dateString) {
+        if (!dateString) return '';
+        
+        // Handle various date formats
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            // Try to parse common formats
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                              'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            for (let i = 0; i < monthNames.length; i++) {
+                if (dateString.includes(monthNames[i])) {
+                    const year = dateString.match(/\d{4}/);
+                    if (year) {
+                        return `${year[0]}-${String(i + 1).padStart(2, '0')}`;
+                    }
+                }
+            }
+            return '';
+        }
+        
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    }
+
+    switchMode(mode) {
+        this.currentMode = mode;
+        
+        // Update mode buttons
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+        
+        // Show/hide grids
+        if (mode === 'add') {
+            document.getElementById('addModeGrid').style.display = 'grid';
+            document.getElementById('editModeGrid').style.display = 'none';
+        } else {
+            document.getElementById('addModeGrid').style.display = 'none';
+            document.getElementById('editModeGrid').style.display = 'grid';
+        }
+        
+        // Hide other sections
+        document.getElementById('formSection').style.display = 'none';
+        document.getElementById('contentListSection').style.display = 'none';
+        document.getElementById('previewSection').style.display = 'none';
+        document.getElementById('codeSection').style.display = 'none';
+    }
+
+    showSelector() {
+        document.querySelector('.content-selector').style.display = 'block';
+        document.getElementById('formSection').style.display = 'none';
+        document.getElementById('contentListSection').style.display = 'none';
+        document.getElementById('previewSection').style.display = 'none';
+        document.getElementById('codeSection').style.display = 'none';
+        
+        // Reset forms
+        document.querySelectorAll('.content-form').forEach(form => {
+            form.reset();
+        });
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async showContentList(type) {
+        this.currentFormType = type;
+        
+        // Hide selector
+        document.querySelector('.content-selector').style.display = 'none';
+        
+        // Show content list section
+        document.getElementById('contentListSection').style.display = 'block';
+        
+        // Update title
+        const titles = {
+            publication: 'Publications',
+            experience: 'Experiences',
+            award: 'Awards',
+            project: 'Projects',
+            teaching: 'Teaching & Services',
+            event: 'Events'
+        };
+        document.getElementById('listTitle').textContent = `Select ${titles[type]} to Edit`;
+        
+        // Load content
+        await this.loadContentList(type);
+        
+        // Scroll to list
+        document.getElementById('contentListSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async loadContentList(type) {
+        try {
+            const fileMap = {
+                publication: 'publications.html',
+                experience: 'experiences.html',
+                award: 'awards.html',
+                project: 'projects.html',
+                teaching: 'teaching.html',
+                event: 'index.html'
+            };
+
+            const filename = fileMap[type];
+            const response = await fetch(`/get-file/${filename}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to read file');
+            }
+            
+            const html = result.content;
+            const contentItems = this.extractContentItems(html, type);
+            
+            this.displayContentList(contentItems, type);
+            
+        } catch (error) {
+            console.error('Error loading content list:', error);
+            this.showMessage(`Error loading content: ${error.message}`, 'error');
+        }
+    }
+
+    extractContentItems(html, type) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        
+        const selectors = {
+            publication: '.publication-item',
+            experience: '.experience-item',
+            award: '.award-item',
+            project: '.project-item',
+            teaching: '.teaching-item',
+            event: '.news-item'
+        };
+        
+        const selector = selectors[type];
+        const items = tempDiv.querySelectorAll(selector);
+        
+        console.log('Extracted items:', { type, selector, count: items.length, items: Array.from(items).map(item => item.outerHTML.substring(0, 100)) });
+        
+        return Array.from(items).map((item, index) => {
+            return {
+                index: index,
+                element: item,
+                html: item.outerHTML,
+                data: this.extractDataFromItem(item, type)
+            };
+        });
+    }
+
+    extractDataFromItem(item, type) {
+        const data = {};
+        
+        switch (type) {
+            case 'publication':
+                data.title = item.querySelector('h3')?.textContent?.trim() || '';
+                data.status = item.querySelector('.publication-status')?.textContent?.trim() || '';
+                data.authors = item.querySelector('.publication-authors')?.textContent?.trim() || '';
+                data.description = item.querySelector('.publication-description')?.textContent?.trim() || '';
+                data.link = item.querySelector('.publication-link')?.href || '';
+                break;
+                
+            case 'experience':
+                data.title = item.querySelector('h3')?.textContent?.trim() || '';
+                data.duration = item.querySelector('.experience-duration')?.textContent?.trim() || '';
+                data.company = item.querySelector('.experience-company')?.textContent?.trim() || '';
+                data.description = item.querySelector('.experience-description')?.textContent?.trim() || '';
+                break;
+                
+            case 'award':
+                data.title = item.querySelector('h3')?.textContent?.trim() || '';
+                data.year = item.querySelector('.award-year')?.textContent?.trim() || '';
+                data.organization = item.querySelector('.award-organization')?.textContent?.trim() || '';
+                data.description = item.querySelector('.award-description')?.textContent?.trim() || '';
+                data.link = item.querySelector('.award-link')?.href || '';
+                break;
+                
+            case 'project':
+                data.title = item.querySelector('h4')?.textContent?.trim() || '';
+                data.description = item.querySelector('p')?.textContent?.trim() || '';
+                data.technologies = item.querySelector('.project-technologies')?.textContent?.trim() || '';
+                data.link = item.querySelector('.project-link')?.href || '';
+                break;
+                
+            case 'teaching':
+                data.title = item.querySelector('h3')?.textContent?.trim() || '';
+                data.duration = item.querySelector('.teaching-duration')?.textContent?.trim() || '';
+                data.institution = item.querySelector('.teaching-institution')?.textContent?.trim() || '';
+                data.description = item.querySelector('.teaching-description')?.textContent?.trim() || '';
+                data.link = item.querySelector('.teaching-link')?.href || '';
+                break;
+                
+            case 'event':
+                data.title = item.querySelector('h3')?.textContent?.trim() || '';
+                data.date = item.querySelector('.news-date')?.textContent?.trim() || '';
+                data.description = item.querySelector('p')?.textContent?.trim() || '';
+                data.link = item.querySelector('a')?.href || '';
+                break;
+        }
+        
+        return data;
+    }
+
+    displayContentList(items, type) {
+        const container = document.getElementById('contentList');
+        
+        console.log('Displaying content list:', { items, type });
+        
+        if (items.length === 0) {
+            container.innerHTML = '<p class="no-content">No content found to edit.</p>';
+            return;
+        }
+        
+        const titles = {
+            publication: 'Publications',
+            experience: 'Experiences',
+            award: 'Awards',
+            project: 'Projects',
+            teaching: 'Teaching & Services',
+            event: 'Events'
+        };
+        
+        container.innerHTML = items.map((item, index) => {
+            const title = item.data.title || `Item ${index + 1}`;
+            const subtitle = this.getSubtitle(item.data, type);
+            
+            return `
+                <div class="content-list-item" data-index="${index}">
+                    <h3>${title}</h3>
+                    <p>${subtitle}</p>
+                    <div class="meta">${titles[type]} #${index + 1}</div>
+                    <div class="action-buttons">
+                        <button class="edit-btn" data-index="${index}" data-type="${type}">Edit</button>
+                        <button class="delete-btn" data-index="${index}" data-type="${type}">Delete</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Add event listeners to edit buttons
+        container.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const index = parseInt(btn.dataset.index);
+                const type = btn.dataset.type;
+                this.editContent(index, type);
+            });
+        });
+
+        // Add event listeners to delete buttons
+        container.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const index = parseInt(btn.dataset.index);
+                const type = btn.dataset.type;
+                this.deleteContent(index, type);
+            });
+        });
+    }
+
+    getSubtitle(data, type) {
+        switch (type) {
+            case 'publication':
+                return data.authors || data.status || 'No additional info';
+            case 'experience':
+                return data.company || data.duration || 'No additional info';
+            case 'award':
+                return data.organization || data.year || 'No additional info';
+            case 'project':
+                return data.description?.substring(0, 100) + '...' || 'No description';
+            case 'teaching':
+                return data.institution || data.duration || 'No additional info';
+            case 'event':
+                return data.date || data.description?.substring(0, 100) + '...' || 'No additional info';
+            default:
+                return 'No additional info';
+        }
+    }
+
+    editContent(index, type) {
+        console.log('Edit content called:', { index, type });
+        
+        // Store current content for editing
+        this.currentContent = { index, type };
+        
+        // Set mode to edit
+        this.currentMode = 'edit';
+        
+        // Show form with pre-filled data
+        this.showForm(type, index);
+    }
+
+    async deleteContent(index, type) {
+        console.log('Delete content called:', { index, type });
+        
+        // Show confirmation dialog
+        const title = await this.getContentTitle(index, type);
+        const confirmed = confirm(`Are you sure you want to delete "${title}"?\n\nThis action cannot be undone.`);
+        
+        if (confirmed) {
+            this.performDelete(index, type);
+        }
+    }
+
+    async performDelete(index, type) {
+        try {
+            await this.deleteContentFromFile(type, index);
+            this.showMessage('Content deleted successfully!', 'success');
+            
+            // Refresh the content list
+            setTimeout(() => {
+                this.showContentList(type);
+            }, 1500);
+            
+        } catch (error) {
+            console.error('Error deleting content:', error);
+            this.showMessage(`Error deleting content: ${error.message}`, 'error');
+        }
+    }
+
+    async deleteContentFromFile(type, index) {
+        const fileMap = {
+            publication: 'publications.html',
+            experience: 'experiences.html',
+            award: 'awards.html',
+            project: 'projects.html',
+            teaching: 'teaching.html',
+            event: 'index.html'
+        };
+
+        const filename = fileMap[type];
+        const response = await fetch(`/get-file/${filename}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        if (!result.success) {
+            throw new Error(result.error || 'Failed to read file');
+        }
+        
+        let html = result.content;
+        
+        // Find and remove the specific item
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        
+        const selectors = {
+            publication: '.publication-item',
+            experience: '.experience-item',
+            award: '.award-item',
+            project: '.project-item',
+            teaching: '.teaching-item',
+            event: '.news-item'
+        };
+        
+        const selector = selectors[type];
+        const items = tempDiv.querySelectorAll(selector);
+        
+        if (items[index]) {
+            // Remove the item
+            items[index].remove();
+            
+            // Save the updated file
+            await this.saveFile(`../${filename}`, tempDiv.innerHTML);
+        } else {
+            throw new Error('Item not found for deletion');
+        }
+    }
+
+    async getContentTitle(index, type) {
+        try {
+            const fileMap = {
+                publication: 'publications.html',
+                experience: 'experiences.html',
+                award: 'awards.html',
+                project: 'projects.html',
+                teaching: 'teaching.html',
+                event: 'index.html'
+            };
+
+            const filename = fileMap[type];
+            const response = await fetch(`/get-file/${filename}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to read file');
+            }
+            
+            const html = result.content;
+            const contentItems = this.extractContentItems(html, type);
+            
+            if (contentItems[index]) {
+                const title = contentItems[index].data.title;
+                return title || `${this.getTypeName(type)} #${index + 1}`;
+            }
+            
+            return `${this.getTypeName(type)} #${index + 1}`;
+            
+        } catch (error) {
+            console.error('Error getting content title:', error);
+            return `${this.getTypeName(type)} #${index + 1}`;
+        }
+    }
+
+    getTypeName(type) {
+        const titles = {
+            publication: 'Publication',
+            experience: 'Experience',
+            award: 'Award',
+            project: 'Project',
+            teaching: 'Teaching Activity',
+            event: 'Event'
+        };
+        
+        return titles[type] || 'Item';
+    }
+
+    handleFormSubmit(form) {
+        // Validate all fields
+        const fields = form.querySelectorAll('input, select, textarea');
+        let isValid = true;
+        
+        fields.forEach(field => {
+            if (!this.validateField(field)) {
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            this.showMessage('Please fix the errors in the form', 'error');
+            return;
+        }
+
+        // Get form data
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        if (this.currentMode === 'edit' && this.currentContent) {
+            // Update existing content
+            this.updateExistingContent(data);
+        } else {
+            // Add new content
+            const htmlCode = this.generateHTML(data, this.currentFormType);
+            this.showGeneratedCode(htmlCode, data);
+        }
+    }
+
+    async updateExistingContent(data) {
+        try {
+            const { index, type } = this.currentContent;
+            
+            // Generate new HTML
+            const newHtmlCode = this.generateHTML(data, type);
+            
+            // Update the specific item in the file
+            await this.updateContentInFile(type, index, newHtmlCode);
+            
+            this.showMessage('Content updated successfully!', 'success');
+            
+            // Go back to content list
+            setTimeout(() => {
+                this.showContentList(type);
+            }, 1500);
+            
+        } catch (error) {
+            console.error('Error updating content:', error);
+            this.showMessage(`Error updating content: ${error.message}`, 'error');
+        }
+    }
+
+    async updateContentInFile(type, index, newHtmlCode) {
+        const fileMap = {
+            publication: 'publications.html',
+            experience: 'experiences.html',
+            award: 'awards.html',
+            project: 'projects.html',
+            teaching: 'teaching.html',
+            event: 'index.html'
+        };
+
+        const filename = fileMap[type];
+        const response = await fetch(`/get-file/${filename}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        if (!result.success) {
+            throw new Error(result.error || 'Failed to read file');
+        }
+        
+        let html = result.content;
+        
+        // Find and replace the specific item
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        
+        const selectors = {
+            publication: '.publication-item',
+            experience: '.experience-item',
+            award: '.award-item',
+            project: '.project-item',
+            teaching: '.teaching-item',
+            event: '.news-item'
+        };
+        
+        const selector = selectors[type];
+        const items = tempDiv.querySelectorAll(selector);
+        
+        if (items[index]) {
+            // Replace the old content with new content
+            items[index].outerHTML = newHtmlCode;
+            
+            // Save the updated file
+            await this.saveFile(`../${filename}`, tempDiv.innerHTML);
+        } else {
+            throw new Error('Item not found for editing');
+        }
+    }
+
+    showPreview(form) {
+        // Validate form
+        const fields = form.querySelectorAll('input, select, textarea');
+        let isValid = true;
+        
+        fields.forEach(field => {
+            if (!this.validateField(field)) {
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            this.showMessage('Please fix the errors in the form before previewing', 'error');
+            return;
+        }
+
+        // Get form data
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Generate preview HTML
+        const previewHTML = this.generatePreviewHTML(data, this.currentFormType);
+        
+        // Show preview
+        document.getElementById('previewContent').innerHTML = previewHTML;
+        document.getElementById('previewSection').style.display = 'block';
+        
+        // Scroll to preview
+        document.getElementById('previewSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    hidePreview() {
+        document.getElementById('previewSection').style.display = 'none';
+    }
+
+    generatePreviewHTML(data, type) {
+        switch (type) {
+            case 'publication':
+                return this.generatePublicationPreview(data);
+            case 'experience':
+                return this.generateExperiencePreview(data);
+            case 'award':
+                return this.generateAwardPreview(data);
+            case 'project':
+                return this.generateProjectPreview(data);
+            case 'teaching':
+                return this.generateTeachingPreview(data);
+            case 'event':
+                return this.generateEventPreview(data);
+            default:
+                return '<p>Preview not available</p>';
+        }
+    }
+
+    generatePublicationPreview(data) {
+        const linkHTML = data.link ? `<a href="${data.link}" class="link" target="_blank">View Publication →</a>` : '';
+        
+        return `
+            <div class="generated-publication">
+                <h3>${data.title}</h3>
+                <div class="status">${data.status}</div>
+                <div class="authors">${data.authors}</div>
+                <div class="description">${data.description}</div>
+                ${linkHTML}
+            </div>
+        `;
+    }
+
+    generateExperiencePreview(data) {
+        const endDate = data.present ? 'Present' : data.endDate;
+        const duration = `${data.startDate} - ${endDate}`;
+        
+        return `
+            <div class="generated-experience">
+                <h3>${data.title}</h3>
+                <div class="duration">${duration}</div>
+                <div class="company">${data.company}</div>
+                <div class="description">${data.description}</div>
+            </div>
+        `;
+    }
+
+    generateAwardPreview(data) {
+        const linkHTML = data.link ? `<a href="${data.link}" class="link" target="_blank">View Award →</a>` : '';
+        
+        return `
+            <div class="generated-award">
+                <h3>${data.title}</h3>
+                <div class="year">${data.year}</div>
+                <div class="organization">${data.organization}</div>
+                <div class="description">${data.description}</div>
+                ${linkHTML}
+            </div>
+        `;
+    }
+
+    generateProjectPreview(data) {
+        const technologiesHTML = data.technologies ? `
+            <div class="technologies">
+                <h4>Technologies Used:</h4>
+                <p>${data.technologies}</p>
+            </div>
+        ` : '';
+        
+        const linkHTML = data.link ? `<a href="${data.link}" class="link" target="_blank">View Project →</a>` : '';
+        
+        return `
+            <div class="generated-project">
+                <h3>${data.title}</h3>
+                <div class="type">${data.type}</div>
+                <div class="description">${data.description}</div>
+                ${technologiesHTML}
+                ${linkHTML}
+            </div>
+        `;
+    }
+
+    generateTeachingPreview(data) {
+        const endDate = data.present ? 'Present' : data.endDate;
+        const duration = `${data.startDate} - ${endDate}`;
+        
+        const linkHTML = data.link ? `<a href="${data.link}" class="link" target="_blank">View Organization →</a>` : '';
+        
+        return `
+            <div class="generated-teaching">
+                <h3>${data.title}</h3>
+                <div class="duration">${duration}</div>
+                <div class="institution">${data.institution}</div>
+                <div class="description">${data.description}</div>
+                ${linkHTML}
+            </div>
+        `;
+    }
+
+    generateEventPreview(data) {
+        const linkHTML = data.link ? `<a href="${data.link}" class="link" target="_blank">View Event →</a>` : '';
+        
+        return `
+            <div class="generated-event">
+                <h3>${data.title}</h3>
+                <div class="date">${data.date}</div>
+                <div class="description">${data.description}</div>
+                ${linkHTML}
+            </div>
+        `;
+    }
+
+    generateHTML(data, type) {
+        switch (type) {
+            case 'publication':
+                return this.generatePublicationHTML(data);
+            case 'experience':
+                return this.generateExperienceHTML(data);
+            case 'award':
+                return this.generateAwardHTML(data);
+            case 'project':
+                return this.generateProjectHTML(data);
+            case 'teaching':
+                return this.generateTeachingHTML(data);
+            case 'event':
+                return this.generateEventHTML(data);
+            default:
+                return '';
+        }
+    }
+
+    generatePublicationHTML(data) {
+        const linkHTML = data.link ? `<a href="${data.link}" target="_blank" class="publication-link">View Publication →</a>` : '';
+        
+        return `<!-- New Publication -->
+<div class="publication-item">
+    <div class="publication-header">
+        <h3>${this.escapeHtml(data.title)}</h3>
+        <span class="publication-status">${this.escapeHtml(data.status)}</span>
+    </div>
+    <p class="publication-authors">${this.escapeHtml(data.authors)}</p>
+    <p class="publication-description">${this.escapeHtml(data.description)}</p>
+    ${linkHTML}
+</div>`;
+    }
+
+    generateExperienceHTML(data) {
+        const endDate = data.present ? 'Present' : data.endDate;
+        
+        return `<!-- New Experience -->
+<div class="experience-item">
+    <div class="experience-header">
+        <h3>${this.escapeHtml(data.title)}</h3>
+        <span class="experience-duration">${this.escapeHtml(data.startDate)} - ${this.escapeHtml(endDate)}</span>
+    </div>
+    <p class="experience-company">${this.escapeHtml(data.company)}</p>
+    <p class="experience-description">${this.escapeHtml(data.description)}</p>
+</div>`;
+    }
+
+    generateAwardHTML(data) {
+        const linkHTML = data.link ? `<a href="${data.link}" target="_blank" class="award-link">View Award →</a>` : '';
+        
+        return `<!-- New Award -->
+<div class="award-item">
+    <div class="award-header">
+        <h3>${this.escapeHtml(data.title)}</h3>
+        <span class="award-year">${this.escapeHtml(data.year)}</span>
+    </div>
+    <p class="award-organization">${this.escapeHtml(data.organization)}</p>
+    <p class="award-description">${this.escapeHtml(data.description)}</p>
+    ${linkHTML}
+</div>`;
+    }
+
+    generateProjectHTML(data) {
+        const technologiesHTML = data.technologies ? `<p class="project-technologies"><strong>Technologies:</strong> ${this.escapeHtml(data.technologies)}</p>` : '';
+        const linkHTML = data.link ? `<a href="${data.link}" target="_blank" class="project-link">View Project →</a>` : '';
+        
+        return `<!-- New Project -->
+<div class="project-item">
+    <h4>${this.escapeHtml(data.title)}</h4>
+    <p>${this.escapeHtml(data.description)}</p>
+    ${technologiesHTML}
+    ${linkHTML}
+</div>`;
+    }
+
+    generateTeachingHTML(data) {
+        const endDate = data.present ? 'Present' : data.endDate;
+        const linkHTML = data.link ? `<a href="${data.link}" target="_blank" class="teaching-link">View Organization →</a>` : '';
+        
+        return `<!-- New Teaching/Service -->
+<div class="teaching-item">
+    <div class="teaching-header">
+        <h3>${this.escapeHtml(data.title)}</h3>
+        <span class="teaching-duration">${this.escapeHtml(data.startDate)} - ${this.escapeHtml(endDate)}</span>
+    </div>
+    <p class="teaching-institution">${this.escapeHtml(data.institution)}</p>
+    <p class="teaching-description">${this.escapeHtml(data.description)}</p>
+    ${linkHTML}
+</div>`;
+    }
+
+    generateEventHTML(data) {
+        const linkHTML = data.link ? `<a href="${data.link}" target="_blank" class="event-link">View Event →</a>` : '';
+        
+        return `<!-- New Event -->
+<div class="news-item" data-page="1">
+    <div class="news-date">${this.escapeHtml(data.date)}</div>
+    <div class="news-content">
+        <h3>${this.escapeHtml(data.title)}</h3>
+        <p>${this.escapeHtml(data.description)}</p>
+        ${linkHTML}
+    </div>
+</div>`;
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    showGeneratedCode(htmlCode, data) {
+        document.getElementById('generatedCode').textContent = htmlCode;
+        document.getElementById('codeSection').style.display = 'block';
+        
+        // Hide other sections
+        document.getElementById('previewSection').style.display = 'none';
+        
+        // Scroll to code section
+        document.getElementById('codeSection').scrollIntoView({ behavior: 'smooth' });
+        
+        // Automatically add to website files
+        this.addToWebsite(htmlCode, this.currentFormType);
+        
+        this.showMessage('HTML code generated and automatically added to your website!', 'success');
+    }
+
+    async addToWebsite(htmlCode, type) {
+        try {
+            const fileMap = {
+                publication: '../publications.html',
+                experience: '../experiences.html',
+                award: '../awards.html',
+                project: '../projects.html',
+                teaching: '../teaching.html',
+                event: '../index.html'
+            };
+
+            const targetFile = fileMap[type];
+            if (!targetFile) {
+                this.showMessage('Error: Unknown content type', 'error');
+                return;
+            }
+
+            // For events, we need to add to the news section in index.html
+            if (type === 'event') {
+                await this.addEventToNewsSection(htmlCode);
+            } else {
+                await this.addContentToFile(targetFile, htmlCode, type);
+            }
+
+        } catch (error) {
+            console.error('Error adding to website:', error);
+            this.showMessage('Error: Could not automatically add to website. Please copy the code manually.', 'error');
+        }
+    }
+
+    async addContentToFile(filePath, htmlCode, type) {
+        try {
+            // Get the filename from the path
+            const filename = filePath.split('/').pop();
+            
+            // Get current file content from server
+            const response = await fetch(`/get-file/${filename}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to read file');
+            }
+            
+            let html = result.content;
+            
+            // Find the content section based on type
+            const sectionSelectors = {
+                publication: '.publications-content',
+                experience: '.experiences-content',
+                award: '.awards-content',
+                project: '.projects-list',
+                teaching: '.teaching-content'
+            };
+            
+            const selector = sectionSelectors[type];
+            if (!selector) {
+                throw new Error('Unknown content type');
+            }
+            
+            // Find the content section
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            const contentSection = tempDiv.querySelector(selector);
+            
+            if (!contentSection) {
+                throw new Error(`Could not find ${selector} section`);
+            }
+            
+            // Insert the new content at the beginning
+            contentSection.insertAdjacentHTML('afterbegin', htmlCode);
+            
+            // Save the updated HTML
+            await this.saveFile(filePath, tempDiv.innerHTML);
+            
+            this.showMessage(`Content successfully added to ${filePath}`, 'success');
+            
+        } catch (error) {
+            console.error('Error updating file:', error);
+            this.showMessage(`Error updating ${filePath}: ${error.message}`, 'error');
+        }
+    }
+
+    async addEventToNewsSection(htmlCode) {
+        try {
+            // Get current index.html content from server
+            const response = await fetch('/get-file/index.html');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to read file');
+            }
+            
+            let html = result.content;
+            
+            // Find the news section
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            const newsSection = tempDiv.querySelector('.news-grid');
+            
+            if (!newsSection) {
+                throw new Error('Could not find news-grid section');
+            }
+            
+            // Insert the new event at the beginning
+            newsSection.insertAdjacentHTML('afterbegin', htmlCode);
+            
+            // Save the updated HTML
+            await this.saveFile('../index.html', tempDiv.innerHTML);
+            
+            this.showMessage('Event successfully added to news section', 'success');
+            
+        } catch (error) {
+            console.error('Error updating news section:', error);
+            this.showMessage(`Error updating news section: ${error.message}`, 'error');
+        }
+    }
+
+    async saveFile(filePath, content) {
+        try {
+            const response = await fetch('/save-file', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    filePath: filePath,
+                    content: content
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error(result.error || 'Unknown error');
+            }
+            
+        } catch (error) {
+            console.error('Error saving file:', error);
+            // Fallback: show instructions for manual save
+            this.showManualSaveInstructions(filePath, content);
+        }
+    }
+
+    showManualSaveInstructions(filePath, content) {
+        const message = `
+            <div class="manual-save-instructions">
+                <h4>Manual Save Required</h4>
+                <p>Due to browser security restrictions, the file couldn't be saved automatically.</p>
+                <p><strong>To save manually:</strong></p>
+                <ol>
+                    <li>Copy the generated code above</li>
+                    <li>Open ${filePath} in your code editor</li>
+                    <li>Find the appropriate content section</li>
+                    <li>Paste the code at the beginning of the section</li>
+                    <li>Save the file</li>
+                </ol>
+                <button onclick="this.parentElement.remove()" class="close-btn">Close</button>
+            </div>
+        `;
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message warning';
+        messageDiv.innerHTML = message;
+        
+        const main = document.querySelector('.admin-main .container');
+        main.insertBefore(messageDiv, main.firstChild);
+    }
+
+    copyGeneratedCode() {
+        const codeElement = document.getElementById('generatedCode');
+        const text = codeElement.textContent;
+        
+        navigator.clipboard.writeText(text).then(() => {
+            const copyBtn = document.getElementById('copyBtn');
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            copyBtn.style.background = 'var(--success-color)';
+            
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+                copyBtn.style.background = 'var(--gradient-accent)';
+            }, 2000);
+            
+            this.showMessage('Code copied to clipboard!', 'success');
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+            this.showMessage('Failed to copy code. Please select and copy manually.', 'error');
+        });
+    }
+
+    showMessage(message, type) {
+        // Remove existing messages
+        const existingMessages = document.querySelectorAll('.message');
+        existingMessages.forEach(msg => msg.remove());
+        
+        // Create new message
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${type}`;
+        messageDiv.textContent = message;
+        
+        // Insert at the top of the main content
+        const main = document.querySelector('.admin-main .container');
+        main.insertBefore(messageDiv, main.firstChild);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (messageDiv.parentNode) {
+                messageDiv.remove();
+            }
+        }, 5000);
+    }
+}
+
+// Initialize admin panel when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new AdminPanel();
+});
+
+// Add some utility functions
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long' 
+    });
+}
+
+function formatMonthYear(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short' 
+    });
+} 

@@ -44,7 +44,15 @@
                     </div>
                     
                     <div class="awards-content"><!-- New Award -->
-
+<div class="award-item">
+    <div class="award-header">
+        <h3>good Researcher</h3>
+        <span class="award-year">2024</span>
+    </div>
+    <p class="award-organization">Ruet</p>
+    <p class="award-description">hi</p>
+    <a href="http: google.com" target="_blank" class="award-link">View Award →</a>
+</div>
                         <div class="award-item">
                             <div class="award-header">
                                 <h3>Top 15 in Dataverse Challenge</h3>

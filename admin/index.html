@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Admin Panel - Md Minhazul Islam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-brand">
+                <span class="admin-logo">⚙️</span>
+                <h1>Portfolio Admin Panel</h1>
+            </div>
+            <p class="admin-subtitle">Manage your portfolio content easily</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="container">
+            <!-- Content Type Selection -->
+            <section class="content-selector">
+                <h2>Select Content Type</h2>
+                <div class="mode-selector">
+                    <button class="mode-btn active" data-mode="add">➕ Add New Content</button>
+                    <button class="mode-btn" data-mode="edit">✏️ Edit Existing Content</button>
+                </div>
+                <div class="selector-grid" id="addModeGrid">
+                    <div class="selector-card" data-type="publication">
+                        <div class="selector-icon">📚</div>
+                        <h3>Publication</h3>
+                        <p>Add new research papers and publications</p>
+                    </div>
+                    <div class="selector-card" data-type="experience">
+                        <div class="selector-icon">💼</div>
+                        <h3>Experience</h3>
+                        <p>Add work experience and research positions</p>
+                    </div>
+                    <div class="selector-card" data-type="award">
+                        <div class="selector-icon">🏆</div>
+                        <h3>Award</h3>
+                        <p>Add awards and achievements</p>
+                    </div>
+                    <div class="selector-card" data-type="project">
+                        <div class="selector-icon">🔬</div>
+                        <h3>Project</h3>
+                        <p>Add research projects and interests</p>
+                    </div>
+                    <div class="selector-card" data-type="teaching">
+                        <div class="selector-icon">🎓</div>
+                        <h3>Teaching</h3>
+                        <p>Add teaching and service activities</p>
+                    </div>
+                    <div class="selector-card" data-type="event">
+                        <div class="selector-icon">📅</div>
+                        <h3>Event</h3>
+                        <p>Add news and events</p>
+                    </div>
+                </div>
+                
+                <!-- Edit Mode Grid -->
+                <div class="selector-grid" id="editModeGrid" style="display: none;">
+                    <div class="selector-card" data-type="publication" data-mode="edit">
+                        <div class="selector-icon">📚</div>
+                        <h3>Publications</h3>
+                        <p>Edit existing publications</p>
+                    </div>
+                    <div class="selector-card" data-type="experience" data-mode="edit">
+                        <div class="selector-icon">💼</div>
+                        <h3>Experiences</h3>
+                        <p>Edit existing experiences</p>
+                    </div>
+                    <div class="selector-card" data-type="award" data-mode="edit">
+                        <div class="selector-icon">🏆</div>
+                        <h3>Awards</h3>
+                        <p>Edit existing awards</p>
+                    </div>
+                    <div class="selector-card" data-type="project" data-mode="edit">
+                        <div class="selector-icon">🔬</div>
+                        <h3>Projects</h3>
+                        <p>Edit existing projects</p>
+                    </div>
+                    <div class="selector-card" data-type="teaching" data-mode="edit">
+                        <div class="selector-icon">🎓</div>
+                        <h3>Teaching</h3>
+                        <p>Edit existing teaching activities</p>
+                    </div>
+                    <div class="selector-card" data-type="event" data-mode="edit">
+                        <div class="selector-icon">📅</div>
+                        <h3>Events</h3>
+                        <p>Edit existing events</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Content List Section (for edit mode) -->
+            <section class="content-list-section" id="contentListSection" style="display: none;">
+                <div class="list-header">
+                    <h2 id="listTitle">Select Content to Edit</h2>
+                    <button class="back-btn" id="backToListBtn">← Back to Selection</button>
+                </div>
+                <div class="content-list" id="contentList">
+                    <!-- Content items will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Dynamic Form Section -->
+            <section class="form-section" id="formSection" style="display: none;">
+                <div class="form-header">
+                    <h2 id="formTitle">Add Content</h2>
+                    <button class="back-btn" id="backBtn">← Back to Selection</button>
+                </div>
+                
+                <!-- Publication Form -->
+                <form class="content-form" id="publicationForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="pubTitle">Publication Title *</label>
+                        <input type="text" id="pubTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pubStatus">Status *</label>
+                        <select id="pubStatus" name="status" required>
+                            <option value="">Select Status</option>
+                            <option value="Accepted - ICCIT 2023">Accepted - ICCIT 2023</option>
+                            <option value="Accepted - ICISET 2024">Accepted - ICISET 2024</option>
+                            <option value="Accepted - STI 2024">Accepted - STI 2024</option>
+                            <option value="Accepted - ICCIT 2024">Accepted - ICCIT 2024</option>
+                            <option value="Accepted - Data in Brief">Accepted - Data in Brief</option>
+                            <option value="Submitted">Submitted</option>
+                            <option value="Under Review">Under Review</option>
+                            <option value="In Progress">In Progress</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pubAuthors">Authors *</label>
+                        <input type="text" id="pubAuthors" name="authors" placeholder="e.g., Md Minhazul Islam, Md Tanbeer Jubaer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pubDescription">Description *</label>
+                        <textarea id="pubDescription" name="description" rows="4" placeholder="Brief description of the publication..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="pubLink">Publication Link</label>
+                        <input type="url" id="pubLink" name="link" placeholder="https://...">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Add Publication</button>
+                        <button type="button" class="preview-btn">Preview</button>
+                    </div>
+                </form>
+
+                <!-- Experience Form -->
+                <form class="content-form" id="experienceForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="expTitle">Position Title *</label>
+                        <input type="text" id="expTitle" name="title" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expStartDate">Start Date *</label>
+                            <input type="month" id="expStartDate" name="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="expEndDate">End Date</label>
+                            <input type="month" id="expEndDate" name="endDate">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="expPresent" name="present">
+                                <label for="expPresent">Present</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="expCompany">Company/Institution *</label>
+                        <input type="text" id="expCompany" name="company" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expDescription">Description *</label>
+                        <textarea id="expDescription" name="description" rows="4" placeholder="Describe your role and responsibilities..." required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Add Experience</button>
+                        <button type="button" class="preview-btn">Preview</button>
+                    </div>
+                </form>
+
+                <!-- Award Form -->
+                <form class="content-form" id="awardForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="awardTitle">Award Title *</label>
+                        <input type="text" id="awardTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="awardYear">Year *</label>
+                        <input type="number" id="awardYear" name="year" min="2010" max="2030" value="2024" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="awardOrganization">Organization *</label>
+                        <input type="text" id="awardOrganization" name="organization" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="awardDescription">Description *</label>
+                        <textarea id="awardDescription" name="description" rows="3" placeholder="Brief description of the award..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="awardLink">Award Link</label>
+                        <input type="url" id="awardLink" name="link" placeholder="https://...">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Add Award</button>
+                        <button type="button" class="preview-btn">Preview</button>
+                    </div>
+                </form>
+
+                <!-- Project Form -->
+                <form class="content-form" id="projectForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="projectTitle">Project Title *</label>
+                        <input type="text" id="projectTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectType">Project Type *</label>
+                        <select id="projectType" name="type" required>
+                            <option value="">Select Type</option>
+                            <option value="research">Research Project</option>
+                            <option value="thesis">Thesis/Dissertation</option>
+                            <option value="competition">Competition</option>
+                            <option value="collaboration">Collaboration</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectDescription">Description *</label>
+                        <textarea id="projectDescription" name="description" rows="4" placeholder="Describe the project, technologies used, and outcomes..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectTechnologies">Technologies Used</label>
+                        <input type="text" id="projectTechnologies" name="technologies" placeholder="e.g., Python, TensorFlow, BERT, NLP">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectLink">Project Link</label>
+                        <input type="url" id="projectLink" name="link" placeholder="https://...">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Add Project</button>
+                        <button type="button" class="preview-btn">Preview</button>
+                    </div>
+                </form>
+
+                <!-- Teaching Form -->
+                <form class="content-form" id="teachingForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="teachingTitle">Position/Activity Title *</label>
+                        <input type="text" id="teachingTitle" name="title" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="teachingStartDate">Start Date *</label>
+                            <input type="month" id="teachingStartDate" name="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="teachingEndDate">End Date</label>
+                            <input type="month" id="teachingEndDate" name="endDate">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="teachingPresent" name="present">
+                                <label for="teachingPresent">Present</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teachingInstitution">Institution/Organization *</label>
+                        <input type="text" id="teachingInstitution" name="institution" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="teachingDescription">Description *</label>
+                        <textarea id="teachingDescription" name="description" rows="4" placeholder="Describe your teaching or service activities..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="teachingLink">Organization Link</label>
+                        <input type="url" id="teachingLink" name="link" placeholder="https://...">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Add Teaching/Service</button>
+                        <button type="button" class="preview-btn">Preview</button>
+                    </div>
+                </form>
+
+                <!-- Event Form -->
+                <form class="content-form" id="eventForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="eventTitle">Event Title *</label>
+                        <input type="text" id="eventTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDate">Date *</label>
+                        <input type="month" id="eventDate" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDescription">Description *</label>
+                        <textarea id="eventDescription" name="description" rows="3" placeholder="Brief description of the event or news..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventLink">Event Link</label>
+                        <input type="url" id="eventLink" name="link" placeholder="https://...">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Add Event</button>
+                        <button type="button" class="preview-btn">Preview</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Preview Section -->
+            <section class="preview-section" id="previewSection" style="display: none;">
+                <div class="preview-header">
+                    <h2>Preview</h2>
+                    <button class="close-preview-btn" id="closePreviewBtn">×</button>
+                </div>
+                <div class="preview-content" id="previewContent">
+                    <!-- Preview content will be inserted here -->
+                </div>
+            </section>
+
+            <!-- Generated Code Section -->
+            <section class="code-section" id="codeSection" style="display: none;">
+                <div class="code-header">
+                    <h2>Generated HTML Code</h2>
+                    <button class="copy-btn" id="copyBtn">Copy Code</button>
+                </div>
+                <div class="code-content">
+                    <pre id="generatedCode"><code></code></pre>
+                </div>
+                <div class="code-instructions">
+                    <h3>Instructions:</h3>
+                    <ol>
+                        <li>Copy the generated HTML code above</li>
+                        <li>Open the corresponding HTML file (e.g., publications.html for publications)</li>
+                        <li>Find the appropriate section (e.g., &lt;div class="publications-content"&gt;)</li>
+                        <li>Paste the new content at the beginning of the section</li>
+                        <li>Save the file and refresh your website</li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html> 
