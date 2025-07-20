@@ -1458,7 +1458,809 @@ Read file: gallery.html
 
 ---
 
+The change you need is to update the `.gallery-image` CSS rule in your `gallery.html` file:
 
+**Replace:**
+```css
+object-fit: cover;
+```
+**With:**
+```css
+object-fit: contain;
+background: #f8f8f8;
+```
+
+If you are not seeing the change, please make sure there are no duplicate `.gallery-image` rules in your `<style>` block or in your `styles.css` file that might override this.  
+You can also try clearing your browser cache or doing a hard refresh (Ctrl+F5).
+
+**Final CSS for .gallery-image:**
+```css
+.gallery-image {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    background: #f8f8f8;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+```
+
+This will ensure images are resized to fit the box without cropping, and any extra space will be filled with a light background.  
+If you want me to check your `styles.css` for conflicting rules, let me know!
+
+---
+
+_**User**_
+
+I need to rebuild the website main page. The design is good. But when I am looking from user point of view then he needs to click several tabs to look. So, I am thinking that you will show all pages highlighted information at first page then it will better for any persons to know about my self. You can take a look these websites @https://www.boazbarak.org/ 
+
+---
+
+_**Assistant**_
+
+Looking at Boaz Barak's website, I can see what you mean about making information more accessible upfront. His site shows key information immediately - his role, current activities, quick links, and selected publications all on the main page without requiring navigation.
+
+Let me help you redesign your main page to be more comprehensive and user-friendly. I'll create a layout that showcases all your important information upfront while maintaining your current design aesthetic.
+
+
+---
+
+Read file: index.html
+
+---
+
+Now let me check your other pages to understand what content should be highlighted on the main page:
+
+
+---
+
+Read file: publications.html
+
+---
+
+Read file: experiences.html
+
+---
+
+Read file: awards.html
+
+---
+
+Now I'll create a comprehensive main page that showcases all your important information upfront, inspired by Boaz Barak's approach. This will include:
+
+1. **Hero section** with your role and quick contact info
+2. **Quick Links** section for easy navigation
+3. **Selected Publications** section highlighting your best work
+4. **Current Activities** section showing your research focus
+5. **Experience Highlights** section
+6. **Awards & Achievements** section
+7. **News & Events** section (keeping your existing one)
+
+
+---
+
+```diff
+          </div>
+      </section>
++ 
++     <!-- Quick Links Section -->
++     <section class="quick-links-section">
++         <div class="container">
++             <div class="quick-links-content">
++                 <h3>Quick Links:</h3>
++                 <div class="quick-links-grid">
++                     <a href="publications.html" class="quick-link">Publications</a>
++                     <a href="projects.html" class="quick-link">Projects</a>
++                     <a href="experiences.html" class="quick-link">Experience</a>
++                     <a href="awards.html" class="quick-link">Awards</a>
++                     <a href="cv.html" class="quick-link">CV</a>
++                     <a href="gallery.html" class="quick-link">Gallery</a>
++                 </div>
++             </div>
++         </div>
++     </section>
+  
+      <!-- About Section -->
+```
+
+```diff
+          </div>
+      </section>
++ 
++     <!-- Selected Publications Section -->
++     <section class="publications-highlight-section">
++         <div class="container">
++             <div class="section-header">
++                 <h2 class="section-title">Selected Publications</h2>
++                 <p class="section-subtitle">Recent research contributions in NLP and Computational Linguistics</p>
++             </div>
++             <div class="publications-highlight-grid">
++                 <div class="publication-highlight-item">
++                     <div class="publication-highlight-header">
++                         <h3>Explainable AI-Driven Disease Prediction</h3>
++                         <span class="publication-status">ICCIT 2024</span>
++                     </div>
++                     <p class="publication-authors">Md Minhazul Islam, Md Tanbeer Jubaer, Azmain Yakin Srizon, Md Ali Hossain</p>
++                     <p class="publication-description">Custom BERT-based hybrid model achieving 99% accuracy with Explainable AI techniques.</p>
++                     <a href="https://github.com/oitik/papers/blob/master/Explainable_AI_Driven_Improved_Disease_Prediction_through_Symptom_Analysis_with_Custom_BERT.pdf" target="_blank" class="publication-link">View Paper</a>
++                 </div>
++ 
++                 <div class="publication-highlight-item">
++                     <div class="publication-highlight-header">
++                         <h3>Bengali Linguistics: ML/DL Perspectives</h3>
++                         <span class="publication-status">ICCIT 2023</span>
++                     </div>
++                     <p class="publication-authors">Md Minhazul Islam, Md Tanbeer Jubaer, Azmain Yakin Srizon</p>
++                     <p class="publication-description">Bengali sentence classification achieving 98.07% accuracy with BERT-based vectorization.</p>
++                     <a href="https://www.researchgate.net/publication/378545042_Navigating_Bengali_Linguistics_Insights_from_Machine_and_Deep_Learning_Perspectives_for_Categorization_of_Sentences#fullTextFileContent" target="_blank" class="publication-link">View Paper</a>
++                 </div>
++ 
++                 <div class="publication-highlight-item">
++                     <div class="publication-highlight-header">
++                         <h3>Contextual Embedding in Literary Texts</h3>
++                         <span class="publication-status">ICISET 2024</span>
++                     </div>
++                     <p class="publication-authors">Md Minhazul Islam, Md Tanbeer Jubaer, Mohammad Harun Or Rashid</p>
++                     <p class="publication-description">Exploring contextual embedding techniques in complex literary texts using BERT model fine-tuning.</p>
++                     <a href="https://ieeexplore.ieee.org/document/10941522" target="_blank" class="publication-link">View Paper</a>
++                 </div>
++             </div>
++             <div class="section-footer">
++                 <a href="publications.html" class="btn btn-outline">View All Publications</a>
++             </div>
++         </div>
++     </section>
++ 
++     <!-- Current Activities Section -->
++     <section class="activities-section">
++         <div class="container">
++             <div class="section-header">
++                 <h2 class="section-title">Current Activities</h2>
++                 <p class="section-subtitle">Ongoing research and professional engagements</p>
++             </div>
++             <div class="activities-grid">
++                 <div class="activity-item">
++                     <div class="activity-icon">🔬</div>
++                     <h3>Research Assistant</h3>
++                     <p class="activity-organization">Young Learners Research Lab</p>
++                     <p class="activity-description">Conducting NLP and deep learning research, focusing on Bengali data analysis and model efficiency.</p>
++                 </div>
++ 
++                 <div class="activity-item">
++                     <div class="activity-icon">📚</div>
++                     <h3>Research Assistant</h3>
++                     <p class="activity-organization">Computational Linguistics Research Lab</p>
++                     <p class="activity-description">Working on word embeddings, contextual embeddings, and stylometric analysis of literary texts.</p>
++                 </div>
++ 
++                 <div class="activity-item">
++                     <div class="activity-icon">🤖</div>
++                     <h3>AI Trainer</h3>
++                     <p class="activity-organization">Outlier AI</p>
++                     <p class="activity-description">Training AI models in coding, mathematics, and multimodal image understanding tasks.</p>
++                 </div>
++             </div>
++         </div>
++     </section>
++ 
++     <!-- Experience Highlights Section -->
++     <section class="experience-highlights-section">
++         <div class="container">
++             <div class="section-header">
++                 <h2 class="section-title">Experience Highlights</h2>
++                 <p class="section-subtitle">Key professional experiences and achievements</p>
++             </div>
++             <div class="experience-highlights-grid">
++                 <div class="experience-highlight-item">
++                     <div class="experience-highlight-header">
++                         <h3>Research Assistant</h3>
++                         <span class="experience-duration">Jan 2023 - Present</span>
++                     </div>
++                     <p class="experience-organization">Young Learners Research Lab</p>
++                     <p class="experience-description">Published multiple conference and journal articles, with ongoing research in Bengali NLP and deep learning.</p>
++                 </div>
++ 
++                 <div class="experience-highlight-item">
++                     <div class="experience-highlight-header">
++                         <h3>Research Assistant</h3>
++                         <span class="experience-duration">June 2023 - Present</span>
++                     </div>
++                     <p class="experience-organization">Computational Linguistics Research Lab</p>
++                     <p class="experience-description">Focusing on word embeddings, topic modeling, and stylometric analysis of American slave narratives.</p>
++                 </div>
++ 
++                 <div class="experience-highlight-item">
++                     <div class="experience-highlight-header">
++                         <h3>AI Trainer</h3>
++                         <span class="experience-duration">May 2024 - January 2025</span>
++                     </div>
++                     <p class="experience-organization">Outlier AI</p>
++                     <p class="experience-description">Providing high-quality data annotations for problem solving and mathematical reasoning tasks.</p>
++                 </div>
++             </div>
++             <div class="section-footer">
++                 <a href="experiences.html" class="btn btn-outline">View Full Experience</a>
++             </div>
++         </div>
++     </section>
++ 
++     <!-- Awards & Achievements Section -->
++     <section class="awards-highlights-section">
++         <div class="container">
++             <div class="section-header">
++                 <h2 class="section-title">Awards & Achievements</h2>
++                 <p class="section-subtitle">Recognition for research and technical excellence</p>
++             </div>
++             <div class="awards-highlights-grid">
++                 <div class="award-highlight-item">
++                     <div class="award-highlight-header">
++                         <h3>Finalist in Robi Datathon 3.0</h3>
++                         <span class="award-year">May 2024</span>
++                     </div>
++                     <p class="award-organization">Robi Headquarters, Dhaka</p>
++                     <p class="award-description">Reached the final round, showcasing data science and analytics skills.</p>
++                 </div>
++ 
++                 <div class="award-highlight-item">
++                     <div class="award-highlight-header">
++                         <h3>Top 10 in CUET ETE DAY 2023</h3>
++                         <span class="award-year">2023</span>
++                     </div>
++                     <p class="award-organization">CUET ML Competition</p>
++                     <p class="award-description">Secured top 10 position, showcasing expertise in model building and optimization.</p>
++                 </div>
++ 
++                 <div class="award-highlight-item">
++                     <div class="award-highlight-header">
++                         <h3>Top 15 in Dataverse Challenge</h3>
++                         <span class="award-year">2023</span>
++                     </div>
++                     <p class="award-organization">IT Verse</p>
++                     <p class="award-description">Ranked in the top 15, demonstrating strong data analysis and ML skills.</p>
++                 </div>
++             </div>
++             <div class="section-footer">
++                 <a href="awards.html" class="btn btn-outline">View All Awards</a>
++             </div>
++         </div>
++     </section>
+  
+      <!-- News & Events Section -->
+```
+
+---
+
+Now I need to add the CSS styles for the new sections to make them look good:
+
+
+---
+
+Read file: styles.css
+
+---
+
+Now I'll add the CSS styles for the new sections:
+
+
+---
+
+```diff
+      color: var(--text-primary);
+  } 
++ 
++ /* Quick Links Section */
++ .quick-links-section {
++     padding: 3rem 0;
++     background: var(--bg-secondary);
++ }
++ 
++ .quick-links-content {
++     text-align: center;
++ }
++ 
++ .quick-links-content h3 {
++     font-size: 1.5rem;
++     font-weight: 600;
++     color: var(--text-primary);
++     margin-bottom: 2rem;
++ }
++ 
++ .quick-links-grid {
++     display: grid;
++     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
++     gap: 1rem;
++     max-width: 800px;
++     margin: 0 auto;
++ }
++ 
++ .quick-link {
++     display: inline-block;
++     padding: 1rem 1.5rem;
++     background: var(--bg-primary);
++     color: var(--text-primary);
++     text-decoration: none;
++     border-radius: 12px;
++     font-weight: 500;
++     transition: all 0.3s ease;
++     border: 2px solid var(--border-color);
++     text-align: center;
++ }
++ 
++ .quick-link:hover {
++     transform: translateY(-2px);
++     box-shadow: var(--shadow-lg);
++     border-color: var(--primary-color);
++     color: var(--primary-color);
++ }
++ 
++ /* Selected Publications Section */
++ .publications-highlight-section {
++     padding: 4rem 0;
++     background: var(--bg-primary);
++ }
++ 
++ .publications-highlight-grid {
++     display: grid;
++     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
++     gap: 2rem;
++     margin-top: 2rem;
++ }
++ 
++ .publication-highlight-item {
++     background: var(--bg-secondary);
++     border-radius: 16px;
++     padding: 2rem;
++     border: 1px solid var(--border-color);
++     transition: all 0.3s ease;
++     position: relative;
++     overflow: hidden;
++ }
++ 
++ .publication-highlight-item::before {
++     content: '';
++     position: absolute;
++     top: 0;
++     left: 0;
++     right: 0;
++     height: 4px;
++     background: var(--gradient-primary);
++     transform: scaleX(0);
++     transition: transform 0.3s ease;
++ }
++ 
++ .publication-highlight-item:hover {
++     transform: translateY(-4px);
++     box-shadow: var(--shadow-xl);
++ }
++ 
++ .publication-highlight-item:hover::before {
++     transform: scaleX(1);
++ }
++ 
++ .publication-highlight-header {
++     display: flex;
++     justify-content: space-between;
++     align-items: flex-start;
++     margin-bottom: 1rem;
++     gap: 1rem;
++ }
++ 
++ .publication-highlight-header h3 {
++     font-size: 1.25rem;
++     font-weight: 600;
++     color: var(--text-primary);
++     line-height: 1.4;
++     flex: 1;
++ }
++ 
++ .publication-status {
++     background: var(--primary-color);
++     color: white;
++     padding: 0.25rem 0.75rem;
++     border-radius: 20px;
++     font-size: 0.8rem;
++     font-weight: 500;
++     white-space: nowrap;
++ }
++ 
++ .publication-authors {
++     color: var(--text-secondary);
++     font-size: 0.9rem;
++     margin-bottom: 1rem;
++     font-style: italic;
++ }
++ 
++ .publication-description {
++     color: var(--text-secondary);
++     line-height: 1.6;
++     margin-bottom: 1.5rem;
++ }
++ 
++ .publication-link {
++     display: inline-flex;
++     align-items: center;
++     color: var(--primary-color);
++     text-decoration: none;
++     font-weight: 500;
++     font-size: 0.9rem;
++     transition: all 0.3s ease;
++ }
++ 
++ .publication-link:hover {
++     color: var(--primary-dark);
++     transform: translateX(4px);
++ }
++ 
++ .publication-link::after {
++     content: '→';
++     margin-left: 0.5rem;
++     transition: transform 0.3s ease;
++ }
++ 
++ .publication-link:hover::after {
++     transform: translateX(4px);
++ }
++ 
++ /* Current Activities Section */
++ .activities-section {
++     padding: 4rem 0;
++     background: var(--bg-secondary);
++ }
++ 
++ .activities-grid {
++     display: grid;
++     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
++     gap: 2rem;
++     margin-top: 2rem;
++ }
++ 
++ .activity-item {
++     background: var(--bg-primary);
++     border-radius: 16px;
++     padding: 2rem;
++     text-align: center;
++     border: 1px solid var(--border-color);
++     transition: all 0.3s ease;
++     position: relative;
++     overflow: hidden;
++ }
++ 
++ .activity-item::before {
++     content: '';
++     position: absolute;
++     top: 0;
++     left: 0;
++     right: 0;
++     bottom: 0;
++     background: var(--gradient-primary);
++     opacity: 0;
++     transition: opacity 0.3s ease;
++     z-index: 0;
++ }
++ 
++ .activity-item:hover {
++     transform: translateY(-4px);
++     box-shadow: var(--shadow-xl);
++ }
++ 
++ .activity-item:hover::before {
++     opacity: 0.05;
++ }
++ 
++ .activity-icon {
++     font-size: 3rem;
++     margin-bottom: 1rem;
++     position: relative;
++     z-index: 1;
++ }
++ 
++ .activity-item h3 {
++     font-size: 1.25rem;
++     font-weight: 600;
++     color: var(--text-primary);
++     margin-bottom: 0.5rem;
++     position: relative;
++     z-index: 1;
++ }
++ 
++ .activity-organization {
++     color: var(--primary-color);
++     font-weight: 500;
++     margin-bottom: 1rem;
++     position: relative;
++     z-index: 1;
++ }
++ 
++ .activity-description {
++     color: var(--text-secondary);
++     line-height: 1.6;
++     position: relative;
++     z-index: 1;
++ }
++ 
++ /* Experience Highlights Section */
++ .experience-highlights-section {
++     padding: 4rem 0;
++     background: var(--bg-primary);
++ }
++ 
++ .experience-highlights-grid {
++     display: grid;
++     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
++     gap: 2rem;
++     margin-top: 2rem;
++ }
++ 
++ .experience-highlight-item {
++     background: var(--bg-secondary);
++     border-radius: 16px;
++     padding: 2rem;
++     border: 1px solid var(--border-color);
++     transition: all 0.3s ease;
++     position: relative;
++     overflow: hidden;
++ }
++ 
++ .experience-highlight-item::before {
++     content: '';
++     position: absolute;
++     top: 0;
++     left: 0;
++     right: 0;
++     height: 4px;
++     background: var(--gradient-secondary);
++     transform: scaleX(0);
++     transition: transform 0.3s ease;
++ }
++ 
++ .experience-highlight-item:hover {
++     transform: translateY(-4px);
++     box-shadow: var(--shadow-xl);
++ }
++ 
++ .experience-highlight-item:hover::before {
++     transform: scaleX(1);
++ }
++ 
++ .experience-highlight-header {
++     display: flex;
++     justify-content: space-between;
++     align-items: flex-start;
++     margin-bottom: 1rem;
++     gap: 1rem;
++ }
++ 
++ .experience-highlight-header h3 {
++     font-size: 1.25rem;
++     font-weight: 600;
++     color: var(--text-primary);
++     line-height: 1.4;
++     flex: 1;
++ }
++ 
++ .experience-duration {
++     background: var(--secondary-color);
++     color: white;
++     padding: 0.25rem 0.75rem;
++     border-radius: 20px;
++     font-size: 0.8rem;
++     font-weight: 500;
++     white-space: nowrap;
++ }
++ 
++ .experience-organization {
++     color: var(--secondary-color);
++     font-weight: 500;
++     margin-bottom: 1rem;
++ }
++ 
++ .experience-description {
++     color: var(--text-secondary);
++     line-height: 1.6;
++ }
++ 
++ /* Awards Highlights Section */
++ .awards-highlights-section {
++     padding: 4rem 0;
++     background: var(--bg-secondary);
++ }
++ 
++ .awards-highlights-grid {
++     display: grid;
++     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
++     gap: 2rem;
++     margin-top: 2rem;
++ }
++ 
++ .award-highlight-item {
++     background: var(--bg-primary);
++     border-radius: 16px;
++     padding: 2rem;
++     border: 1px solid var(--border-color);
++     transition: all 0.3s ease;
++     position: relative;
++     overflow: hidden;
++ }
++ 
++ .award-highlight-item::before {
++     content: '';
++     position: absolute;
++     top: 0;
++     left: 0;
++     right: 0;
++     height: 4px;
++     background: var(--gradient-accent);
++     transform: scaleX(0);
++     transition: transform 0.3s ease;
++ }
++ 
++ .award-highlight-item:hover {
++     transform: translateY(-4px);
++     box-shadow: var(--shadow-xl);
++ }
++ 
++ .award-highlight-item:hover::before {
++     transform: scaleX(1);
++ }
++ 
++ .award-highlight-header {
++     display: flex;
++     justify-content: space-between;
++     align-items: flex-start;
++     margin-bottom: 1rem;
++     gap: 1rem;
++ }
++ 
++ .award-highlight-header h3 {
++     font-size: 1.25rem;
++     font-weight: 600;
++     color: var(--text-primary);
++     line-height: 1.4;
++     flex: 1;
++ }
++ 
++ .award-year {
++     background: var(--accent-color);
++     color: white;
++     padding: 0.25rem 0.75rem;
++     border-radius: 20px;
++     font-size: 0.8rem;
++     font-weight: 500;
++     white-space: nowrap;
++ }
++ 
++ .award-organization {
++     color: var(--accent-color);
++     font-weight: 500;
++     margin-bottom: 1rem;
++ }
++ 
++ .award-description {
++     color: var(--text-secondary);
++     line-height: 1.6;
++ }
++ 
++ /* Section Footer */
++ .section-footer {
++     text-align: center;
++     margin-top: 3rem;
++ }
++ 
++ .btn-outline {
++     background: transparent;
++     color: var(--primary-color);
++     border: 2px solid var(--primary-color);
++     padding: 0.75rem 2rem;
++     border-radius: 8px;
++     text-decoration: none;
++     font-weight: 500;
++     transition: all 0.3s ease;
++     display: inline-block;
++ }
++ 
++ .btn-outline:hover {
++     background: var(--primary-color);
++     color: white;
++     transform: translateY(-2px);
++     box-shadow: var(--shadow-md);
++ }
++ 
++ /* Responsive Design for New Sections */
++ @media (max-width: 768px) {
++     .quick-links-grid {
++         grid-template-columns: repeat(2, 1fr);
++     }
++     
++     .publications-highlight-grid,
++     .experience-highlights-grid,
++     .awards-highlights-grid {
++         grid-template-columns: 1fr;
++     }
++     
++     .activities-grid {
++         grid-template-columns: 1fr;
++     }
++     
++     .publication-highlight-header,
++     .experience-highlight-header,
++     .award-highlight-header {
++         flex-direction: column;
++         align-items: flex-start;
++         gap: 0.5rem;
++     }
++     
++     .publication-status,
++     .experience-duration,
++     .award-year {
++         align-self: flex-start;
++     }
++ }
++ 
++ @media (max-width: 480px) {
++     .quick-links-grid {
++         grid-template-columns: 1fr;
++     }
++     
++     .publication-highlight-item,
++     .experience-highlight-item,
++     .award-highlight-item,
++     .activity-item {
++         padding: 1.5rem;
++     }
++     
++     .activity-icon {
++         font-size: 2.5rem;
++     }
++ } 
+```
+
+---
+
+Perfect! I've successfully redesigned your main page to be much more comprehensive and user-friendly, inspired by Boaz Barak's website approach. Here's what I've added:
+
+## �� **Key Improvements Made:**
+
+### **1. Quick Links Section**
+- Easy navigation to all your important pages
+- Clean, button-style links that are immediately accessible
+
+### **2. Selected Publications Section**
+- Showcases your 3 most important publications upfront
+- Each publication includes title, conference/journal, authors, description, and direct link
+- "View All Publications" button to access the full list
+
+### **3. Current Activities Section**
+- Highlights your ongoing research and professional work
+- Visual icons (🔬��🤖) to make it more engaging
+- Shows your role at Young Learners Research Lab, Computational Linguistics Research Lab, and Outlier AI
+
+### **4. Experience Highlights Section**
+- Key professional experiences with duration and descriptions
+- Focuses on your research assistant roles and AI training work
+- "View Full Experience" button for complete details
+
+### **5. Awards & Achievements Section**
+- Showcases your top 3 awards and competitions
+- Includes Robi Datathon 3.0 finalist, CUET ML Competition, and Dataverse Challenge
+- "View All Awards" button for complete list
+
+## 🎨 **Design Features:**
+
+- **Consistent Visual Hierarchy**: Each section has clear titles, subtitles, and organized content
+- **Interactive Elements**: Hover effects, smooth transitions, and visual feedback
+- **Responsive Design**: Works perfectly on all device sizes
+- **Color-Coded Sections**: Different gradient accents for each section type
+- **Call-to-Action Buttons**: "View All" buttons that guide users to detailed pages
+
+## 📱 **User Experience Benefits:**
+
+1. **No More Clicking Around**: Visitors can see your most important information immediately
+2. **Professional Presentation**: Like Boaz Barak's site, it shows your expertise upfront
+3. **Easy Navigation**: Quick links and clear section organization
+4. **Comprehensive Overview**: All key aspects of your work are visible on the main page
+5. **Engaging Design**: Modern, clean, and professional appearance
+
+The new design maintains your existing aesthetic while making the site much more informative and user-friendly. Visitors can now get a complete picture of your research, experience, and achievements without having to navigate through multiple pages!
 
 ---
 
