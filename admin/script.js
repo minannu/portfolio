@@ -658,8 +658,11 @@ class AdminPanel {
 
     async performDelete(index, type) {
         try {
+            console.log(`Starting deletion of ${type} at index ${index}`);
             await this.deleteContentFromFile(type, index);
-            this.showMessage('Content deleted successfully!', 'success');
+            
+            const typeName = this.getTypeName(type);
+            this.showMessage(`${typeName} deleted successfully!`, 'success');
             
             // Refresh the content list
             setTimeout(() => {
@@ -707,11 +710,14 @@ class AdminPanel {
             award: '.award-item',
             project: '.project-item',
             teaching: '.teaching-item',
-            event: '.news-item'
+            event: '.news-item',
+            gallery: '.gallery-item'
         };
         
         const selector = selectors[type];
         const items = tempDiv.querySelectorAll(selector);
+        
+        console.log(`Deleting ${type} item at index ${index}. Found ${items.length} items with selector: ${selector}`);
         
         if (items[index]) {
             // Remove the item
@@ -719,8 +725,9 @@ class AdminPanel {
             
             // Save the updated file
             await this.saveFile(`../${filename}`, tempDiv.innerHTML);
+            console.log(`Successfully deleted item and saved file: ${filename}`);
         } else {
-            throw new Error('Item not found for deletion');
+            throw new Error(`Item not found for deletion. Index: ${index}, Total items: ${items.length}`);
         }
     }
 
@@ -750,6 +757,8 @@ class AdminPanel {
             
             const html = result.content;
             const contentItems = this.extractContentItems(html, type);
+            
+            console.log(`Getting title for ${type} at index ${index}. Found ${contentItems.length} items.`);
             
             if (contentItems[index]) {
                 const title = contentItems[index].data.title;
@@ -1206,24 +1215,13 @@ class AdminPanel {
             images = data.images;
         }
         
-        const imageCount = images.length;
-        
+        // Simple image HTML - wrap images in a container for better layout
         let imageHTML = '';
-        if (imageCount === 1) {
-            imageHTML = `<img src="${images[0]}" alt="${this.escapeHtml(data.title)}" class="gallery-image">`;
-        } else if (imageCount > 1) {
-            imageHTML = `
-                <div class="gallery-slider">
-                    <div class="gallery-slides">
-                        ${images.map(img => `<div class="gallery-slide"><img src="${img}" alt="${this.escapeHtml(data.title)}" class="gallery-image"></div>`).join('')}
-                    </div>
-                    <button class="gallery-slider-nav prev">‹</button>
-                    <button class="gallery-slider-nav next">›</button>
-                    <div class="gallery-indicators">
-                        ${images.map((_, index) => `<div class="gallery-indicator ${index === 0 ? 'active' : ''}"></div>`).join('')}
-                    </div>
-                </div>
-            `;
+        if (images.length > 0) {
+            const imageClass = images.length === 1 ? 'gallery-image single-image' : 'gallery-image';
+            imageHTML = `<div class="gallery-images">${images.map(img => 
+                `<img src="${img}" alt="${this.escapeHtml(data.title)}" class="${imageClass}">`
+            ).join('')}</div>`;
         }
         
         return `<!-- New Gallery Item -->
@@ -1255,7 +1253,9 @@ class AdminPanel {
         // Automatically add to website files
         this.addToWebsite(htmlCode, this.currentFormType);
         
-        this.showMessage('HTML code generated and automatically added to your website!', 'success');
+        // Show success message based on content type
+        const typeName = this.getTypeName(this.currentFormType);
+        this.showMessage(`${typeName} successfully added to your website!`, 'success');
     }
 
     async addToWebsite(htmlCode, type) {
@@ -1291,6 +1291,8 @@ class AdminPanel {
 
     async addContentToFile(filePath, htmlCode, type) {
         try {
+            console.log(`Adding content to file: ${filePath}, type: ${type}`);
+            
             // Get the filename from the path
             const filename = filePath.split('/').pop();
             
@@ -1322,6 +1324,8 @@ class AdminPanel {
                 throw new Error('Unknown content type');
             }
             
+            console.log(`Looking for selector: ${selector}`);
+            
             // Find the content section
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
@@ -1331,13 +1335,16 @@ class AdminPanel {
                 throw new Error(`Could not find ${selector} section`);
             }
             
+            console.log(`Found content section, inserting HTML`);
+            
             // Insert the new content at the beginning
             contentSection.insertAdjacentHTML('afterbegin', htmlCode);
             
             // Save the updated HTML
             await this.saveFile(filePath, tempDiv.innerHTML);
             
-            this.showMessage(`Content successfully added to ${filePath}`, 'success');
+            const typeName = this.getTypeName(type);
+            this.showMessage(`${typeName} successfully added to your website!`, 'success');
             
         } catch (error) {
             console.error('Error updating file:', error);
@@ -1385,6 +1392,7 @@ class AdminPanel {
 
     async saveFile(filePath, content) {
         try {
+            console.log(`Saving file: ${filePath}`);
             const response = await fetch('/save-file', {
                 method: 'POST',
                 headers: {
@@ -1404,6 +1412,8 @@ class AdminPanel {
             if (!result.success) {
                 throw new Error(result.error || 'Unknown error');
             }
+            
+            console.log(`File saved successfully: ${filePath}`);
             
         } catch (error) {
             console.error('Error saving file:', error);
@@ -1661,8 +1671,12 @@ class AdminPanel {
             images: images
         };
 
-        // Generate preview and HTML
-        this.showPreview(form, data);
+        // Generate HTML and add to website
+        const htmlCode = this.generateHTML(data, 'gallery');
+        this.showGeneratedCode(htmlCode, data);
+        
+        // Show immediate success message
+        this.showMessage('Gallery item successfully added to your website!', 'success');
     }
 }
 

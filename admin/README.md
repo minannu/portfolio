@@ -4,13 +4,15 @@ A comprehensive admin panel for managing your portfolio website content. This to
 
 ## Features
 
-- **6 Content Types**: Publications, Experiences, Awards, Projects, Teaching/Service, and Events
+- **7 Content Types**: Publications, Experiences, Awards, Projects, Teaching/Service, Events, and Gallery
 - **Live Preview**: See how your content will look before generating the code
 - **Form Validation**: Real-time validation with helpful error messages
 - **HTML Code Generation**: Automatically generates properly formatted HTML code
 - **One-Click Copy**: Copy generated code to clipboard instantly
 - **Modern UI**: Beautiful, responsive design with smooth animations
-- **Local Only**: Works entirely offline - no server required
+- **Automatic File Updates**: Server version automatically saves content to your website files
+- **File Upload Support**: Gallery items support both URL and file uploads
+- **Delete Functionality**: Edit mode allows you to delete existing content
 
 ## How to Use
 
@@ -30,13 +32,21 @@ A comprehensive admin panel for managing your portfolio website content. This to
 
 ### 2. Adding Content
 
-1. **Select Content Type**: Choose from Publications, Experiences, Awards, Projects, Teaching/Service, or Events
+1. **Select Content Type**: Choose from Publications, Experiences, Awards, Projects, Teaching/Service, Events, or Gallery
 2. **Fill the Form**: Complete all required fields (marked with *)
 3. **Preview**: Click "Preview" to see how your content will look
 4. **Add Automatically**: Click "Add [Content Type]" to automatically add to your website
 5. **Success**: Content is automatically added to the correct file!
 
-### 3. Automatic File Updates
+### 3. Editing/Deleting Content
+
+1. **Switch to Edit Mode**: Click the "Edit" button in the top navigation
+2. **Select Content Type**: Choose the type of content you want to edit
+3. **View Content List**: See all existing content for that type
+4. **Edit or Delete**: Click "Edit" to modify content or "Delete" to remove it
+5. **Confirm Actions**: Confirm any deletions in the popup dialog
+
+### 4. Automatic File Updates
 
 When you use the server version, the admin panel will:
 - ✅ **Automatically read** your current website files
@@ -91,6 +101,11 @@ When you use the server version, the admin panel will:
 - **Description**: Event description
 - **Link**: Event URL (optional)
 
+### Gallery
+- **Title**: Gallery item title
+- **Description**: Description of the gallery item
+- **Images**: Upload files or provide image URLs (one per line)
+
 ## Tips
 
 1. **Always Preview**: Use the preview feature to see how your content will look
@@ -140,6 +155,21 @@ This admin panel is designed for local use only. Do not upload the `admin/` fold
 - Make sure all required fields are filled
 - Check for validation errors (red text under fields)
 - Try refreshing the page
+
+### Items Not Deleting
+- Check browser console for error messages
+- Verify that the HTML files have the correct CSS classes
+- Ensure the server has write permissions to the project directory
+
+### Gallery Not Adding
+- Make sure you've provided at least one image (URL or file upload)
+- Check that gallery.html has a `.gallery-grid` section
+- Verify the server is running and accessible
+
+### Recent Fixes
+- ✅ **Gallery Add Issue**: Fixed - Gallery items now automatically add to website
+- ✅ **Delete Functionality**: Fixed - All content types can now be deleted properly
+- ✅ **Success Messages**: Improved - More specific success messages for each content type
 
 ## Support
 
