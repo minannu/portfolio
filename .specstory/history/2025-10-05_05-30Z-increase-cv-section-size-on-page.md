@@ -438,3 +438,158 @@ Now when visitors see your social links, they'll clearly see "Email", "LinkedIn"
 
 ---
 
+_**User (2025-10-05 05:30Z)**_
+
+I think the link will be vertical one after another and the image is not completely visible, I think the sections height is little small. so do this two things
+
+---
+
+_**Assistant (default)**_
+
+I'll help you fix both issues - making the social links horizontal instead of vertical and increasing the hero section height so the image is more visible. Let me update the CSS:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: styles.css</summary>
+
+**Chunk 1**
+Lines added: 3, lines removed: undefined
+
+```diff
+@@ -284,4 +284,7 @@
+    padding: var(--spacing-2xl) 0;
+    border-bottom: 3px solid var(--accent-gold);
++   min-height: 90vh;
++   display: flex;
++   align-items: center;
+  }
+  
+```
+
+</details>
+
+---
+
+Now let me fix the social links to be horizontal instead of vertical by updating the responsive design:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: styles.css</summary>
+
+**Chunk 1**
+Lines added: 11, lines removed: 5
+
+```diff
+@@ -814,13 +814,19 @@
+    
+    .hero-contact-links {
+-     flex-direction: column;
++     flex-direction: row;
++     flex-wrap: wrap;
+      gap: var(--spacing-sm);
+-     align-items: center;
++     justify-content: center;
+    }
+    
+    .hero-contact-link {
+-     min-width: 140px;
+-     justify-content: flex-start;
+-     padding: var(--spacing-sm) var(--spacing-lg);
++     min-width: 120px;
++     justify-content: center;
++     padding: var(--spacing-sm) var(--spacing-md);
++     font-size: 0.8rem;
++   }
++   
++   .hero-contact-text {
++     font-size: 0.75rem;
+    }
+    
+```
+
+</details>
+
+---
+
+Let me also add some additional responsive styles for very small screens to ensure the links work well on all devices:
+
+
+---
+
+Tool use: **search_replace**
+
+
+<details><summary>Edit file: styles.css</summary>
+
+**Chunk 1**
+Lines added: 15, lines removed: undefined
+
+```diff
+@@ -868,4 +868,19 @@
+      font-size: 0.9rem;
+    }
++   
++   .hero-contact-links {
++     flex-direction: column;
++     gap: var(--spacing-xs);
++   }
++   
++   .hero-contact-link {
++     min-width: 100px;
++     font-size: 0.75rem;
++     padding: var(--spacing-xs) var(--spacing-sm);
++   }
++   
++   .hero-contact-text {
++     font-size: 0.7rem;
++   }
+  }
+  
+```
+
+</details>
+
+---
+
+Perfect! I've made the following improvements to address both of your concerns:
+
+## Changes Made:
+
+### 1. **Increased Hero Section Height**:
+- Added `min-height: 90vh` to make the hero section take up 90% of the viewport height
+- Added `display: flex` and `align-items: center` to vertically center the content
+- This ensures your profile image is much more visible and the section has proper breathing room
+
+### 2. **Fixed Social Links Layout**:
+- **Desktop/Tablet (768px+)**: Links remain horizontal in a row
+- **Mobile (768px and below)**: Links are arranged horizontally with flex-wrap, so they wrap to multiple rows if needed
+- **Small Mobile (480px and below)**: Links stack vertically only on very small screens for better usability
+
+### 3. **Responsive Design Improvements**:
+- **Medium screens**: Links stay horizontal with smaller text and padding
+- **Small screens**: Links stack vertically only when absolutely necessary
+- **Text sizing**: Adjusted font sizes for different screen sizes to maintain readability
+
+### 4. **Visual Benefits**:
+- **Better Image Visibility**: The hero section now takes up most of the screen height
+- **Cleaner Layout**: Social links are properly arranged and don't take up too much vertical space
+- **Professional Look**: The increased height gives your profile image more prominence
+- **Responsive**: Works well on all device sizes
+
+Now your homepage will have:
+- A much taller hero section (90% of screen height) making your profile image more prominent
+- Social links that stay horizontal on most screens and only stack vertically on very small mobile devices
+- Better overall visual balance and professional appearance
+
+The changes ensure your profile image is much more visible while keeping the social links in a clean, horizontal arrangement!
+
+---
+
