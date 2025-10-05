@@ -1,15 +1,15 @@
-
-
-  
+<!DOCTYPE html>
+<html lang="en">
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Md Minhazul Islam - Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-  
-  
+  </head>
+  <body>
     <!-- Fixed Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -41,7 +41,7 @@
             <div class="hero-content">
                 <div class="hero-text">
                     <h1 class="hero-title">Md Minhazul Islam</h1>
-                    <p class="hero-subtitle">Research Scientist &amp; AI Enthusiast</p>
+                    <p class="hero-subtitle">Research Scientist & AI Enthusiast</p>
                     <p class="hero-description">
                         Advancing Natural Language Processing and Computational Linguistics research. 
                         Specializing in Bengali NLP, sentiment analysis, and multimodal learning.
@@ -56,23 +56,18 @@
                     <div class="hero-contact-links">
                         <a href="mailto:minannu2001@gmail.com" class="hero-contact-link" title="Email">
                             <span class="hero-contact-icon">📧</span>
-                            <span class="hero-contact-text">Email</span>
                         </a>
                         <a href="https://www.linkedin.com/in/md-minhazul-islam-6755461a1/" target="_blank" class="hero-contact-link" title="LinkedIn">
                             <span class="hero-contact-icon">💼</span>
-                            <span class="hero-contact-text">LinkedIn</span>
                         </a>
                         <a href="https://github.com/minannu" target="_blank" class="hero-contact-link" title="GitHub">
                             <span class="hero-contact-icon">🐙</span>
-                            <span class="hero-contact-text">GitHub</span>
                         </a>
-                        <a href="https://scholar.google.com/citations?user=3IIqrOYAAAAJ&amp;hl=en" target="_blank" class="hero-contact-link" title="Google Scholar">
+                        <a href="https://scholar.google.com/citations?user=3IIqrOYAAAAJ&hl=en" target="_blank" class="hero-contact-link" title="Google Scholar">
                             <span class="hero-contact-icon">🎓</span>
-                            <span class="hero-contact-text">Google Scholar</span>
                         </a>
                         <a href="https://www.kaggle.com/minannu" target="_blank" class="hero-contact-link" title="Kaggle">
                             <span class="hero-contact-icon">📊</span>
-                            <span class="hero-contact-text">Kaggle</span>
                         </a>
                     </div>
                 </div>
@@ -260,7 +255,7 @@
     <section class="awards-highlights-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Awards &amp; Achievements</h2>
+                <h2 class="section-title">Awards & Achievements</h2>
                 <p class="section-subtitle">Recognition for research and technical excellence</p>
             </div>
             <div class="awards-highlights-grid">
@@ -301,19 +296,11 @@
     <section class="news-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Recent News &amp; Events</h2>
+                <h2 class="section-title">Recent News & Events</h2>
                 <p class="section-subtitle">Stay updated with my latest research activities and achievements</p>
             </div>
             <div class="news-container">
-                <div class="news-grid" id="newsGrid"><!-- New Event -->
-<div class="news-item" data-page="1">
-    <div class="news-date">2025-09</div>
-    <div class="news-content">
-        <h3>Submitted paper in ICCIT 2025</h3>
-        <p>I have submitted one conference paper analyzing the behavior of LLM and comparing its performance with that of the hybrid model.</p>
-        <a href="https://iccit.org.bd/2025/" target="_blank" class="event-link">View Event →</a>
-    </div>
-</div>
+                <div class="news-grid" id="newsGrid">
                     <div class="news-item" data-page="1">
                         <div class="news-date">December 2024</div>
                         <div class="news-content">
@@ -380,7 +367,7 @@
                 </div>
                 
                 <div class="news-pagination">
-                    <button class="pagination-btn prev-btn" id="prevBtn" disabled="">
+                    <button class="pagination-btn prev-btn" id="prevBtn" disabled>
                         <span>←</span> Previous
                     </button>
                     <div class="pagination-info">
@@ -423,11 +410,11 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2025 Md Minhazul Islam. All rights reserved.</p>
+                <p>&copy; 2025 Md Minhazul Islam. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
-  
-
+  </body>
+</html>

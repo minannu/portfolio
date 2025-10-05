@@ -1,9 +1,33 @@
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* Academic Research Theme - React App Styling */
+
+/* Import Academic Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@300;400;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Academic Color Variables */
+:root {
+  --primary-navy: #1a365d;
+  --secondary-navy: #2d3748;
+  --accent-blue: #2b6cb0;
+  --light-blue: #4299e1;
+  --accent-gold: #d69e2e;
+  --warm-gold: #f6ad55;
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7fafc;
+  --bg-tertiary: #edf2f7;
+  --bg-accent: #e6fffa;
+  --border-light: #e2e8f0;
+  --border-medium: #cbd5e0;
+  --font-serif: 'Crimson Text', 'Times New Roman', serif;
+  --font-sans: 'Source Sans Pro', 'Arial', sans-serif;
+  --font-display: 'Playfair Display', 'Times New Roman', serif;
+}
 
 /* Base styles */
 * {
@@ -11,10 +35,12 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
 }
 
 /* Custom scrollbar */

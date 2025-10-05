@@ -11,7 +11,7 @@ import CV from "./pages/CV";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <Header />
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -21,7 +21,14 @@ function App() {
             </div>
           </div>
           <div className="lg:col-span-9">
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8 min-h-[600px]">
+            <div 
+              className="rounded-lg shadow-lg border p-8 min-h-[600px]"
+              style={{ 
+                backgroundColor: 'var(--bg-primary)',
+                borderColor: 'var(--border-light)',
+                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
+              }}
+            >
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/publications" element={<Publications />} />
