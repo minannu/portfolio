@@ -331,6 +331,40 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Visitor Counter Functionality
+    function initVisitorCounter() {
+        // Get or initialize counters from localStorage
+        let visitorCount = parseInt(localStorage.getItem('visitorCount')) || 0;
+        let pageViews = parseInt(localStorage.getItem('pageViews')) || 0;
+        
+        // Check if this is a new visitor (using sessionStorage)
+        const hasVisited = sessionStorage.getItem('hasVisited');
+        if (!hasVisited) {
+            visitorCount++;
+            sessionStorage.setItem('hasVisited', 'true');
+            localStorage.setItem('visitorCount', visitorCount.toString());
+        }
+        
+        // Always increment page views
+        pageViews++;
+        localStorage.setItem('pageViews', pageViews.toString());
+        
+        // Update the display with animation
+        const visitorCountElement = document.getElementById('visitorCount');
+        const pageViewsElement = document.getElementById('pageViews');
+        
+        if (visitorCountElement) {
+            animateCounter(visitorCountElement, visitorCount);
+        }
+        
+        if (pageViewsElement) {
+            animateCounter(pageViewsElement, pageViews);
+        }
+    }
+    
+    // Initialize visitor counter
+    initVisitorCounter();
 });
 
 // Add CSS for mobile menu

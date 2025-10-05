@@ -789,6 +789,64 @@ h4 {
   font-size: 1.1rem;
 }
 
+/* Visitor Counter Section */
+.visitor-counter-section {
+  background: var(--bg-secondary);
+  padding: var(--spacing-xl) 0;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.visitor-counter-content {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-2xl);
+  flex-wrap: wrap;
+}
+
+.visitor-counter-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  background: var(--bg-primary);
+  padding: var(--spacing-lg);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  transition: all 0.3s ease;
+  min-width: 200px;
+}
+
+.visitor-counter-item:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--accent-blue);
+}
+
+.counter-icon {
+  font-size: 2.5rem;
+  opacity: 0.8;
+}
+
+.counter-info {
+  text-align: left;
+}
+
+.counter-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-navy);
+  font-family: var(--font-display);
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
+}
+
+.counter-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
 /* Academic Responsive Design */
 @media (max-width: 768px) {
   .nav-container {
@@ -847,6 +905,15 @@ h4 {
   
   .quick-links-grid {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+  
+  .visitor-counter-content {
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+  
+  .visitor-counter-item {
+    min-width: 180px;
   }
 }
 
