@@ -183,7 +183,8 @@ class AdminPanel {
             award: editIndex !== null ? 'Edit Award' : 'Add Award',
             project: editIndex !== null ? 'Edit Project' : 'Add Project',
             teaching: editIndex !== null ? 'Edit Teaching/Service' : 'Add Teaching/Service',
-            event: editIndex !== null ? 'Edit Event' : 'Add Event'
+            event: editIndex !== null ? 'Edit Event' : 'Add Event',
+            gallery: editIndex !== null ? 'Edit Gallery Item' : 'Add Gallery Item'
         };
         document.getElementById('formTitle').textContent = titles[type];
         
@@ -227,7 +228,8 @@ class AdminPanel {
                 award: 'awards.html',
                 project: 'projects.html',
                 teaching: 'teaching.html',
-                event: 'index.html'
+                event: 'index.html',
+                gallery: 'gallery.html'
             };
 
             const filename = fileMap[type];
@@ -259,24 +261,29 @@ class AdminPanel {
     fillFormFields(form, type, data) {
         switch (type) {
             case 'publication':
+                if (form.querySelector('[name="section"]')) form.querySelector('[name="section"]').value = data.section || '';
                 form.querySelector('[name="title"]').value = data.title || '';
                 form.querySelector('[name="status"]').value = data.status || '';
+                if (form.querySelector('[name="venue"]')) form.querySelector('[name="venue"]').value = data.venue || '';
                 form.querySelector('[name="authors"]').value = data.authors || '';
                 form.querySelector('[name="description"]').value = data.description || '';
+                if (form.querySelector('[name="tags"]')) form.querySelector('[name="tags"]').value = data.tags || '';
                 form.querySelector('[name="link"]').value = data.link || '';
+                if (form.querySelector('[name="linkText"]')) form.querySelector('[name="linkText"]').value = data.linkText || 'View Paper →';
                 break;
                 
             case 'experience':
                 form.querySelector('[name="title"]').value = data.title || '';
-                // Parse duration to get start and end dates
                 if (data.duration) {
-                    const parts = data.duration.split(' - ');
-                    if (parts.length === 2) {
+                    const parts = data.duration.split(/\s*[–-]\s*/);
+                    if (parts.length >= 1) {
                         form.querySelector('[name="startDate"]').value = this.parseDateToMonth(parts[0]);
-                        if (parts[1] !== 'Present') {
+                        if (parts[1] && parts[1] !== 'Present') {
                             form.querySelector('[name="endDate"]').value = this.parseDateToMonth(parts[1]);
-                        } else {
+                            form.querySelector('[name="present"]').checked = false;
+                        } else if (parts[1] === 'Present') {
                             form.querySelector('[name="present"]').checked = true;
+                            form.querySelector('[name="endDate"]').disabled = true;
                         }
                     }
                 }
@@ -294,27 +301,33 @@ class AdminPanel {
                 
             case 'project':
                 form.querySelector('[name="title"]').value = data.title || '';
+                if (form.querySelector('[name="type"]')) form.querySelector('[name="type"]').value = data.type || '';
+                if (form.querySelector('[name="year"]')) form.querySelector('[name="year"]').value = data.year || '';
                 form.querySelector('[name="description"]').value = data.description || '';
                 form.querySelector('[name="technologies"]').value = data.technologies || '';
+                if (form.querySelector('[name="tags"]')) form.querySelector('[name="tags"]').value = data.tags || '';
                 form.querySelector('[name="link"]').value = data.link || '';
                 break;
                 
             case 'teaching':
+                if (form.querySelector('[name="section"]')) form.querySelector('[name="section"]').value = data.section || '';
                 form.querySelector('[name="title"]').value = data.title || '';
-                // Parse duration to get start and end dates
                 if (data.duration) {
-                    const parts = data.duration.split(' - ');
-                    if (parts.length === 2) {
+                    const parts = data.duration.split(/\s*[–-]\s*/);
+                    if (parts.length >= 1) {
                         form.querySelector('[name="startDate"]').value = this.parseDateToMonth(parts[0]);
-                        if (parts[1] !== 'Present') {
+                        if (parts[1] && parts[1] !== 'Present') {
                             form.querySelector('[name="endDate"]').value = this.parseDateToMonth(parts[1]);
-                        } else {
+                            form.querySelector('[name="present"]').checked = false;
+                        } else if (parts[1] === 'Present') {
                             form.querySelector('[name="present"]').checked = true;
+                            form.querySelector('[name="endDate"]').disabled = true;
                         }
                     }
                 }
                 form.querySelector('[name="institution"]').value = data.institution || '';
                 form.querySelector('[name="description"]').value = data.description || '';
+                if (form.querySelector('[name="tags"]')) form.querySelector('[name="tags"]').value = data.tags || '';
                 form.querySelector('[name="link"]').value = data.link || '';
                 break;
                 
@@ -326,8 +339,10 @@ class AdminPanel {
                 break;
                 
             case 'gallery':
+                if (form.querySelector('[name="category"]')) form.querySelector('[name="category"]').value = data.category || '';
                 form.querySelector('[name="title"]').value = data.title || '';
                 form.querySelector('[name="description"]').value = data.description || '';
+                if (form.querySelector('[name="caption"]')) form.querySelector('[name="caption"]').value = data.caption || '';
                 form.querySelector('[name="images"]').value = data.images || '';
                 break;
         }
@@ -335,26 +350,159 @@ class AdminPanel {
 
     parseDateToMonth(dateString) {
         if (!dateString) return '';
-        
-        // Handle various date formats
-        const date = new Date(dateString);
-        if (isNaN(date.getTime())) {
-            // Try to parse common formats
-            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-                              'July', 'August', 'September', 'October', 'November', 'December'];
-            
-            for (let i = 0; i < monthNames.length; i++) {
-                if (dateString.includes(monthNames[i])) {
-                    const year = dateString.match(/\d{4}/);
-                    if (year) {
-                        return `${year[0]}-${String(i + 1).padStart(2, '0')}`;
-                    }
+        dateString = String(dateString).trim();
+
+        // Already YYYY-MM
+        if (/^\d{4}-\d{2}$/.test(dateString)) return dateString;
+
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                          'July', 'August', 'September', 'October', 'November', 'December'];
+        const monthShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        for (let i = 0; i < monthNames.length; i++) {
+            if (dateString.includes(monthNames[i]) || dateString.includes(monthShort[i])) {
+                const year = dateString.match(/\d{4}/);
+                if (year) {
+                    return `${year[0]}-${String(i + 1).padStart(2, '0')}`;
                 }
             }
-            return '';
         }
-        
-        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+
+        // Year only
+        const yearOnly = dateString.match(/^(\d{4})$/);
+        if (yearOnly) return `${yearOnly[1]}-01`;
+
+        const date = new Date(dateString);
+        if (!isNaN(date.getTime())) {
+            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        }
+
+        return '';
+    }
+
+    formatDisplayMonth(monthValue) {
+        if (!monthValue) return '';
+        if (monthValue === 'Present') return 'Present';
+        // YYYY-MM → Mon YYYY
+        const match = String(monthValue).match(/^(\d{4})-(\d{2})$/);
+        if (match) {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${months[parseInt(match[2], 10) - 1]} ${match[1]}`;
+        }
+        return monthValue;
+    }
+
+    formatDuration(startDate, endDate, isPresent) {
+        const start = this.formatDisplayMonth(startDate);
+        const end = isPresent ? 'Present' : this.formatDisplayMonth(endDate);
+        return `${start} – ${end}`;
+    }
+
+    formatEventDate(monthValue) {
+        return this.formatDisplayMonth(monthValue);
+    }
+
+    buildTagsHTML(tagsString) {
+        if (!tagsString || !String(tagsString).trim()) return '';
+        const tags = String(tagsString).split(',').map(t => t.trim()).filter(Boolean);
+        if (!tags.length) return '';
+        return `<div class="publication-meta">
+                                    ${tags.map(tag => `<span class="publication-tag">${this.escapeHtml(tag)}</span>`).join('\n                                    ')}
+                                </div>`;
+    }
+
+    getPublicationStatusClass(section, statusText = '') {
+        if (section === 'journal') return 'status-journal';
+        if (section === 'conference') return 'status-accepted';
+        if (/revision/i.test(statusText)) return 'status-revision';
+        if (/submitted/i.test(statusText)) return 'status-submitted';
+        return 'status-review';
+    }
+
+    getSectionId(type, data) {
+        if (type === 'publication') {
+            const map = { journal: 'journal-papers', 'under-review': 'under-review', conference: 'conference-papers' };
+            return map[data.section] || null;
+        }
+        if (type === 'project') {
+            const map = { research: 'research-projects', application: 'application-projects' };
+            return map[data.type] || null;
+        }
+        if (type === 'teaching') {
+            const map = { teaching: 'teaching', mentoring: 'mentoring', 'community-service': 'community-service' };
+            return map[data.section] || null;
+        }
+        return null;
+    }
+
+    detectItemSection(item, type) {
+        const sectionEl = item.closest('.pub-section');
+        if (!sectionEl || !sectionEl.id) return '';
+        const id = sectionEl.id;
+        if (type === 'publication') {
+            if (id === 'journal-papers') return 'journal';
+            if (id === 'under-review') return 'under-review';
+            if (id === 'conference-papers') return 'conference';
+        }
+        if (type === 'project') {
+            if (id === 'research-projects') return 'research';
+            if (id === 'application-projects') return 'application';
+        }
+        if (type === 'teaching') {
+            if (id === 'teaching') return 'teaching';
+            if (id === 'mentoring') return 'mentoring';
+            if (id === 'community-service') return 'community-service';
+        }
+        return '';
+    }
+
+    slugify(text) {
+        return String(text || 'gallery-item')
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '')
+            .slice(0, 60) || 'gallery-item';
+    }
+
+    updateSectionCount(sectionEl) {
+        if (!sectionEl) return;
+        const countEl = sectionEl.querySelector('.pub-section-count');
+        if (!countEl) return;
+        const itemCount = sectionEl.querySelectorAll('.publication-item, .project-item, .teaching-item').length;
+        const label = itemCount === 1 ? '1 item' : `${itemCount} items`;
+        // Preserve specialty wording when possible
+        const current = countEl.textContent || '';
+        if (/paper/i.test(current)) {
+            countEl.textContent = itemCount === 1 ? '1 paper' : `${itemCount} papers`;
+        } else if (/manuscript/i.test(current)) {
+            countEl.textContent = itemCount === 1 ? '1 manuscript' : `${itemCount} manuscripts`;
+        } else if (/published/i.test(current)) {
+            countEl.textContent = itemCount === 1 ? '1 published' : `${itemCount} published`;
+        } else if (/project/i.test(current)) {
+            countEl.textContent = itemCount === 1 ? '1 project' : `${itemCount} projects`;
+        } else if (/role/i.test(current)) {
+            countEl.textContent = itemCount === 1 ? '1 role' : `${itemCount} roles`;
+        } else {
+            countEl.textContent = label;
+        }
+    }
+
+    insertIntoSection(root, sectionId, htmlCode, itemSelector) {
+        const section = root.querySelector(`#${sectionId}`);
+        if (!section) {
+            throw new Error(`Could not find section #${sectionId}`);
+        }
+        const header = section.querySelector('.pub-section-header');
+        const firstItem = section.querySelector(itemSelector);
+        if (firstItem) {
+            firstItem.insertAdjacentHTML('beforebegin', htmlCode);
+        } else if (header) {
+            header.insertAdjacentHTML('afterend', '\n\n                            ' + htmlCode);
+        } else {
+            section.insertAdjacentHTML('beforeend', htmlCode);
+        }
+        this.updateSectionCount(section);
     }
 
     switchMode(mode) {
@@ -497,9 +645,13 @@ class AdminPanel {
             case 'publication':
                 data.title = item.querySelector('h3')?.textContent?.trim() || '';
                 data.status = item.querySelector('.publication-status')?.textContent?.trim() || '';
+                data.venue = item.querySelector('.publication-venue')?.textContent?.trim() || '';
                 data.authors = item.querySelector('.publication-authors')?.textContent?.trim() || '';
                 data.description = item.querySelector('.publication-description')?.textContent?.trim() || '';
-                data.link = item.querySelector('.publication-link')?.href || '';
+                data.tags = Array.from(item.querySelectorAll('.publication-tag')).map(t => t.textContent.trim()).join(', ');
+                data.link = item.querySelector('.publication-link')?.getAttribute('href') || '';
+                data.linkText = item.querySelector('.publication-link')?.textContent?.trim() || 'View Paper →';
+                data.section = this.detectItemSection(item, type);
                 break;
                 
             case 'experience':
@@ -514,14 +666,19 @@ class AdminPanel {
                 data.year = item.querySelector('.award-year')?.textContent?.trim() || '';
                 data.organization = item.querySelector('.award-organization')?.textContent?.trim() || '';
                 data.description = item.querySelector('.award-description')?.textContent?.trim() || '';
-                data.link = item.querySelector('.award-link')?.href || '';
+                data.link = item.querySelector('.award-link')?.getAttribute('href') || '';
                 break;
                 
             case 'project':
-                data.title = item.querySelector('h4')?.textContent?.trim() || '';
-                data.description = item.querySelector('p')?.textContent?.trim() || '';
-                data.technologies = item.querySelector('.project-technologies')?.textContent?.trim() || '';
-                data.link = item.querySelector('.project-link')?.href || '';
+                data.title = item.querySelector('h4')?.textContent?.trim() || item.querySelector('h3')?.textContent?.trim() || '';
+                data.year = item.querySelector('.project-year')?.textContent?.trim() || '';
+                data.description = item.querySelector('.project-description')?.textContent?.trim()
+                    || item.querySelector('p:not(.project-technologies)')?.textContent?.trim() || '';
+                const techText = item.querySelector('.project-technologies')?.textContent?.trim() || '';
+                data.technologies = techText.replace(/^Technologies:\s*/i, '');
+                data.tags = Array.from(item.querySelectorAll('.publication-tag')).map(t => t.textContent.trim()).join(', ');
+                data.link = item.querySelector('.project-link')?.getAttribute('href') || '';
+                data.type = this.detectItemSection(item, type);
                 break;
                 
             case 'teaching':
@@ -529,21 +686,27 @@ class AdminPanel {
                 data.duration = item.querySelector('.teaching-duration')?.textContent?.trim() || '';
                 data.institution = item.querySelector('.teaching-institution')?.textContent?.trim() || '';
                 data.description = item.querySelector('.teaching-description')?.textContent?.trim() || '';
-                data.link = item.querySelector('.teaching-link')?.href || '';
+                data.tags = Array.from(item.querySelectorAll('.publication-tag')).map(t => t.textContent.trim()).join(', ');
+                data.link = item.querySelector('.teaching-link')?.getAttribute('href') || '';
+                data.section = this.detectItemSection(item, type);
                 break;
                 
             case 'event':
                 data.title = item.querySelector('h3')?.textContent?.trim() || '';
                 data.date = item.querySelector('.news-date')?.textContent?.trim() || '';
-                data.description = item.querySelector('p')?.textContent?.trim() || '';
-                data.link = item.querySelector('a')?.href || '';
+                data.description = item.querySelector('.news-content p')?.textContent?.trim()
+                    || item.querySelector('p')?.textContent?.trim() || '';
+                data.link = item.querySelector('.news-content a')?.getAttribute('href')
+                    || item.querySelector('a')?.getAttribute('href') || '';
                 break;
                 
             case 'gallery':
                 data.title = item.querySelector('.gallery-title')?.textContent?.trim() || '';
                 data.description = item.querySelector('.gallery-description')?.textContent?.trim() || '';
+                data.category = item.querySelector('.gallery-category')?.textContent?.trim() || '';
+                data.caption = item.querySelector('.gallery-caption')?.textContent?.trim() || '';
                 const images = item.querySelectorAll('.gallery-image');
-                data.images = Array.from(images).map(img => img.src).join('\n');
+                data.images = Array.from(images).map(img => img.getAttribute('src')).filter(Boolean).join('\n');
                 break;
         }
         
@@ -613,19 +776,19 @@ class AdminPanel {
     getSubtitle(data, type) {
         switch (type) {
             case 'publication':
-                return data.authors || data.status || 'No additional info';
+                return `${data.status || ''}${data.section ? ` · ${data.section}` : ''}` || data.authors || 'No additional info';
             case 'experience':
                 return data.company || data.duration || 'No additional info';
             case 'award':
                 return data.organization || data.year || 'No additional info';
             case 'project':
-                return data.description?.substring(0, 100) + '...' || 'No description';
+                return `${data.type || 'project'}${data.year ? ` · ${data.year}` : ''}` || data.description?.substring(0, 100) + '...' || 'No description';
             case 'teaching':
-                return data.institution || data.duration || 'No additional info';
+                return `${data.section || ''}${data.institution ? ` · ${data.institution}` : ''}` || data.duration || 'No additional info';
             case 'event':
                 return data.date || data.description?.substring(0, 100) + '...' || 'No additional info';
             case 'gallery':
-                return data.description?.substring(0, 100) + '...' || 'No description';
+                return data.category || data.description?.substring(0, 100) + '...' || 'No description';
             default:
                 return 'No additional info';
         }
@@ -720,10 +883,10 @@ class AdminPanel {
         console.log(`Deleting ${type} item at index ${index}. Found ${items.length} items with selector: ${selector}`);
         
         if (items[index]) {
-            // Remove the item
+            const section = items[index].closest('.pub-section');
             items[index].remove();
+            if (section) this.updateSectionCount(section);
             
-            // Save the updated file
             await this.saveFile(`../${filename}`, tempDiv.innerHTML);
             console.log(`Successfully deleted item and saved file: ${filename}`);
         } else {
@@ -864,8 +1027,6 @@ class AdminPanel {
         }
         
         let html = result.content;
-        
-        // Find and replace the specific item
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = html;
         
@@ -875,21 +1036,39 @@ class AdminPanel {
             award: '.award-item',
             project: '.project-item',
             teaching: '.teaching-item',
-            event: '.news-item'
+            event: '.news-item',
+            gallery: '.gallery-item'
         };
         
         const selector = selectors[type];
         const items = tempDiv.querySelectorAll(selector);
         
-        if (items[index]) {
-            // Replace the old content with new content
-            items[index].outerHTML = newHtmlCode;
-            
-            // Save the updated file
-            await this.saveFile(`../${filename}`, tempDiv.innerHTML);
-        } else {
+        if (!items[index]) {
             throw new Error('Item not found for editing');
         }
+
+        const oldSection = items[index].closest('.pub-section');
+        const form = document.getElementById(`${type}Form`);
+        const formData = form ? Object.fromEntries(new FormData(form).entries()) : {};
+        if (form?.querySelector('[name="present"]')?.checked) {
+            formData.present = 'on';
+        }
+        const newSectionId = this.getSectionId(type, formData);
+        const oldSectionId = oldSection?.id || null;
+
+        // If section changed for sectioned types, move the item
+        if (newSectionId && oldSectionId && newSectionId !== oldSectionId &&
+            (type === 'publication' || type === 'project' || type === 'teaching')) {
+            items[index].remove();
+            this.updateSectionCount(oldSection);
+            const itemSelector = selector;
+            this.insertIntoSection(tempDiv, newSectionId, newHtmlCode, itemSelector);
+        } else {
+            items[index].outerHTML = newHtmlCode;
+            if (oldSection) this.updateSectionCount(oldSection);
+        }
+
+        await this.saveFile(`../${filename}`, tempDiv.innerHTML);
     }
 
     showPreview(form, galleryData = null) {
@@ -1118,120 +1297,145 @@ class AdminPanel {
     }
 
     generatePublicationHTML(data) {
-        const linkHTML = data.link ? `<a href="${data.link}" target="_blank" class="publication-link">View Publication →</a>` : '';
+        const statusClass = this.getPublicationStatusClass(data.section, data.status);
+        const venueHTML = data.venue ? `<p class="publication-venue">${this.escapeHtml(data.venue)}</p>` : '';
+        const tagsHTML = this.buildTagsHTML(data.tags);
+        const linkText = data.linkText || 'View Paper →';
+        const linkHTML = data.link ? `<a href="${this.escapeHtml(data.link)}" target="_blank" class="publication-link">${this.escapeHtml(linkText)}</a>` : '';
         
         return `<!-- New Publication -->
 <div class="publication-item">
-    <div class="publication-header">
-        <h3>${this.escapeHtml(data.title)}</h3>
-        <span class="publication-status">${this.escapeHtml(data.status)}</span>
-    </div>
-    <p class="publication-authors">${this.escapeHtml(data.authors)}</p>
-    <p class="publication-description">${this.escapeHtml(data.description)}</p>
-    ${linkHTML}
-</div>`;
+                                <div class="publication-header">
+                                    <h3>${this.escapeHtml(data.title)}</h3>
+                                    <span class="publication-status ${statusClass}">${this.escapeHtml(data.status)}</span>
+                                </div>
+                                ${venueHTML}
+                                <p class="publication-authors">${this.escapeHtml(data.authors)}</p>
+                                <p class="publication-description">${this.escapeHtml(data.description)}</p>
+                                ${tagsHTML}
+                                ${linkHTML}
+                            </div>`;
     }
 
     generateExperienceHTML(data) {
-        const endDate = data.present ? 'Present' : data.endDate;
+        const duration = this.formatDuration(data.startDate, data.endDate, !!data.present);
         
         return `<!-- New Experience -->
 <div class="experience-item">
-    <div class="experience-header">
-        <h3>${this.escapeHtml(data.title)}</h3>
-        <span class="experience-duration">${this.escapeHtml(data.startDate)} - ${this.escapeHtml(endDate)}</span>
-    </div>
-    <p class="experience-company">${this.escapeHtml(data.company)}</p>
-    <p class="experience-description">${this.escapeHtml(data.description)}</p>
-</div>`;
+                            <div class="experience-header">
+                                <h3>${this.escapeHtml(data.title)}</h3>
+                                <span class="experience-duration">${this.escapeHtml(duration)}</span>
+                            </div>
+                            <p class="experience-company">${this.escapeHtml(data.company)}</p>
+                            <p class="experience-description">${this.escapeHtml(data.description)}</p>
+                        </div>`;
     }
 
     generateAwardHTML(data) {
-        const linkHTML = data.link ? `<a href="${data.link}" target="_blank" class="award-link">View Award →</a>` : '';
+        const linkHTML = data.link ? `<a href="${this.escapeHtml(data.link)}" target="_blank" class="award-link">View Details →</a>` : '';
         
         return `<!-- New Award -->
 <div class="award-item">
-    <div class="award-header">
-        <h3>${this.escapeHtml(data.title)}</h3>
-        <span class="award-year">${this.escapeHtml(data.year)}</span>
-    </div>
-    <p class="award-organization">${this.escapeHtml(data.organization)}</p>
-    <p class="award-description">${this.escapeHtml(data.description)}</p>
-    ${linkHTML}
-</div>`;
+                            <div class="award-header">
+                                <h3>${this.escapeHtml(data.title)}</h3>
+                                <span class="award-year">${this.escapeHtml(data.year)}</span>
+                            </div>
+                            <p class="award-organization">${this.escapeHtml(data.organization)}</p>
+                            <p class="award-description">${this.escapeHtml(data.description)}</p>
+                            ${linkHTML}
+                        </div>`;
     }
 
     generateProjectHTML(data) {
-        const technologiesHTML = data.technologies ? `<p class="project-technologies"><strong>Technologies:</strong> ${this.escapeHtml(data.technologies)}</p>` : '';
-        const linkHTML = data.link ? `<a href="${data.link}" target="_blank" class="project-link">View Project →</a>` : '';
+        const yearHTML = data.year ? `<span class="project-year">${this.escapeHtml(data.year)}</span>` : '';
+        const technologiesHTML = data.technologies
+            ? `<p class="project-technologies"><strong>Technologies:</strong> ${this.escapeHtml(data.technologies)}</p>`
+            : '';
+        const tagsHTML = this.buildTagsHTML(data.tags);
+        const linkHTML = data.link ? `<a href="${this.escapeHtml(data.link)}" target="_blank" class="project-link">View Project →</a>` : '';
         
         return `<!-- New Project -->
 <div class="project-item">
-    <h4>${this.escapeHtml(data.title)}</h4>
-    <p>${this.escapeHtml(data.description)}</p>
-    ${technologiesHTML}
-    ${linkHTML}
-</div>`;
+                                <div class="project-header">
+                                    <h4>${this.escapeHtml(data.title)}</h4>
+                                    ${yearHTML}
+                                </div>
+                                <p class="project-description">${this.escapeHtml(data.description)}</p>
+                                ${technologiesHTML}
+                                ${tagsHTML}
+                                ${linkHTML}
+                            </div>`;
     }
 
     generateTeachingHTML(data) {
-        const endDate = data.present ? 'Present' : data.endDate;
-        const linkHTML = data.link ? `<a href="${data.link}" target="_blank" class="teaching-link">View Organization →</a>` : '';
+        const duration = this.formatDuration(data.startDate, data.endDate, !!data.present);
+        const tagsHTML = this.buildTagsHTML(data.tags);
+        const linkHTML = data.link ? `<a href="${this.escapeHtml(data.link)}" target="_blank" class="teaching-link">Visit Organization →</a>` : '';
         
         return `<!-- New Teaching/Service -->
 <div class="teaching-item">
-    <div class="teaching-header">
-        <h3>${this.escapeHtml(data.title)}</h3>
-        <span class="teaching-duration">${this.escapeHtml(data.startDate)} - ${this.escapeHtml(endDate)}</span>
-    </div>
-    <p class="teaching-institution">${this.escapeHtml(data.institution)}</p>
-    <p class="teaching-description">${this.escapeHtml(data.description)}</p>
-    ${linkHTML}
-</div>`;
+                                <div class="teaching-header">
+                                    <h3>${this.escapeHtml(data.title)}</h3>
+                                    <span class="teaching-duration">${this.escapeHtml(duration)}</span>
+                                </div>
+                                <p class="teaching-institution">${this.escapeHtml(data.institution)}</p>
+                                <p class="teaching-description">${this.escapeHtml(data.description)}</p>
+                                ${tagsHTML}
+                                ${linkHTML}
+                            </div>`;
     }
 
     generateEventHTML(data) {
-        const linkHTML = data.link ? `<a href="${data.link}" target="_blank" class="event-link">View Event →</a>` : '';
+        const displayDate = this.formatEventDate(data.date);
+        const linkInside = data.link
+            ? ` <a href="${this.escapeHtml(data.link)}" target="_blank">View details →</a>`
+            : '';
         
         return `<!-- New Event -->
 <div class="news-item" data-page="1">
-    <div class="news-date">${this.escapeHtml(data.date)}</div>
-    <div class="news-content">
-        <h3>${this.escapeHtml(data.title)}</h3>
-        <p>${this.escapeHtml(data.description)}</p>
-        ${linkHTML}
-    </div>
-</div>`;
+                        <div class="news-date">${this.escapeHtml(displayDate)}</div>
+                        <div class="news-content">
+                            <h3>${this.escapeHtml(data.title)}</h3>
+                            <p>${this.escapeHtml(data.description)}${linkInside}</p>
+                        </div>
+                    </div>`;
     }
 
     generateGalleryHTML(data) {
-        // Handle both URL strings and array of URLs
         let images = [];
         if (typeof data.images === 'string') {
-            // Split by newlines for URL input
-            images = data.images.split('\n').filter(url => url.trim());
+            images = data.images.split('\n').map(u => u.trim()).filter(Boolean);
         } else if (Array.isArray(data.images)) {
-            // Use array directly for file uploads
             images = data.images;
         }
-        
-        // Simple image HTML - wrap images in a container for better layout
+
+        const category = data.category || 'Other';
+        const slug = this.slugify(data.title);
+        const captionHTML = data.caption
+            ? `<p class="gallery-caption">${this.escapeHtml(data.caption)}</p>`
+            : '';
+
         let imageHTML = '';
         if (images.length > 0) {
-            const imageClass = images.length === 1 ? 'gallery-image single-image' : 'gallery-image';
-            imageHTML = `<div class="gallery-images">${images.map(img => 
-                `<img src="${img}" alt="${this.escapeHtml(data.title)}" class="${imageClass}">`
-            ).join('')}</div>`;
+            const containClass = /certificate|recognition/i.test(category) ? ' contain' : '';
+            imageHTML = `<div class="gallery-images">
+                                    ${images.map(img => `
+                                    <a href="${img}" class="gallery-image-link" data-lightbox>
+                                        <img src="${img}" alt="${this.escapeHtml(data.title)}" class="gallery-image${containClass}">
+                                    </a>`).join('')}
+                                    ${captionHTML}
+                                </div>`;
         }
-        
+
         return `<!-- New Gallery Item -->
-<div class="gallery-item">
-    <div class="gallery-header">
-        <h3 class="gallery-title">${this.escapeHtml(data.title)}</h3>
-        <p class="gallery-description">${this.escapeHtml(data.description)}</p>
-    </div>
-    ${imageHTML}
-</div>`;
+<article class="gallery-item" id="${slug}">
+                                <div class="gallery-header">
+                                    <span class="gallery-category">${this.escapeHtml(category)}</span>
+                                    <h3 class="gallery-title">${this.escapeHtml(data.title)}</h3>
+                                    <p class="gallery-description">${this.escapeHtml(data.description)}</p>
+                                </div>
+                                ${imageHTML}
+                            </article>`;
     }
 
     escapeHtml(text) {
@@ -1293,10 +1497,7 @@ class AdminPanel {
         try {
             console.log(`Adding content to file: ${filePath}, type: ${type}`);
             
-            // Get the filename from the path
             const filename = filePath.split('/').pop();
-            
-            // Get current file content from server
             const response = await fetch(`/get-file/${filename}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -1308,39 +1509,54 @@ class AdminPanel {
             }
             
             let html = result.content;
-            
-            // Find the content section based on type
-            const sectionSelectors = {
-                publication: '.publications-content',
-                experience: '.experiences-content',
-                award: '.awards-content',
-                project: '.projects-list',
-                gallery: '.gallery-grid',
-                teaching: '.teaching-content'
-            };
-            
-            const selector = sectionSelectors[type];
-            if (!selector) {
-                throw new Error('Unknown content type');
-            }
-            
-            console.log(`Looking for selector: ${selector}`);
-            
-            // Find the content section
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
-            const contentSection = tempDiv.querySelector(selector);
-            
-            if (!contentSection) {
-                throw new Error(`Could not find ${selector} section`);
+
+            // Prefer sectioned insert for publications / projects / teaching
+            const form = document.getElementById(`${type}Form`);
+            const formData = form ? Object.fromEntries(new FormData(form).entries()) : {};
+            if (form?.querySelector('[name="present"]')?.checked) {
+                formData.present = 'on';
             }
-            
-            console.log(`Found content section, inserting HTML`);
-            
-            // Insert the new content at the beginning
-            contentSection.insertAdjacentHTML('afterbegin', htmlCode);
-            
-            // Save the updated HTML
+            const sectionId = this.getSectionId(type, formData);
+
+            if (sectionId && (type === 'publication' || type === 'project' || type === 'teaching')) {
+                const itemSelector = type === 'publication'
+                    ? '.publication-item'
+                    : type === 'project'
+                        ? '.project-item'
+                        : '.teaching-item';
+                this.insertIntoSection(tempDiv, sectionId, htmlCode, itemSelector);
+            } else {
+                const sectionSelectors = {
+                    publication: '.publications-content',
+                    experience: '.experiences-content',
+                    award: '.awards-content',
+                    project: '.projects-content',
+                    gallery: '.gallery-grid',
+                    teaching: '.teaching-content'
+                };
+
+                const selector = sectionSelectors[type];
+                if (!selector) {
+                    throw new Error('Unknown content type');
+                }
+
+                const contentSection = tempDiv.querySelector(selector);
+                if (!contentSection) {
+                    throw new Error(`Could not find ${selector} section`);
+                }
+
+                // For gallery: prepend into grid; for others fallback prepend
+                if (type === 'gallery') {
+                    contentSection.insertAdjacentHTML('afterbegin', htmlCode);
+                } else if (type === 'experience' || type === 'award') {
+                    contentSection.insertAdjacentHTML('afterbegin', htmlCode);
+                } else {
+                    contentSection.insertAdjacentHTML('afterbegin', htmlCode);
+                }
+            }
+
             await this.saveFile(filePath, tempDiv.innerHTML);
             
             const typeName = this.getTypeName(type);

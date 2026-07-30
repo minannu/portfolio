@@ -1,6 +1,6 @@
-
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery - Md Minhazul Islam</title>
@@ -10,83 +10,181 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         .gallery-container {
-            margin-top: 2rem;
+            margin-top: 1rem;
         }
-        
+
+        .gallery-jump-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            padding: 1rem;
+            background: var(--bg-secondary, #f7fafc);
+            border: 1px solid var(--border-light, #e2e8f0);
+            border-radius: 8px;
+        }
+
+        .gallery-jump-nav a {
+            color: var(--accent-blue, #2b6cb0);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .gallery-jump-nav a:hover {
+            background: #fff;
+            border-color: var(--accent-blue, #2b6cb0);
+            color: var(--primary-navy, #1a365d);
+        }
+
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.75rem;
+            margin-top: 0.5rem;
         }
-        
+
         .gallery-item {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: var(--bg-primary, #fff);
+            border: 1px solid var(--border-light, #e2e8f0);
+            border-radius: 10px;
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            scroll-margin-top: 100px;
+            display: flex;
+            flex-direction: column;
         }
-        
+
         .gallery-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            border-color: var(--accent-blue, #2b6cb0);
         }
-        
+
         .gallery-item .gallery-header {
-            margin-bottom: 1rem;
+            margin-bottom: 0.85rem;
         }
-        
-        .gallery-title {
-            font-size: 1.5rem;
-            color: var(--primary-color);
+
+        .gallery-category {
+            display: inline-block;
+            background: var(--accent-gold, #d69e2e);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
             margin-bottom: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .gallery-title {
+            font-size: 1.25rem;
+            color: var(--primary-navy, #1a365d);
+            margin-bottom: 0.4rem;
             font-weight: 600;
+            line-height: 1.35;
         }
-        
+
         .gallery-description {
-            color: var(--text-secondary);
+            color: var(--text-secondary, #4a5568);
             line-height: 1.6;
-            margin-bottom: 1rem;
+            margin-bottom: 0;
+            font-size: 0.95rem;
         }
-        
+
         .gallery-images {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            margin-top: 1rem;
         }
-        
+
+        .gallery-image-link {
+            display: block;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-light, #e2e8f0);
+            background: var(--bg-secondary, #f7fafc);
+        }
+
         .gallery-image {
             width: 100%;
-            height: 200px;
+            height: 240px;
             object-fit: cover;
-            border-radius: 8px;
+            display: block;
             transition: transform 0.3s ease;
         }
-        
-        .gallery-image:hover {
-            transform: scale(1.05);
-        }
-        
-        .single-image {
-            grid-column: 1 / -1;
-        }
-        
 
-        
+        .gallery-image.contain {
+            object-fit: contain;
+            background: #f8fafc;
+            height: 280px;
+        }
+
+        .gallery-image-link:hover .gallery-image {
+            transform: scale(1.03);
+        }
+
+        .gallery-caption {
+            margin-top: 0.65rem;
+            font-size: 0.85rem;
+            color: var(--text-muted, #718096);
+            font-style: italic;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(15, 23, 42, 0.88);
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: min(1100px, 95vw);
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.25rem;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
         @media (max-width: 768px) {
             .gallery-grid {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+                gap: 1.25rem;
             }
-            
-            .gallery-images {
-                grid-template-columns: 1fr;
+
+            .gallery-image,
+            .gallery-image.contain {
+                height: 220px;
             }
         }
     </style>
-
-
+</head>
+<body>
     <!-- Fixed Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -119,24 +217,106 @@
                 <div class="content-card">
                     <div class="page-header">
                         <h2 class="section-title">Gallery</h2>
-                        <p class="section-subtitle">Explore my work, projects, and experiences through this visual collection.</p>
+                        <p class="section-subtitle">Moments from paper presentations, competitions, ceremonies, and research milestones.</p>
                     </div>
-                    
+
                     <div class="gallery-container">
-        
+                        <nav class="gallery-jump-nav" aria-label="Gallery sections">
+                            <a href="#presenting-papers">Presenting Papers</a>
+                            <a href="#thesis-defence">Thesis Defence</a>
+                            <a href="#datathon">Datathon</a>
+                            <a href="#certificate-appreciation">Certificate of Appreciation</a>
+                            <a href="#online-presentation">Online Presentation</a>
+                        </nav>
 
-        
-        <div class="gallery-grid"><!-- New Gallery Item -->
+                        <div class="gallery-grid">
 
-            <!-- Sample Gallery Item -->
-            
-            
-            <!-- Gallery items will be added here by the admin panel -->
+                            <!-- Presenting Papers -->
+                            <article class="gallery-item" id="presenting-papers">
+                                <div class="gallery-header">
+                                    <span class="gallery-category">Conference</span>
+                                    <h3 class="gallery-title">Presenting Papers</h3>
+                                    <p class="gallery-description">Presenting research at ICCIT — discussing problem statements and findings in multilingual hate speech and slang detection with LLMs and hybrid transformers.</p>
+                                </div>
+                                <div class="gallery-images">
+                                    <a href="public/gallery/presenting-paper-iccit.png" class="gallery-image-link" data-lightbox>
+                                        <img src="public/gallery/presenting-paper-iccit.png" alt="Presenting a research paper at ICCIT conference" class="gallery-image">
+                                    </a>
+                                    <p class="gallery-caption">Technical session presentation at ICCIT, Long Beach Hotel, Cox’s Bazar</p>
+                                </div>
+                            </article>
+
+                            <!-- Closing Ceremony / Thesis Defence -->
+                            <article class="gallery-item" id="thesis-defence">
+                                <div class="gallery-header">
+                                    <span class="gallery-category">Ceremony</span>
+                                    <h3 class="gallery-title">Closing Ceremony — Undergraduate Thesis Defence</h3>
+                                    <p class="gallery-description">Moments from the closing ceremony after the undergraduate thesis defence, receiving recognition for completed research work.</p>
+                                </div>
+                                <div class="gallery-images">
+                                    <a href="public/gallery/thesis-defence-closing-ceremony.png" class="gallery-image-link" data-lightbox>
+                                        <img src="public/gallery/thesis-defence-closing-ceremony.png" alt="Closing ceremony of undergraduate thesis defence" class="gallery-image">
+                                    </a>
+                                    <p class="gallery-caption">Certificate and appreciation gift at the thesis defence closing ceremony</p>
+                                </div>
+                            </article>
+
+                            <!-- Datathon Competition -->
+                            <article class="gallery-item" id="datathon">
+                                <div class="gallery-header">
+                                    <span class="gallery-category">Competition</span>
+                                    <h3 class="gallery-title">Datathon Competition</h3>
+                                    <p class="gallery-description">Team collaboration at Robi Datathon 3.0 — finalist round at Robi Headquarters, Dhaka, working through data science challenges together.</p>
+                                </div>
+                                <div class="gallery-images">
+                                    <a href="public/gallery/robi-datathon-3.png" class="gallery-image-link" data-lightbox>
+                                        <img src="public/gallery/robi-datathon-3.png" alt="Team at Robi Datathon 3.0 competition" class="gallery-image">
+                                    </a>
+                                    <p class="gallery-caption">Robi Datathon 3.0 — team working on-site during the competition</p>
+                                </div>
+                            </article>
+
+                            <!-- Certificate of Appreciation -->
+                            <article class="gallery-item" id="certificate-appreciation">
+                                <div class="gallery-header">
+                                    <span class="gallery-category">Recognition</span>
+                                    <h3 class="gallery-title">Certificate of Appreciation</h3>
+                                    <p class="gallery-description">Certificate of Appreciation from Young Learners’ Research Lab (YLRL), RUET, for dedication and achievement in research activities (June 2023 – June 2025) as an executive member and lab alumni.</p>
+                                </div>
+                                <div class="gallery-images">
+                                    <a href="public/gallery/ylrl-certificate-of-appreciation.png" class="gallery-image-link" data-lightbox>
+                                        <img src="public/gallery/ylrl-certificate-of-appreciation.png" alt="YLRL Certificate of Appreciation for Md Minhazul Islam" class="gallery-image contain">
+                                    </a>
+                                    <p class="gallery-caption">Issued by Md. Azmain Yakin Srizon, Lab Head, Young Learners’ Research Lab</p>
+                                </div>
+                            </article>
+
+                            <!-- Online Paper Presentation -->
+                            <article class="gallery-item" id="online-presentation">
+                                <div class="gallery-header">
+                                    <span class="gallery-category">Virtual Event</span>
+                                    <h3 class="gallery-title">Online Paper Presentation</h3>
+                                    <p class="gallery-description">Participating in an online paper presentation session with IEEE Bangladesh Section and academic peers via Zoom.</p>
+                                </div>
+                                <div class="gallery-images">
+                                    <a href="public/gallery/online-paper-presentation.png" class="gallery-image-link" data-lightbox>
+                                        <img src="public/gallery/online-paper-presentation.png" alt="Online paper presentation on Zoom with IEEE Bangladesh Section" class="gallery-image">
+                                    </a>
+                                    <p class="gallery-caption">Virtual presentation session — December 2024</p>
+                                </div>
+                            </article>
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div></main>
+    </main>
+
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+        <img src="" alt="Gallery preview" id="lightboxImage">
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
@@ -147,7 +327,7 @@
                     <span class="footer-title">Md Minhazul Islam</span>
                 </div>
                 <p class="footer-description">
-                    Advancing the understanding of human communication through computational analysis of literature and social media.
+                    Advancing AI research in NLP, multimodal learning, and agentic systems.
                 </p>
                 <div class="footer-links">
                     <a href="publications.html">Publications</a>
@@ -157,11 +337,42 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2025 Md Minhazul Islam. All rights reserved.</p>
+                <p>© 2026 Md Minhazul Islam. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        (function () {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const closeBtn = document.getElementById('lightboxClose');
 
- 
+            document.querySelectorAll('[data-lightbox]').forEach(function (link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    lightboxImage.src = link.getAttribute('href');
+                    lightboxImage.alt = link.querySelector('img')?.alt || 'Gallery preview';
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                lightboxImage.src = '';
+                document.body.style.overflow = '';
+            }
+
+            closeBtn.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', function (e) {
+                if (e.target === lightbox) closeLightbox();
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeLightbox();
+            });
+        })();
+    </script>
+</body>
+</html>

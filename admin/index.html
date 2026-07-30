@@ -130,22 +130,26 @@
                 <!-- Publication Form -->
                 <form class="content-form" id="publicationForm" style="display: none;">
                     <div class="form-group">
+                        <label for="pubSection">Publication Section *</label>
+                        <select id="pubSection" name="section" required>
+                            <option value="">Select Section</option>
+                            <option value="journal">Journal Papers</option>
+                            <option value="under-review">Under Review</option>
+                            <option value="conference">Conference Papers</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="pubTitle">Publication Title *</label>
                         <input type="text" id="pubTitle" name="title" required>
                     </div>
                     <div class="form-group">
-                        <label for="pubStatus">Status *</label>
-                        <select id="pubStatus" name="status" required>
-                            <option value="">Select Status</option>
-                            <option value="Accepted - ICCIT 2023">Accepted - ICCIT 2023</option>
-                            <option value="Accepted - ICISET 2024">Accepted - ICISET 2024</option>
-                            <option value="Accepted - STI 2024">Accepted - STI 2024</option>
-                            <option value="Accepted - ICCIT 2024">Accepted - ICCIT 2024</option>
-                            <option value="Accepted - Data in Brief">Accepted - Data in Brief</option>
-                            <option value="Submitted">Submitted</option>
-                            <option value="Under Review">Under Review</option>
-                            <option value="In Progress">In Progress</option>
-                        </select>
+                        <label for="pubStatus">Status Badge *</label>
+                        <input type="text" id="pubStatus" name="status" placeholder="e.g., ICCIT 2025, Under Review, Data in Brief (Elsevier)" required>
+                        <small class="form-help">Shown on the gold/colored badge next to the title.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="pubVenue">Venue / Journal / Conference</label>
+                        <input type="text" id="pubVenue" name="venue" placeholder="e.g., Information Processing & Management">
                     </div>
                     <div class="form-group">
                         <label for="pubAuthors">Authors *</label>
@@ -156,8 +160,16 @@
                         <textarea id="pubDescription" name="description" rows="4" placeholder="Brief description of the publication..." required></textarea>
                     </div>
                     <div class="form-group">
+                        <label for="pubTags">Tags</label>
+                        <input type="text" id="pubTags" name="tags" placeholder="e.g., Multimodal, NLP, Dataset (comma-separated)">
+                    </div>
+                    <div class="form-group">
                         <label for="pubLink">Publication Link</label>
                         <input type="url" id="pubLink" name="link" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label for="pubLinkText">Link Text</label>
+                        <input type="text" id="pubLinkText" name="linkText" placeholder="View Paper →" value="View Paper →">
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="submit-btn">Add Publication</button>
@@ -206,8 +218,8 @@
                         <input type="text" id="awardTitle" name="title" required>
                     </div>
                     <div class="form-group">
-                        <label for="awardYear">Year *</label>
-                        <input type="number" id="awardYear" name="year" min="2010" max="2030" value="2024" required>
+                        <label for="awardYear">Year / Date *</label>
+                        <input type="text" id="awardYear" name="year" placeholder="e.g., 2024 or May 2024" required>
                     </div>
                     <div class="form-group">
                         <label for="awardOrganization">Organization *</label>
@@ -230,18 +242,20 @@
                 <!-- Project Form -->
                 <form class="content-form" id="projectForm" style="display: none;">
                     <div class="form-group">
+                        <label for="projectType">Project Section *</label>
+                        <select id="projectType" name="type" required>
+                            <option value="">Select Section</option>
+                            <option value="research">Research Projects</option>
+                            <option value="application">Application Projects</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="projectTitle">Project Title *</label>
                         <input type="text" id="projectTitle" name="title" required>
                     </div>
                     <div class="form-group">
-                        <label for="projectType">Project Type *</label>
-                        <select id="projectType" name="type" required>
-                            <option value="">Select Type</option>
-                            <option value="research">Research Project</option>
-                            <option value="thesis">Thesis/Dissertation</option>
-                            <option value="competition">Competition</option>
-                            <option value="collaboration">Collaboration</option>
-                        </select>
+                        <label for="projectYear">Year / Label</label>
+                        <input type="text" id="projectYear" name="year" placeholder="e.g., 2025, 2024 – Present, Web Application">
                     </div>
                     <div class="form-group">
                         <label for="projectDescription">Description *</label>
@@ -250,6 +264,10 @@
                     <div class="form-group">
                         <label for="projectTechnologies">Technologies Used</label>
                         <input type="text" id="projectTechnologies" name="technologies" placeholder="e.g., Python, TensorFlow, BERT, NLP">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectTags">Tags</label>
+                        <input type="text" id="projectTags" name="tags" placeholder="e.g., NLP, Multimodal, Thesis (comma-separated)">
                     </div>
                     <div class="form-group">
                         <label for="projectLink">Project Link</label>
@@ -263,6 +281,15 @@
 
                 <!-- Teaching Form -->
                 <form class="content-form" id="teachingForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="teachingSection">Section *</label>
+                        <select id="teachingSection" name="section" required>
+                            <option value="">Select Section</option>
+                            <option value="teaching">Teaching</option>
+                            <option value="mentoring">Mentoring</option>
+                            <option value="community-service">Community Service</option>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label for="teachingTitle">Position/Activity Title *</label>
                         <input type="text" id="teachingTitle" name="title" required>
@@ -288,6 +315,10 @@
                     <div class="form-group">
                         <label for="teachingDescription">Description *</label>
                         <textarea id="teachingDescription" name="description" rows="4" placeholder="Describe your teaching or service activities..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="teachingTags">Tags</label>
+                        <input type="text" id="teachingTags" name="tags" placeholder="e.g., ICT, Mentorship, Community (comma-separated)">
                     </div>
                     <div class="form-group">
                         <label for="teachingLink">Organization Link</label>
@@ -326,12 +357,28 @@
                 <!-- Gallery Form -->
                 <form class="content-form" id="galleryForm" style="display: none;">
                     <div class="form-group">
+                        <label for="galleryCategory">Category Badge *</label>
+                        <select id="galleryCategory" name="category" required>
+                            <option value="">Select Category</option>
+                            <option value="Conference">Conference</option>
+                            <option value="Ceremony">Ceremony</option>
+                            <option value="Competition">Competition</option>
+                            <option value="Recognition">Recognition</option>
+                            <option value="Virtual Event">Virtual Event</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="galleryTitle">Gallery Title *</label>
                         <input type="text" id="galleryTitle" name="title" required>
                     </div>
                     <div class="form-group">
                         <label for="galleryDescription">Description *</label>
                         <textarea id="galleryDescription" name="description" rows="3" placeholder="Brief description of the gallery..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="galleryCaption">Image Caption</label>
+                        <input type="text" id="galleryCaption" name="caption" placeholder="Optional caption under the image">
                     </div>
                     <div class="form-group">
                         <label>Image Upload Method</label>
@@ -348,8 +395,8 @@
                     </div>
                     <div class="form-group" id="urlInputGroup">
                         <label for="galleryImages">Image URLs *</label>
-                        <textarea id="galleryImages" name="images" rows="4" placeholder="Enter image URLs, one per line. Example:&#10;https://example.com/image1.jpg&#10;https://example.com/image2.jpg&#10;https://example.com/image3.jpg"></textarea>
-                        <small class="form-help">Enter one image URL per line. For multiple images, each URL should be on a separate line.</small>
+                        <textarea id="galleryImages" name="images" rows="4" placeholder="Enter image URLs, one per line. Example:&#10;public/gallery/photo.png&#10;https://example.com/image.jpg"></textarea>
+                        <small class="form-help">Prefer paths like public/gallery/your-image.png. One URL per line.</small>
                     </div>
                     <div class="form-group" id="fileInputGroup" style="display: none;">
                         <label for="galleryFileInput">Upload Images *</label>
@@ -394,11 +441,11 @@
                 <div class="code-instructions">
                     <h3>Instructions:</h3>
                     <ol>
-                        <li>Copy the generated HTML code above</li>
-                        <li>Open the corresponding HTML file (e.g., publications.html for publications)</li>
-                        <li>Find the appropriate section (e.g., &lt;div class="publications-content"&gt;)</li>
-                        <li>Paste the new content at the beginning of the section</li>
-                        <li>Save the file and refresh your website</li>
+                        <li>Content is saved automatically when you click Add.</li>
+                        <li>Publications go into Journal / Under Review / Conference sections.</li>
+                        <li>Projects go into Research or Application sections.</li>
+                        <li>Teaching goes into Teaching / Mentoring / Community Service.</li>
+                        <li>Refresh the website page to see changes.</li>
                     </ol>
                 </div>
             </section>

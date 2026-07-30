@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects - Md Minhazul Islam</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -41,41 +41,129 @@
             <div class="page-content">
                 <div class="content-card">
                     <div class="page-header">
-                        <h2 class="section-title">Research Interests & Projects</h2>
+                        <h2 class="section-title">Research Interests &amp; Projects</h2>
+                        <p class="section-subtitle">Research-driven work and applied systems across NLP, multimodal AI, and software</p>
                     </div>
-                    
+
                     <div class="projects-content">
                         <div class="research-interests">
                             <h3>Research Interests</h3>
-                            <ul>
-                                <li>Natural Language Processing (NLP) and Computational Linguistics, focusing on language understanding, text classification, and context-aware models.</li>
-                                <li>Medical Text Analysis and Healthcare Informatics, leveraging AI to improve clinical decision-making and patient data analytics.</li>
-                                <li>Multimodal Learning and Contextual Embeddings, integrating diverse data types like images, text, and signals for richer AI applications.</li>
-                                <li>Explainable AI and Model Interpretability, ensuring transparency and trustworthiness in AI-driven systems and predictive models.</li>
-                                <li>Topic Modeling, Semantic Search, and Representation Learning for uncovering hidden patterns and enhancing information retrieval.</li>
-                                <li>Bengali Linguistics and Low-Resource Language Processing, addressing challenges in underrepresented languages through computational approaches.</li>
+                            <ul class="interest-list">
+                                <li>Natural Language Processing, Computational Linguistics, and Low-Resource Language Processing</li>
+                                <li>Agentic AI systems with Retrieval-Augmented Generation (RAG)</li>
+                                <li>Medical Text Analysis, Healthcare Informatics, and Semantic Search</li>
+                                <li>Large Language Models, Multimodal Learning, and Contextual Embeddings</li>
+                                <li>Explainable AI, Model Interpretability, and Topic Modeling</li>
                             </ul>
                         </div>
 
-                        <div class="projects-list">
-                            <h3>Projects</h3>
-                            <div class="project-item">
-                                <h4>Contextual Sarcasm Detection (Undergraduate Thesis)</h4>
-                                <p>Developed an encoder-encoder cross-attention model for detecting contextual sarcasm. Combined CLIP for image encoding and mBERT for text processing, achieving 95% accuracy. Currently refining a custom multimodal architecture for enhanced performance.</p>
+                        <nav class="pub-jump-nav" aria-label="Project sections">
+                            <a href="#research-projects">Research Projects</a>
+                            <a href="#application-projects">Application Projects</a>
+                        </nav>
+
+                        <!-- Research Projects -->
+                        <section class="pub-section" id="research-projects">
+                            <div class="pub-section-header">
+                                <h3 class="pub-section-title">Research Projects</h3>
+                                <span class="pub-section-count">4 projects</span>
                             </div>
+
                             <div class="project-item">
-                                <h4>Clickbait Content Detection</h4>
-                                <p>Built a tool to detect clickbait on social media using multimodal analysis. Integrated CLIP and mBERT models, achieving 95% accuracy in initial evaluations. Currently extending the dataset and refining model reliability.</p>
+                                <div class="project-header">
+                                    <h4>Contextual Sarcasm Detection</h4>
+                                    <span class="project-year">Undergraduate Thesis · 2025</span>
+                                </div>
+                                <p class="project-description">Developed an encoder–encoder cross-attention model for contextual sarcasm detection in social media conversations, jointly modeling comments and their parent context. Introduced sarcasm-adaptive pretraining strategies to capture subtle linguistic incongruities, with strong results on political sarcasm benchmarks. Extended into a journal manuscript currently under review.</p>
+                                <p class="project-technologies"><strong>Technologies:</strong> Python, PyTorch, Transformers, ELECTRA, Cross-Attention</p>
+                                <div class="publication-meta">
+                                    <span class="publication-tag">NLP</span>
+                                    <span class="publication-tag">Sarcasm</span>
+                                    <span class="publication-tag">Thesis</span>
+                                </div>
                             </div>
+
                             <div class="project-item">
-                                <h4>Medical Triage Classification</h4>
-                                <p>Developed a BERT-based model for classifying medical triage notes. Implemented regex and medical dictionaries for preprocessing and achieved 83% accuracy. Also explored multimodal and EDBERT-based enhancements for improved classification.</p>
+                                <div class="project-header">
+                                    <h4>Clickbait Content Detection</h4>
+                                    <span class="project-year">2024 – Present</span>
+                                </div>
+                                <p class="project-description">Built a multimodal (text + image) system for YouTube clickbait detection by combining language embeddings with CLIP visual features and incongruence-aware fusion. Extended into the YTClickbait21K dataset and ICFNet framework, with multimodal LLM comparison and explainability analysis. Related manuscripts are under review at Scientific Data and Information Processing &amp; Management.</p>
+                                <p class="project-technologies"><strong>Technologies:</strong> Python, PyTorch, CLIP, RoBERTa, ConvNeXtV2, Multimodal RAG / VLMs</p>
+                                <div class="publication-meta">
+                                    <span class="publication-tag">Multimodal</span>
+                                    <span class="publication-tag">Clickbait</span>
+                                    <span class="publication-tag">Dataset</span>
+                                </div>
                             </div>
+
                             <div class="project-item">
-                                <h4>US Election Data Analysis</h4>
-                                <p>Analyzed Twitter posts using topic modeling, BERT-based semantic search, and GraphRAG. Clustered embeddings with t-SNE and HDBSCAN for extracting election-related insights. Proposed an alternative to traditional exit polls, with ongoing evaluation.</p>
+                                <div class="project-header">
+                                    <h4>Medical Triage Classification</h4>
+                                    <span class="project-year">2024 – 2025</span>
+                                </div>
+                                <p class="project-description">Developed a BERT-based hybrid model that combines free-text triage notes with numeric clinical features to classify cases as critical, urgent, or non-urgent. Integrated regex and medical dictionaries for rare terminology handling, achieving 83% accuracy as a foundation for AI-assisted clinical decision support.</p>
+                                <p class="project-technologies"><strong>Technologies:</strong> Python, Custom BERT, Regex, Medical Dictionaries, Scikit-learn</p>
+                                <div class="publication-meta">
+                                    <span class="publication-tag">Medical NLP</span>
+                                    <span class="publication-tag">Healthcare AI</span>
+                                    <span class="publication-tag">Classification</span>
+                                </div>
                             </div>
-                        </div>
+
+                            <div class="project-item">
+                                <div class="project-header">
+                                    <h4>US Election 2024 Data Analysis</h4>
+                                    <span class="project-year">2025</span>
+                                </div>
+                                <p class="project-description">Analyzed election-related Twitter data with semantic search, topic modeling, and GraphRAG. Clustered embeddings using t-SNE and HDBSCAN to surface communities, influence patterns, and misinformation signals—exploring NLP and graph-based AI as an alternative lens to traditional polling.</p>
+                                <p class="project-technologies"><strong>Technologies:</strong> Python, LLMs, GraphRAG, t-SNE, HDBSCAN, Semantic Search</p>
+                                <div class="publication-meta">
+                                    <span class="publication-tag">Topic Modeling</span>
+                                    <span class="publication-tag">GraphRAG</span>
+                                    <span class="publication-tag">Social Media</span>
+                                </div>
+                                <a href="https://github.com/kowshik24/us-election-2024" target="_blank" class="project-link">View Project →</a>
+                            </div>
+                        </section>
+
+                        <!-- Application Projects -->
+                        <section class="pub-section" id="application-projects">
+                            <div class="pub-section-header">
+                                <h3 class="pub-section-title">Application Projects</h3>
+                                <span class="pub-section-count">3 projects</span>
+                            </div>
+
+                            <div class="project-item">
+                                <div class="project-header">
+                                    <h4>Internship Tracking System</h4>
+                                    <span class="project-year">Web Application</span>
+                                </div>
+                                <p class="project-description">A centralized internship management platform for organizations and academic institutions to track internship records, monitor student progress, and coordinate communication among students, coordinators, and host organizations.</p>
+                                <p class="project-technologies"><strong>Technologies:</strong> Python, HTML, CSS, JavaScript, Database Management, Backend Frameworks</p>
+                                <a href="https://github.com/minhazulruet/Internship-tracking-Demo" target="_blank" class="project-link">View Project →</a>
+                            </div>
+
+                            <div class="project-item">
+                                <div class="project-header">
+                                    <h4>Vocab App</h4>
+                                    <span class="project-year">Mobile Learning</span>
+                                </div>
+                                <p class="project-description">A vocabulary learning application that helps users organize words, practice meanings, and improve retention through an interactive, learner-friendly interface focused on personalized language practice.</p>
+                                <p class="project-technologies"><strong>Technologies:</strong> Mobile App Development, UI/UX Design, Database Management</p>
+                                <a href="https://github.com/minhazulruet/Vocab-App" target="_blank" class="project-link">View Project →</a>
+                            </div>
+
+                            <div class="project-item">
+                                <div class="project-header">
+                                    <h4>AI Chatbot</h4>
+                                    <span class="project-year">Conversational AI</span>
+                                </div>
+                                <p class="project-description">An AI chatbot that understands user queries and generates context-aware responses using NLP and transformer-based models, demonstrating dialogue handling and response generation for automated conversational agents.</p>
+                                <p class="project-technologies"><strong>Technologies:</strong> Python, NLP, Machine Learning, Deep Learning, Transformers, LLMs</p>
+                                <a href="https://github.com/minhazulruet/AI-Chatbot" target="_blank" class="project-link">View Project →</a>
+                            </div>
+                        </section>
                     </div>
                 </div>
             </div>
@@ -91,7 +179,7 @@
                     <span class="footer-title">Md Minhazul Islam</span>
                 </div>
                 <p class="footer-description">
-                    Advancing the understanding of human communication through computational analysis of literature and social media.
+                    Advancing AI research in NLP, multimodal learning, and agentic systems.
                 </p>
                 <div class="footer-links">
                     <a href="publications.html">Publications</a>
@@ -101,11 +189,11 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Md Minhazul Islam. All rights reserved.</p>
+                <p>© 2026 Md Minhazul Islam. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
 </body>
-</html> 
+</html>

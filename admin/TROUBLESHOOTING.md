@@ -68,13 +68,21 @@
 
 For the admin panel to work correctly, ensure these files exist with the correct structure:
 
-- `gallery.html` - Must contain `<div class="gallery-grid">` and `<div class="gallery-item">` elements
-- `publications.html` - Must contain `.publications-content` and `.publication-item` elements
-- `experiences.html` - Must contain `.experiences-content` and `.experience-item` elements
-- `awards.html` - Must contain `.awards-content` and `.award-item` elements
-- `projects.html` - Must contain `.projects-list` and `.project-item` elements
-- `teaching.html` - Must contain `.teaching-content` and `.teaching-item` elements
-- `index.html` - Must contain `.news-grid` and `.news-item` elements for events
+- `gallery.html` — `.gallery-grid` and `article.gallery-item` (with optional `.gallery-category`)
+- `publications.html` — `#journal-papers`, `#under-review`, `#conference-papers` and `.publication-item`
+- `experiences.html` — `.experiences-content` and `.experience-item`
+- `awards.html` — `.awards-content` and `.award-item`
+- `projects.html` — `#research-projects`, `#application-projects` and `.project-item`
+- `teaching.html` — `#teaching`, `#mentoring`, `#community-service` and `.teaching-item`
+- `index.html` — `.news-grid` and `.news-item` for events
+
+### Issue: "Could not find .projects-list section"
+**Cause**: Old admin expected `.projects-list` (removed in the redesign).
+**Solution**: ✅ Fixed — admin now uses `#research-projects` / `#application-projects`.
+
+### Issue: Publication added above all section headers
+**Cause**: Old admin prepended into `.publications-content` only.
+**Solution**: ✅ Fixed — choose Journal / Under Review / Conference; item is inserted into that section.
 
 ## Success Messages
 

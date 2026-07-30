@@ -1,10 +1,11 @@
 {
-    "aboutMe": {
-        "description": "Md Minhazul Islam currently pursuing his BSc in Computer Science and Engineering at Rajshahi University of Engineering and Technology. His research interests encompass a broad spectrum, including Natural Language Processing, Digital Humanities, Computational Linguistics, Signal Processing and machine learning. Prior to his educational experience, he worked as a Research Assistant under the supervision of [Md. Harun Or Rashid](https://www.ruet.ac.bd/harunmr9), [Md Azmain Yakin Srizon](https://www.ruet.ac.bd/azmainsrizon) and some other teachers.",
-        "quickPreviews": [
-            "**Research Assistant:** Under supervision of **[Md. Harun Or Rashid](https://www.ruet.ac.bd/harunmr9)**",
-            "**Research Assistant:** Under supervision of **[Md. Azmain Yakin Srizon](https://www.ruet.ac.bd/azmainsrizon)**",
-            "**Contributor:** At **Young Learner Research Lab**"
-        ]
-    }
+  "aboutMe": {
+    "description": "Md Minhazul Islam recently completed his BSc in Computer Science and Engineering at Rajshahi University of Engineering and Technology (CGPA 3.42/4.00) and currently works as a remote Research Assistant at Qatar University. His research interests center on large language models (LLMs), multimodal analysis, agentic AI, retrieval-augmented generation (RAG), privacy-preserving machine learning, natural language processing, and medical text analysis. He previously worked as an AI Engineer at Makebell Ltd and as a Junior Research Scientist at GPHRF, and conducted research under the supervision of [Md. Harun Or Rashid](https://www.ruet.ac.bd/harunmr9) and [Md Azmain Yakin Srizon](https://www.ruet.ac.bd/azmainsrizon).",
+    "quickPreviews": [
+      "**Research Assistant:** Qatar University (Mar 2026 – Present)",
+      "**Junior Research Scientist:** Global Public Health Research Foundation (Jan–May 2026)",
+      "**AI Engineer:** Makebell Ltd (Jun–Sep 2025)",
+      "**Research Assistant:** Young Learners Research Lab & Computational Linguistics Research Lab"
+    ]
+  }
 }

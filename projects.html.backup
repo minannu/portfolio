@@ -1,0 +1,123 @@
+
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Md Minhazul Islam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+
+    <!-- Fixed Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="nav-logo">M</span>
+                <span class="nav-title">Md Minhazul Islam</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="publications.html" class="nav-link">Publications</a>
+                <a href="experiences.html" class="nav-link">Experiences</a>
+                <a href="awards.html" class="nav-link">Awards</a>
+                <a href="projects.html" class="nav-link active">Projects</a>
+                <a href="teaching.html" class="nav-link">Teaching</a>
+                <a href="gallery.html" class="nav-link">Gallery</a>
+                <a href="cv.html" class="nav-link">CV</a>
+            </div>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="page-content">
+                <div class="content-card">
+                    <div class="page-header">
+                        <h2 class="section-title">Research Interests &amp; Projects</h2>
+                    </div>
+                    
+                    <div class="projects-content">
+                        <div class="research-interests">
+                            <h3>Research Interests</h3>
+                            <ul>
+                                <li>Natural Language Processing (NLP) and Computational Linguistics, focusing on language understanding, text classification, and context-aware models.</li>
+                                <li>Medical Text Analysis and Healthcare Informatics, leveraging AI to improve clinical decision-making and patient data analytics.</li>
+                                <li>Multimodal Learning and Contextual Embeddings, integrating diverse data types like images, text, and signals for richer AI applications.</li>
+                                <li>Explainable AI and Model Interpretability, ensuring transparency and trustworthiness in AI-driven systems and predictive models.</li>
+                                <li>Topic Modeling, Semantic Search, and Representation Learning for uncovering hidden patterns and enhancing information retrieval.</li>
+                                <li>Bengali Linguistics and Low-Resource Language Processing, addressing challenges in underrepresented languages through computational approaches.</li>
+                            </ul>
+                        </div>
+
+                        <div class="projects-list"><!-- New Project -->
+<div class="project-item">
+    <h4>Vocab App</h4>
+    <p>Developed a vocabulary learning application designed to help users improve their language skills through interactive learning features. The app provides an organized platform for managing vocabulary, practicing word meanings, and enhancing retention through a user-friendly interface. The project focuses on improving personalized learning experiences by combining mobile application development with educational tools for efficient vocabulary building.</p>
+    <p class="project-technologies"><strong>Technologies:</strong> Mobile App Development, UI/UX Design, Database Management</p>
+    <a href="https://github.com/minhazulruet/Vocab-App" target="_blank" class="project-link">View Project →</a>
+</div><!-- New Project -->
+<div class="project-item">
+    <h4>AI Chatbot</h4>
+    <p>Developed an AI-powered chatbot system capable of understanding user queries and generating context-aware responses using natural language processing techniques. The project implements conversational AI capabilities with a focus on intelligent dialogue handling, response generation, and user interaction. It demonstrates the application of machine learning and NLP techniques for building automated conversational agents.</p>
+    <p class="project-technologies"><strong>Technologies:</strong> Python, Natural Language Processing (NLP), Machine Learning, Deep Learning, Transformers, Large Language Models (LLMs), Chatbot Frameworks</p>
+    <a href="https://github.com/minhazulruet/AI-Chatbot" target="_blank" class="project-link">View Project →</a>
+</div>
+                            <h3>Projects</h3>
+                            <div class="project-item">
+                                <h4>Contextual Sarcasm Detection (Undergraduate Thesis)</h4>
+                                <p>Developed an encoder-encoder cross-attention model for detecting contextual sarcasm. Combined CLIP for image encoding and mBERT for text processing, achieving 95% accuracy. Currently refining a custom multimodal architecture for enhanced performance.</p>
+                            </div>
+                            <div class="project-item">
+                                <h4>Clickbait Content Detection</h4>
+                                <p>Built a tool to detect clickbait on social media using multimodal analysis. Integrated CLIP and mBERT models, achieving 95% accuracy in initial evaluations. Currently extending the dataset and refining model reliability.</p>
+                            </div>
+                            <div class="project-item">
+                                <h4>Medical Triage Classification</h4>
+                                <p>Developed a BERT-based model for classifying medical triage notes. Implemented regex and medical dictionaries for preprocessing and achieved 83% accuracy. Also explored multimodal and EDBERT-based enhancements for improved classification.</p>
+                            </div>
+                            <div class="project-item">
+                                <h4>US Election Data Analysis</h4>
+                                <p>Analyzed Twitter posts using topic modeling, BERT-based semantic search, and GraphRAG. Clustered embeddings with t-SNE and HDBSCAN for extracting election-related insights. Proposed an alternative to traditional exit polls, with ongoing evaluation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo">M</span>
+                    <span class="footer-title">Md Minhazul Islam</span>
+                </div>
+                <p class="footer-description">
+                    Advancing the understanding of human communication through computational analysis of literature and social media.
+                </p>
+                <div class="footer-links">
+                    <a href="publications.html">Publications</a>
+                    <a href="projects.html">Projects</a>
+                    <a href="cv.html">CV</a>
+                    <a href="mailto:minannu2001@gmail.com">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Md Minhazul Islam. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+ 

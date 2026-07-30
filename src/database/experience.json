@@ -1,36 +1,58 @@
 {
-    "experiences": [
-      {
-        "title": "Research Assistant",
-        "company": "[Young Learners Research Lab](https://web.facebook.com/aysrizon.ylrl)",
-        "duration": "Jan 2023 - Present",
-        "description": "Conducting research on NLP and deep learning, with a focus on improving model efficiency and explainability. Primarily working with Bengali data, an underexplored domain, alongside English datasets. Published multiple conference and journal articles, with ongoing research in progress."
-      },
-      {
-        "title": "Research Assistant",
-        "company": "Computational Linguistics Research Lab",
-        "duration": "June 2023 - Present",
-        "description": "Conducting research in computational linguistics, focusing on word embeddings in literary texts, contextual embeddings, topic modeling, and stylometric analysis of writers. Projects include analyzing American slave narratives, exploring linguistic patterns, and advancing NLP techniques for literary research."
-      },
-
-      {
-        "title": "Officer Cadet",
-        "company": "Bangladesh Military Academy(BMA)",
-        "duration": " Jan 2022 - April 2022 (3 Month)",
-        "description": "I joined Bangladesh Military Academy (BMA) with 87 BMA L/C. But after 3 month of regorous training, I took self withdraw from this academy. It was very tough decesion. But I thought that I may do well in civil life and choose comfort and freedom instead of honour and dignity. I have learned a lot of lessons from that academy."
-      },
-      {
-        "title": "AI Trainer (Coding And Mathemetics)",
-        "company": "Outlier Ai",
-        "duration": "May 2024 - January 2025",
-        "description": "Trained AI models by providing high-quality data annotations, improving model performance in various tasks such as problem solving, Mathemetical Reasoning and Multimodal Image understanding."
-      },
-    
-      {        
-        "title": "Teacher",
-        "company": "HSC and SSC ",
-        "duration": "January 2020 - December 2024",
-        "description": "I have taught many students in HSC and SSC level Mathemetics, Physics and ICT"
-      }
-    ]
-  }
+  "experiences": [
+    {
+      "title": "Research Assistant",
+      "company": "Qatar University",
+      "duration": "Mar 2026 – Present",
+      "description": "Conducting research on agentic AI systems, privacy-preserving machine learning, and multimodal learning. Designing intelligent AI agents, developing multimodal models, and exploring privacy-aware techniques combining LLMs, RAG, and multimodal representation learning."
+    },
+    {
+      "title": "Junior Research Scientist",
+      "company": "Global Public Health Research Foundation (GPHRF)",
+      "duration": "Jan 2026 – May 2026",
+      "description": "Developed AI-driven approaches for early disease biomarker detection using multimodal health data from facial images and physiological signals."
+    },
+    {
+      "title": "AI Engineer",
+      "company": "Makebell Ltd",
+      "duration": "Jun 2025 – Sep 2025",
+      "description": "Developed an agentic AI-based domain-specific translation system for legal documents with RAG, prompt engineering, and LLM integration."
+    },
+    {
+      "title": "Research Assistant",
+      "company": "[Young Learners Research Lab](https://web.facebook.com/aysrizon.ylrl)",
+      "duration": "Jan 2023 – Aug 2025",
+      "description": "Conducting research on NLP and deep learning, with a focus on improving model efficiency and explainability. Primarily working with Bengali data alongside English datasets. Co-authored multiple conference and journal articles."
+    },
+    {
+      "title": "Research Assistant",
+      "company": "Computational Linguistics Research Lab",
+      "duration": "Jun 2023 – Present",
+      "description": "Conducting research in computational linguistics, focusing on word embeddings in literary texts, contextual embeddings, topic modeling, and stylometric analysis."
+    },
+    {
+      "title": "AI Trainer (Coding And Mathematics)",
+      "company": "Outlier AI",
+      "duration": "Jun 2024 – Sep 2025",
+      "description": "Trained AI models by providing high-quality data annotations for problem solving, mathematical reasoning, and multimodal image understanding."
+    },
+    {
+      "title": "ICT Instructor",
+      "company": "Talent IT and ICT",
+      "duration": "2020 – 2022",
+      "description": "Taught ICT to secondary and higher-secondary students."
+    },
+    {
+      "title": "Personal Tutor",
+      "company": "HSC and SSC",
+      "duration": "Jan 2020 – Dec 2024",
+      "description": "Tutored students in Mathematics, Physics, and ICT at the SSC and HSC levels."
+    },
+    {
+      "title": "Officer Cadet",
+      "company": "Bangladesh Military Academy (BMA)",
+      "duration": "Jan 2022 – Apr 2022",
+      "description": "Completed three months of rigorous training with 87 BMA L/C before self-withdrawing to pursue a civilian academic and research path."
+    }
+  ]
+}

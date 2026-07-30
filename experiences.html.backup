@@ -44,7 +44,23 @@
                         <h2 class="section-title">Experiences</h2>
                     </div>
                     
-                    <div class="experiences-content">
+                    <div class="experiences-content"><!-- New Experience -->
+<div class="experience-item">
+    <div class="experience-header">
+        <h3>Junior Research Scientist</h3>
+        <span class="experience-duration">2026-01 - 2026-07</span>
+    </div>
+    <p class="experience-company">Global Public Health Research Foundation(GPHRF)</p>
+    <p class="experience-description">Worked on developing AI-driven approaches for early disease biomarker detection using multimodal health data. My research focused on extracting clinically relevant biomarkers from facial images and physiological signals by leveraging computer vision, deep learning, and multimodal fusion techniques. Developed machine learning models to analyze non-invasive digital health indicators for potential disease screening and healthcare applications.</p>
+</div><!-- New Experience -->
+<div class="experience-item">
+    <div class="experience-header">
+        <h3>AI Engineer</h3>
+        <span class="experience-duration">2025-06 - 2025-09</span>
+    </div>
+    <p class="experience-company">Makebell Ltd</p>
+    <p class="experience-description">I was an AI engineer at Makebell Ltd, where my responsibility was to develop an Agentic AI-based domain-specific translation system. I gained a wealth of industry-level experience and skills, including designing large projects, team management, deployment, and effective communication. I left this job to prepare myself for higher studies.</p>
+</div>
                         <div class="experience-item">
                             <div class="experience-header">
                                 <h3>Research Assistant</h3>
@@ -74,7 +90,7 @@
 
                         <div class="experience-item">
                             <div class="experience-header">
-                                <h3>Teacher</h3>
+                                <h3>Personal Tutor</h3>
                                 <span class="experience-duration">January 2020 - December 2024</span>
                             </div>
                             <p class="experience-company">HSC and SSC</p>

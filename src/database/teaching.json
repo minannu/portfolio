@@ -1,18 +1,33 @@
 {
   "teaching": [
     {
-      "title": "Social Worker",
-      "institution": "BD Clean Bagmara, Rajshahi",
-      "duration": "2024 -- Present",
-      "link": "https://www.bdclean.org/",
-      "description": "Raised awareness on environmental conservation, cleanliness, and waste management. Participated in community events to promote health and hygiene practices."
+      "category": "teaching",
+      "title": "ICT Instructor",
+      "institution": "Talent IT and ICT, Rajshahi",
+      "duration": "2020 – 2022",
+      "description": "Taught ICT to secondary and higher-secondary students, covering foundational computing, digital literacy, and exam-oriented problem solving."
     },
     {
+      "category": "teaching",
+      "title": "Personal Tutor",
+      "institution": "HSC and SSC Level",
+      "duration": "Jan 2020 – Dec 2024",
+      "description": "Tutored students in Mathematics, Physics, and ICT for SSC and HSC examinations with individualized guidance."
+    },
+    {
+      "category": "mentoring",
       "title": "AI Research Mentor",
       "institution": "University Research Community",
-      "duration": "2023 -- Present",
-      "link": "https://www.example.com/ai-research-mentorship",
-      "description": "Mentored students in AI, ML, and data analysis, organizing knowledge-sharing sessions."
+      "duration": "2023 – Present",
+      "description": "Mentoring students in AI, ML, NLP, and data analysis through knowledge-sharing sessions on research design and paper writing."
+    },
+    {
+      "category": "community",
+      "title": "Social Worker & IT Advisor",
+      "institution": "BD Clean Bagmara, Rajshahi",
+      "duration": "2024 – Present",
+      "link": "https://www.bdclean.org/",
+      "description": "Raised awareness on environmental conservation, cleanliness, and waste management; advise on IT needs for community outreach."
     }
   ]
 }

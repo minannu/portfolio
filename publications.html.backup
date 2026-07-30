@@ -1,0 +1,202 @@
+
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publications - Md Minhazul Islam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+
+    <!-- Fixed Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="nav-logo">M</span>
+                <span class="nav-title">Md Minhazul Islam</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="publications.html" class="nav-link active">Publications</a>
+                <a href="experiences.html" class="nav-link">Experiences</a>
+                <a href="awards.html" class="nav-link">Awards</a>
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="teaching.html" class="nav-link">Teaching</a>
+                <a href="gallery.html" class="nav-link">Gallery</a>
+                <a href="cv.html" class="nav-link">CV</a>
+            </div>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="page-content">
+                <div class="content-card">
+                    <div class="page-header">
+                        <h2 class="section-title">Publications</h2>
+                    </div>
+                    
+                    <div class="publications-content"><!-- New Publication -->
+<!-- New Publication -->
+<div class="publication-item">
+    <div class="publication-header">
+        <h3>Encoder-Encoder Cross Attention Based Contextual  Sarcasm Detection (Under Review: Journal of Big  Data)</h3>
+        <span class="publication-status">Under Review</span>
+    </div>
+    <p class="publication-authors">Md. Minhazul Islam, Md Tanbeer Jubaer, Md. Azmain Yakin Srizon, Saad Aloteibi, Mohammad Ali Moni</p>
+    <p class="publication-description">This paper presents a contextual encoder–encoder cross-attention framework for sarcasm detection in social media conversations. The model jointly analyzes Reddit parent comments and replies to capture contextual dependencies and implicit sarcastic cues often missed by text-only approaches. It introduces sarcasm-adaptive ELECTRA pretraining using Replaced Token Detection on the SARC V1 dataset and fine-tunes the model across benchmark datasets. Achieving up to 83.72% accuracy, the proposed approach outperforms existing methods, while ablation studies demonstrate the importance of both cross-attention and domain-specific pretraining for robust sarcasm understanding.</p>
+    
+</div><!-- New Publication -->
+<!-- New Publication -->
+<div class="publication-item">
+    <div class="publication-header">
+        <h3>ICFNet: An Incongruence-Aware Cross-Modal  Unified Framework for YouTube Clickbait  Detection with Multimodal LLM Comparison.  (Under Review: Information Processing And  Management) </h3>
+        <span class="publication-status">Under Review</span>
+    </div>
+    <p class="publication-authors">Md. Minhazul Islam, Md. Masum Mia, Amith Khandakar, Mohamed Arselene Ayari, Md. Tajim An Noor, Muhammad Salman Khan, Hamed Noori</p>
+    <p class="publication-description">This paper introduces ICFNet, an efficient multimodal framework for YouTube clickbait detection by identifying inconsistencies between video titles and thumbnails. The model combines RoBERTa and ConvNeXtV2 representations through bidirectional cross-attention and an incongruence-aware FiLM gated classifier. Evaluated on the newly introduced YTClickbait21K dataset with 21,238 videos, ICFNet achieves 92.04% accuracy and 97.51% AUC while training only 3.02M parameters using frozen backbones. Extensive experiments, cross-dataset evaluation, retrieval-augmented LLM comparison, and explainability analysis demonstrate its effectiveness, efficiency, and interpretability for multimodal misinformation detection.</p>
+    
+</div><!-- New Publication -->
+<div class="publication-item">
+    <div class="publication-header">
+        <h3>YTClickbait21K: Human-Annotated MultimodalDataset for YouTube Clickbait Detection AcrossDiverse Channels and Content Categories</h3>
+        <span class="publication-status">Under Review</span>
+    </div>
+    <p class="publication-authors">Md. Minhazul Islam, Md. Tanbeer Jubaer, Amith Khandakar, Shovon Sarker, Sumaiya Rahman, Md. Masum Mia, Mohamed Arselene Ayari, Hamed Noori</p>
+    <p class="publication-description">YTClickbait21K: Human-Annotated Multimodal Dataset for YouTube Clickbait Detection Across Diverse Channels and Content Categories introduces a large-scale, human-annotated multimodal dataset for studying clickbait detection in online video platforms. The dataset contains 21,238 YouTube videos collected from 40 channels across 29 countries, covering diverse categories such as news, entertainment, education, and gaming. It provides aligned multimodal information, including video titles, thumbnails, metadata, and annotations, enabling research on multimodal learning for detecting misleading content. The dataset addresses limitations of existing clickbait benchmarks and supports the development of more reliable AI-based content understanding systems.</p>
+    <a href="https://arxiv.org/abs/2606.14780" target="_blank" class="publication-link">View Publication →</a>
+</div><!-- New Publication -->
+<!-- New Publication -->
+
+</div><!-- New Publication -->
+<div class="publication-item">
+    <div class="publication-header">
+        <h3>Multilingual Hate Speech and Slang Detection: Evaluating Hybrid Transformers Against Zero-Shot and Few-Shot LLMs Struggling with Short and Low-Context Texts</h3>
+        <span class="publication-status">Accepted - ICCIT 2025</span>
+    </div>
+    <p class="publication-authors">Md Minhazul Islam; Most Anamika Akter Zedni; Azmain Yakin Srizon; Md Tanbeer Jubaer; Md Sanaul Haque Shanto</p>
+    <p class="publication-description">This paper investigates multilingual hate speech and slang detection in short, low-context social media texts, comparing hybrid transformer-based models with zero-shot and few-shot large language models (LLMs). The study evaluates the challenges faced by LLMs in understanding implicit, slang-driven, and culturally dependent toxic expressions. Through extensive experiments across multilingual datasets, it demonstrates the effectiveness of task-specific hybrid transformer architectures for robust classification, while highlighting limitations of general-purpose LLMs under limited context conditions. The findings provide insights into developing more reliable and efficient multilingual content moderation systems.</p>
+    <a href="https://ieeexplore.ieee.org/abstract/document/11491201" target="_blank" class="publication-link">View Publication →</a>
+</div>
+                        <div class="publication-item">
+                            <div class="publication-header">
+                                <h3>Navigating Bengali Linguistics: Insights from Machine and Deep Learning Perspectives for Categorization of Sentences</h3>
+                                <span class="publication-status">Accepted - ICCIT 2023</span>
+                            </div>
+                            <p class="publication-authors">Md Minhazul Islam, Md Tanbeer Jubaer, Azmain Yakin Srizon</p>
+                            <p class="publication-description">The paper explores the classification of Bengali sentences, achieving 98.07% accuracy with BERT-based vectorization. Key Contribution: Main Code, Methodology design and Writing.</p>
+                            <a href="https://www.researchgate.net/publication/378545042_Navigating_Bengali_Linguistics_Insights_from_Machine_and_Deep_Learning_Perspectives_for_Categorization_of_Sentences#fullTextFileContent" target="_blank" class="publication-link">View Paper</a>
+                        </div>
+
+                        <div class="publication-item">
+                            <div class="publication-header">
+                                <h3>Consistency of Contextual Embedding in Literary Texts</h3>
+                                <span class="publication-status">Accepted - ICISET 2024</span>
+                            </div>
+                            <p class="publication-authors">Md Minhazul Islam, Md Tanbeer Jubaer, Mohammad Harun Or Rashid</p>
+                            <p class="publication-description">This research explores the effectiveness of contextual embedding techniques in analyzing complex literary texts using BERT model fine-tuning. Key Contribution: Main Idea, Code, Visualization.</p>
+                            <a href="https://ieeexplore.ieee.org/document/10941522" target="_blank" class="publication-link">View Paper</a>
+                        </div>
+
+                        <div class="publication-item">
+                            <div class="publication-header">
+                                <h3>Detecting Discrepancy to Enhance the Accuracy of Sentiment and Emotion Analysis: A Study Based on Bangla E-commerce Dataset</h3>
+                                <span class="publication-status">Accepted - STI 2024</span>
+                            </div>
+                            <p class="publication-authors">Md Tanbeer Jubaer, Barisha Chowdhury, Md Minhazul Islam, Mohammad Harun Or Rashid</p>
+                            <p class="publication-description">A novel approach to identify and resolve inconsistencies in Bangla e-commerce datasets. Sentiment analysis accuracy increased from 93.96% to 96.31%. Key Contribution: Data pre-processing, Literature review writing.</p>
+                            <a href="https://ieeexplore.ieee.org/document/10951076" target="_blank" class="publication-link">View Paper</a>
+                        </div>
+
+                        <div class="publication-item">
+                            <div class="publication-header">
+                                <h3>Analyzing Audience Engagement in Esports: Sentiment and LLM-Based Topic Insights from Live Chats in South Asia</h3>
+                                <span class="publication-status">Accepted - ICCIT 2024</span>
+                            </div>
+                            <p class="publication-authors">Md Tanbeer Jubaer, Mayeesha Farzana, Barisha Chowdhury, Md Shahid Uz Zaman, Azmain Yakin Srizon, Md Minhazul Islam</p>
+                            <p class="publication-description">Explores audience engagement in esports through sentiment analysis using 15 million live chat messages. Key Contribution: Revision, Literature Review.</p>
+                            <a href="https://github.com/oitik/papers/blob/master/Esports.pdf" target="_blank" class="publication-link">View Paper</a>
+                        </div>
+
+                        <div class="publication-item">
+                            <div class="publication-header">
+                                <h3>Explainable AI-Driven Improved Disease Prediction through Symptom Analysis with Custom BERT</h3>
+                                <span class="publication-status">Accepted - ICCIT 2024</span>
+                            </div>
+                            <p class="publication-authors">Md Minhazul Islam, Md Tanbeer Jubaer, Azmain Yakin Srizon, Md Ali Hossain</p>
+                            <p class="publication-description">A custom BERT-based hybrid model for disease prediction achieving 99% accuracy with Explainable AI techniques. Key Contribution: Main idea, Code, Visualization, Methodology writing.</p>
+                            <a href="https://github.com/oitik/papers/blob/master/Explainable_AI_Driven_Improved_Disease_Prediction_through_Symptom_Analysis_with_Custom_BERT.pdf" target="_blank" class="publication-link">View Paper</a>
+                        </div>
+
+                        <div class="publication-item">
+                            <div class="publication-header">
+                                <h3>Live and mediated user engagements: A comparative dataset from two Bengali audio-story based youtube channels</h3>
+                                <span class="publication-status">Accepted - Data in Brief</span>
+                            </div>
+                            <p class="publication-authors">Mohammad Harun Or Rashid, Md Tanbeer Jubaer, Md Minhazul Islam, Barisha Chowdhury</p>
+                            <p class="publication-description">A dataset containing user engagement and language data from two YouTube audio story channels with over 250,000 comments and 300,000 live chats. Key Contribution: Revision, Translation.</p>
+                            <a href="https://www.sciencedirect.com/science/article/pii/S2352340924011818" target="_blank" class="publication-link">View Paper</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+    </main>
+
+    <!-- Visitor Counter Section -->
+    <section class="visitor-counter-section">
+        <div class="container">
+            <div class="visitor-counter-content">
+                <div class="visitor-counter-item">
+                    <div class="counter-icon">👥</div>
+                    <div class="counter-info">
+                        <div class="counter-number" id="visitorCount">0</div>
+                        <div class="counter-label">Website Visitors</div>
+                    </div>
+                </div>
+                <div class="visitor-counter-item">
+                    <div class="counter-icon">📄</div>
+                    <div class="counter-info">
+                        <div class="counter-number" id="pageViews">0</div>
+                        <div class="counter-label">Page Views</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo">M</span>
+                    <span class="footer-title">Md Minhazul Islam</span>
+                </div>
+                <p class="footer-description">
+                    Advancing the understanding of human communication through computational analysis of literature and social media.
+                </p>
+                <div class="footer-links">
+                    <a href="publications.html">Publications</a>
+                    <a href="projects.html">Projects</a>
+                    <a href="cv.html">CV</a>
+                    <a href="mailto:minannu2001@gmail.com">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Md Minhazul Islam. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+ 

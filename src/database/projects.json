@@ -1,28 +1,61 @@
 {
   "research_interests": [
-    "Natural Language Processing (NLP) and Computational Linguistics, focusing on language understanding, text classification, and context-aware models.",
-    "Medical Text Analysis and Healthcare Informatics, leveraging AI to improve clinical decision-making and patient data analytics.",
-    "Multimodal Learning and Contextual Embeddings, integrating diverse data types like images, text, and signals for richer AI applications.",
-    "Explainable AI and Model Interpretability, ensuring transparency and trustworthiness in AI-driven systems and predictive models.",
-    "Topic Modeling, Semantic Search, and Representation Learning for uncovering hidden patterns and enhancing information retrieval.",
-    "Bengali Linguistics and Low-Resource Language Processing, addressing challenges in underrepresented languages through computational approaches."
+    "Natural Language Processing, Computational Linguistics, and Low-Resource Language Processing",
+    "Agentic AI systems with Retrieval-Augmented Generation (RAG)",
+    "Medical Text Analysis, Healthcare Informatics, and Semantic Search",
+    "Large Language Models, Multimodal Learning, and Contextual Embeddings",
+    "Explainable AI, Model Interpretability, and Topic Modeling"
   ],
   "projects": [
     {
+      "category": "research",
       "title": "Contextual Sarcasm Detection (Undergraduate Thesis)",
-      "description": "Developed an encoder-encoder cross-attention model for detecting contextual sarcasm. Combined CLIP for image encoding and mBERT for text processing, achieving 95% accuracy. Currently refining a custom multimodal architecture for enhanced performance."
+      "year": "2025",
+      "description": "Encoder–encoder cross-attention model for contextual sarcasm detection with sarcasm-adaptive pretraining. Extended into a journal manuscript under review at Journal of Big Data.",
+      "technologies": ["Python", "PyTorch", "Transformers", "ELECTRA"]
     },
     {
+      "category": "research",
       "title": "Clickbait Content Detection",
-      "description": "Built a tool to detect clickbait on social media using multimodal analysis. Integrated CLIP and mBERT models, achieving 95% accuracy in initial evaluations. Currently extending the dataset and refining model reliability."
+      "year": "2024–Present",
+      "description": "Multimodal YouTube clickbait detection with incongruence-aware fusion; related to YTClickbait21K and ICFNet manuscripts under review.",
+      "technologies": ["Python", "PyTorch", "CLIP", "RoBERTa", "ConvNeXtV2"]
     },
     {
+      "category": "research",
       "title": "Medical Triage Classification",
-      "description": "Developed a BERT-based model for classifying medical triage notes. Implemented regex and medical dictionaries for preprocessing and achieved 83% accuracy. Also explored multimodal and EDBERT-based enhancements for improved classification."
+      "year": "2024–2025",
+      "description": "BERT-based hybrid triage note classification with medical dictionaries, achieving 83% accuracy.",
+      "technologies": ["Python", "Custom BERT", "Regex", "Medical Dictionaries"]
     },
     {
-      "title": "US Election Data Analysis",
-      "description": "Analyzed Twitter posts using topic modeling, BERT-based semantic search, and GraphRAG. Clustered embeddings with t-SNE and HDBSCAN for extracting election-related insights. Proposed an alternative to traditional exit polls, with ongoing evaluation."
+      "category": "research",
+      "title": "US Election 2024 Data Analysis",
+      "year": "2025",
+      "description": "Semantic search, topic modeling, and GraphRAG on election-related Twitter data with t-SNE and HDBSCAN clustering.",
+      "technologies": ["Python", "LLM", "GraphRAG", "t-SNE", "HDBSCAN"],
+      "url": "https://github.com/kowshik24/us-election-2024"
+    },
+    {
+      "category": "application",
+      "title": "Internship Tracking System",
+      "description": "Web platform for managing internship records, student progress, and coordinator workflows.",
+      "technologies": ["Python", "HTML", "CSS", "JavaScript"],
+      "url": "https://github.com/minhazulruet/Internship-tracking-Demo"
+    },
+    {
+      "category": "application",
+      "title": "Vocab App",
+      "description": "Vocabulary learning application for organized practice and retention.",
+      "technologies": ["Mobile App Development", "UI/UX", "Database"],
+      "url": "https://github.com/minhazulruet/Vocab-App"
+    },
+    {
+      "category": "application",
+      "title": "AI Chatbot",
+      "description": "Context-aware conversational agent using NLP and transformer-based models.",
+      "technologies": ["Python", "NLP", "Transformers", "LLMs"],
+      "url": "https://github.com/minhazulruet/AI-Chatbot"
     }
   ]
 }
